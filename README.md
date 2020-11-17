@@ -1,1 +1,1 @@
-"a tope con IW" 
+Aplicación para ajuste de cuentas entre amigos
