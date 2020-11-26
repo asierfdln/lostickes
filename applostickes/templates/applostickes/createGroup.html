@@ -1,0 +1,21 @@
+{% extends "applostickes/base.html" %}
+{% block content %}
+  
+<p>Campos a rellenar</p>
+
+{% endblock content %}
+{%block side %}
+<div class="col-md-4">
+        <div class="content-section">
+          <h3>Options</h3>
+          <p class='text-muted'>
+            <ul class="list-group">
+              <li class="list-group-item list-group-item-light"><a class="article-title" href="{% url 'user' %}">Home</a></li>
+              <li class="list-group-item list-group-item-light"><a class="article-title" href="{% url 'group' %}">Groups</a></li>
+              <li class="list-group-item list-group-item-light"><a class="article-title" href="{% url 'debt' %}">Debts</a></li>
+              <li class="list-group-item list-group-item-light"><a class="article-title" href="">Create group</a></li>
+            </ul>
+          </p>
+        </div>
+</div>
+{% endblock side %}

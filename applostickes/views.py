@@ -23,3 +23,24 @@ def home(request):
 
 def about(request):
     return render(request, 'applostickes/about.html', {'title': 'About'})
+
+def main(request):
+    return render(request, 'applostickes/main.html', {'title': 'Main'})
+
+def user(request):
+    return render(request, 'applostickes/user.html', {'title': 'User'})
+
+def group(request):
+    context = {
+        'posts': posts
+    }
+    return render(request, 'applostickes/group.html', context)
+
+def debt(request):
+    context = {
+        'posts': posts
+    }
+    return render(request, 'applostickes/debt.html', context)
+
+def createGroup(request):
+    return render(request, 'applostickes/createGroup.html')

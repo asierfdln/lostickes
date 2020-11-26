@@ -1,0 +1,58 @@
+{% extends "applostickes/base.html" %}
+{% block content %}
+<header class="site-header">
+    <style>div{
+        text-align: center;
+        justify-content: center;
+        justify-items: center;
+    }
+
+    </style>
+    <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
+      <div class="container">
+        <a class="navbar-brand mr-4" href="{% url 'main' %}">Tickount</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarToggle">
+          <div class="navbar-nav mr-auto">
+            <a class="nav-item nav-link" href="{% url 'about' %}">About</a>
+          </div>
+          <div class="navbar-nav">
+            <div class="dropdown">
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Account
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item" href="#">Profile</a>
+                    <a class="dropdown-item" href="{% url 'main' %}">Log out</a>
+                </div>
+            </div>
+          </div>
+        </div>
+    </div>
+    </nav>
+  
+</header>
+<div id="izq" class="col-md-6">
+    <div class="content-section">
+      <h3><a class="article-title" href="{% url 'group' %}">Groups</a></h3>
+        <p>Info de grupos</p>
+    </div>
+</div>
+<div id="centro" class="col-md-6">
+    <div class="content-section">
+      <h3><a class="article-title" href="{% url 'debt' %}">Debts</a></h3>
+        <p>Paga moroso, 2€ en palmeritas</p>
+    </div>
+</div>
+<div id="dcha" class="col-md-6">
+    <div class="content-section">
+      <h3>Create group</h3>
+      <a class="btn btn-outline-primary" href="{% url 'createGroup' %}" role="button" >+</a>
+    </div>
+</div>
+
+{% endblock content %}
+{% block side %}
+{% endblock side %}
