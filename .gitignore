@@ -1,3 +1,7 @@
 .idea/
 
-*/__pycache__/*
+applostickes/__pycache__/*
+
+applostickes/migrations/__pycache__/*
+
+lostickes/__pycache__/*
