@@ -1,10 +1,13 @@
 {% extends "applostickes/base.html" %}
+    
+
 {% block content %}
+
 <header class="site-header">
   <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
     <div class="container">
       <img src="../static/applostickes/dollar-rotation-icon.ico" width="30" height="30" class="d-inline-block align-top" alt="">
-          
+             
       <a class="navbar-brand mr-4" href="{% url 'main' %}">Tickount</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -35,8 +38,70 @@
       </div>
     </div>
   </nav>
-</header> 
-<p>Campos a rellenar</p>
+</header>  
+{% for post in posts %}
+<div class="row justify-content:center">
+  <article class="media content-section col-md-12">
+    <div class="media-body">
+      <div class="article-metadata">
+        <div class="row">
+          <div class="col border-right">
+            <a class="mr-2" href="#">{{ post.debtName }}</a>
+          </div>
+          <hr>
+          <div class="col border-right">
+            <small class="text-muted">{{ post.description }}</small>
+          </div>
+          <hr>
+          <div class="col">
+            <a class="mr-2" href="#">{{ post.groupName }}</a>
+          </div>
+        </div>
+      </div>
+      <div class="article-metadata">
+        <div class="row">
+          <div class="col-md-auto">
+            <p style="justify-content: right;">Cost:</p>
+          </div>
+          <div class="col-md-auto">
+            <p style="justify-content: center;">{{ post.cost }}</p>
+          </div>
+        </div>
+      </div>
+      <div class="article-metadata">
+        <div class="row">
+          <div class="col-md-auto">
+            <p style="justify-content: right;">Balance:</p>
+          </div>
+          <div class="col-md-auto">
+            <p style="justify-content: center;">{{ post.debtBalance }}</p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="row">
+        <div class="col border-right">
+          <a class="mr-2" href="#">{{ post.user1 }}</a>
+        </div>
+        <hr>
+        <div class="col border-right">
+          <a class="mr-2" href="#">{{ post.user2 }}</a>
+        </div>
+        <hr>
+        <div class="col border-right">
+          <a class="mr-2" href="#">{{ post.user3 }}</a>
+        </div>
+        <div class="col">
+          <a class="mr-2" href="#">{{ post.user4 }}</a>
+        </div>
+      </div> 
+      </div>
+  </article>
+  
+</div>
+{% endfor %}
+
+<p>Pero con info de las deudas</p>
 
 {% endblock content %}
 {%block side %}
@@ -47,8 +112,8 @@
             <ul class="list-group">
               <li class="list-group-item list-group-item-light"><a class="article-title" href="{% url 'user' %}">Home</a></li>
               <li class="list-group-item list-group-item-light"><a class="article-title" href="{% url 'groups' %}">Groups</a></li>
-              <li class="list-group-item list-group-item-light"><a class="article-title" href="{% url 'debts' %}">Debts</a></li>
-              <li class="list-group-item list-group-item-light"><a class="article-title" href="">Create group</a></li>
+              <li class="list-group-item list-group-item-light"><a class="article-title" href="">Debts</a></li>
+              <li class="list-group-item list-group-item-light"><a class="article-title" href="{% url 'createGroup' %}">Create group</a></li>
             </ul>
           </p>
         </div>

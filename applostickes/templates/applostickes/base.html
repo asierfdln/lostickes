@@ -9,7 +9,7 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-
+    <link rel="icon" type="img/css" href="{% static 'applostickes/dollar-rotation-icon.ico' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'applostickes/main.css' %}">
 
     {% if title %}
@@ -22,6 +22,7 @@
     <header class="site-header">
       <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
         <div class="container">
+          <img src="{% static 'applostickes/dollar-rotation-icon.ico' %}" width="30" height="30" class="d-inline-block align-top" alt="">
           <a class="navbar-brand mr-4" href="{% url 'main' %}">Tickount</a>
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
@@ -32,8 +33,8 @@
             </div>
             <!-- Navbar Right Side -->
             <div class="navbar-nav">
-              <a class="nav-item nav-link" href="user/">Login</a>
-              <a class="nav-item nav-link" href="user/">Register</a>
+              <a class="nav-item nav-link" href="{% url 'user' %}">Login</a>
+              <a class="nav-item nav-link" href="{% url 'user' %}">Register</a>
             </div>
           </div>
         </div>
