@@ -68,21 +68,49 @@ def main(request):
     return render(request, 'applostickes/main.html', {'title': 'Main'})
 
 def user(request):
-    return render(request, 'applostickes/user.html', {'title': 'User'})
+    context = {
+        'title' : 'User',
+        'nameClass' : 'User'
+    }
+    return render(request, 'applostickes/user.html', context)
 
 def groups(request):
     context = {
         'posts': posts,
-        'title': "Groups"
+        'title': 'Groups',
+        'nameClass' : 'Groups'
     }
     return render(request, 'applostickes/groups.html', context)
 
 def debts(request):
     context = {
         'posts': postsDebt,
-        'title': "Debts"
+        'title': 'Debts',
+        'nameClass' : 'Debts'
     }
     return render(request, 'applostickes/debts.html', context)
 
 def createGroup(request):
-    return render(request, 'applostickes/createGroup.html', {'title': 'Create group'})
+    context = {
+        'nameClass' : 'Create group',
+        'title': 'Create group'
+    }
+    return render(request, 'applostickes/createGroup.html', context)
+
+def group(request, groupName):
+    context = {
+        'posts': groupName,
+        'nameClass' : 'Group',
+        'title': 'Group'
+    }
+    
+    return render(request, 'applostickes/group.html', context)
+
+def debt(request, debtName):
+    context = {
+        'posts': debtName,
+        'nameClass' : 'Debt',
+        'title': 'Debt'
+    }
+    
+    return render(request, 'applostickes/debt.html', context)

@@ -3,42 +3,6 @@
 
 {% block content %}
 
-<header class="site-header">
-  <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
-    <div class="container">
-      <img src="../static/applostickes/dollar-rotation-icon.ico" width="30" height="30" class="d-inline-block align-top" alt="">
-             
-      <a class="navbar-brand mr-4" href="{% url 'main' %}">Tickount</a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarToggle">
-        <div class="navbar-nav mr-auto">
-          <a class="nav-item nav-link" href="{% url 'about' %}">About</a>
-        </div>
-        <!-- Navbar Right Side -->
-        <div class="navbar-nav">
-          <div class="dropdown">
-              <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <h4 class="d-inline-block align-top">
-                  <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-person-circle" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M13.468 12.37C12.758 11.226 11.195 10 8 10s-4.757 1.225-5.468 2.37A6.987 6.987 0 0 0 8 15a6.987 6.987 0 0 0 5.468-2.63z"/>
-                    <path fill-rule="evenodd" d="M8 9a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
-                    <path fill-rule="evenodd" d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1zM0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8z"/>
-                  </svg>
-                </h4>  
-                Account
-              </button>
-              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                  <a class="dropdown-item" href="#">Profile</a>
-                  <a class="dropdown-item" href="{% url 'main' %}">Log out</a>
-              </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </nav>
-</header>  
 {% for post in posts %}
 <div class="row justify-content:center">
   <article class="media content-section col-md-12">
@@ -46,7 +10,7 @@
       <div class="article-metadata">
         <div class="row">
           <div class="col border-right">
-            <a class="mr-2" href="#">{{ post.debtName }}</a>
+            <a class="mr-2" href="{% url 'debt' post.debtName %}">{{ post.debtName }}</a>
           </div>
           <hr>
           <div class="col border-right">
@@ -54,7 +18,7 @@
           </div>
           <hr>
           <div class="col">
-            <a class="mr-2" href="#">{{ post.groupName }}</a>
+            <a class="mr-2" href="{% url 'group' post.groupName %}">{{ post.groupName }}</a>
           </div>
         </div>
       </div>
