@@ -100,6 +100,7 @@ def createGroup(request):
 def group(request, groupName):
     context = {
         'posts': groupName,
+        'info': postsDebt,
         'nameClass' : 'Group',
         'title': 'Group'
     }
@@ -109,6 +110,7 @@ def group(request, groupName):
 def debt(request, debtName):
     context = {
         'posts': debtName,
+        'info':postsDebt,
         'nameClass' : 'Debt',
         'title': 'Debt'
     }

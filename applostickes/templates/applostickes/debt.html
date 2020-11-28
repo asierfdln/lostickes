@@ -1,21 +1,78 @@
 {% extends "applostickes/base.html" %}
 {% block content %}
 
-<div class="row justify-content:center">
-    <article class="media content-section col-md-12">
-      <div class="media-body">
-        <div class="article-metadata">
-          <div class="row">
-            <div class="col">
-              <h4>{{ posts }}</h4>
+
+{% for i in info %}
+        {% if i.debtName == posts %}
+        <h3>{{i.groupName}} >> {{i.debtName}} </h3>
+            <div style="justify-content: center;" class="row">
+                <article class="media content-section col-md-12">
+                <div class="media-body">
+                    <div class="article-metadata">
+                    <div class="row">
+                        <div class="col border-right">
+                        <h4>{{ i.debtName }}</h4>
+                        </div>
+                        <div class="col">
+                        <small class="text-muted">{{i.description}}</small>
+                        </div>
+                    </div>
+                    </div>
+                    <div class="article-metadata">
+                        <div class="row">
+                            <div class="col">
+                            <p>Cost: {{ i.cost }}</p>
+                            </div>
+                        </div>
+                        
+                        </div>
+                        <div class="article-metadata">
+                            <div class="row">
+                                <div class="col">
+                                <p>Balance: {{ i.debtBalance }}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="article-metadata">
+                            <div class="row">
+                                <div class="col border-right">
+                                <p>{{ i.user1 }}</p>
+                                </div>
+                                <div class="col border-right">
+                                    <p>{{ i.user2 }}</p>
+                                </div>
+                                <div class="col border-right">
+                                    <p>{{ i.user3 }}</p>
+                                </div>
+                                <div class="col">
+                                    <p>{{ i.user4 }}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <p>Elemento 1</p>
+                                </div>
+                            <div class="col">
+                            <p>{{ i.user1 }}</p>
+                            </div>
+                            <div class="col">
+                                <p>8</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <p>...</p>
+                                </div>
+                            
+                        </div>
+                    </div>
+                </article>
+                
             </div>
-            
-          </div>
-        </div>
-        <p>Info de {{posts}}</p>
-      </div>
-    </article>
-  </div>
+        {% endif %}
+    {% endfor %}
+
 
 {% endblock %}
 {% block side %}
@@ -27,9 +84,11 @@
           <li class="list-group-item list-group-item-light"><a class="article-title" href="{% url 'user' %}">Home</a></li>
           <li class="list-group-item list-group-item-light"><a class="article-title" href="{% url 'groups' %}">Groups</a></li>
           <li class="list-group-item list-group-item-light"><a class="article-title" href="{% url 'debts' %}">Debts</a></li>
-          <li class="list-group-item list-group-item-light"><a class="article-title" href="">Create group</a></li>
+          <li class="list-group-item list-group-item-light"><a class="article-title" href="{% url 'createGroup' %}">Create group</a></li>
         </ul>
       </p>
     </div>
+    
+<a type="button" class="btn btn-outline-secondary btn-block" href="#">Pay debt</a>
 </div>
 {% endblock side %}
