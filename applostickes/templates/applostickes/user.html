@@ -1,6 +1,6 @@
 {% extends "applostickes/base.html" %}
 {% block content %}
-
+<div class="col-md-12">
   <a id="btnLeft" class="article-title" href="{% url 'groups' %}">
     <article class="media content-section">
       <div class="media-body">
@@ -45,13 +45,15 @@
       </div>
     </article>
   </a>  
+</div>
+  
 
 
 {% endblock content %}
 {% block side %}
 
 
-<div class="col-md">
+<div class="col-md-4">
   <a id="createGroup" type="button" class="btn btn-block" href="{% url 'createGroup' %}">
     <article class="media content-section">
       <div class="media-body">
