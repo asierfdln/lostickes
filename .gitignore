@@ -1,5 +1,7 @@
 .idea/
 
+.vscode/*
+
 applostickes/__pycache__/*
 
 applostickes/migrations/__pycache__/*
