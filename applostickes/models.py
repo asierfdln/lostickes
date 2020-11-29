@@ -1,87 +1,121 @@
+# import string, random, hashlib
 import uuid
 from django.db import models
 from django.core import validators as vals
 
 # Create your models here.
 
+"""
+
+Operamos bajo el supuesto de que el user2 nunca ha pagado nada, por lo que debe pagar siempre
+
+"""
 
 class User(models.Model):
 
-    # TODO docu
-    # TODO imagen,icono
-
-    # hacer el tema este hashlib y sha256(name + email + ruido_random)
-    primkey = models.UUIDField(primary_key=True, editable=False, default=str(uuid.uuid4()))
     name = models.CharField(max_length=55, blank=False)
     email = models.EmailField(max_length=105, unique=True, blank=False)
 
+    """
+    -------------------------------------------------------
+    SOBRE MI CABEZONERIA Y LAS PRIMARY KEYS UNICAS A MANIJA
+    -------------------------------------------------------
+
+    Intentar definir una primkey que dependa de name + email + _random_noise tiene dos problemas:
+        - (1) no puedes acceder al texto de name/email tal y como esta definido ahora mismo
+        - (2) necesitas que la utilizacion de todas las funciones del modulo de random sean utilizadas
+              dentro del metodo __init__ de la clase, ya que si no todos los objetos de la clase User
+              tendran el mismo _random_noise, cosa que no nos interesa a la hora de generar primkeys unicas.
+              Y, aunque puedas tener _random_noise disponible, tampoco puedes definir un 
+              UUIDField dentro del constructor __init__ porque Django se rompe...
+    """
+
+    # _random_noise = ''.join((random.choice(string.ascii_letters + string.digits) for i in range(10)))
+    # _string_key = f'{_random_noise}' # TODO añadir name y email
+    # _key = hashlib.sha256(bytes(_string_key, 'utf-8')).hexdigest()
+    # primkey = models.UUIDField(primary_key=True, editable=False, default=_key[:16])
+    primkey = models.UUIDField(primary_key=True, editable=False, default=uuid.uuid4)
+
     def __str__(self):
-        # TODO un poco mas mejor
         return self.name
 
 
 class UserGroup(models.Model):
 
-    # TODO docu
-    # TODO imagen,icono
-
-    primkey = models.UUIDField(primary_key=True, editable=False, default=str(uuid.uuid4()))
     name = models.CharField(max_length=55, blank=False)
-    desc = models.TextField(max_length=280, blank=False) # si esto peta, charfield con widget=forms.Textarea
+    desc = models.TextField(max_length=280, blank=False)
 
-    users = models.ManyToManyField(User, help_text="Users belonging to this group")
+    primkey = models.UUIDField(primary_key=True, editable=False, default=uuid.uuid4)
 
-    users_names = []
+    users = models.ManyToManyField(User, blank=False, help_text="Usuarios pertenecientes al grupo.")
 
-    def generate_list_of_users_names(self):
-        # for user in self.users: # TODO ver como manejar objetos de fk
-        #     users_names.append(user.name)
-        pass
+    def user_balance(self, user="user2"):
+        balance = 0
+        for transaction in Transaction.objects.filter(user_group=self):
+            balance = balance + transaction.user_account(user=user)
 
-    def add_user(self, user):
-        # self.users.add(user)
-        pass
-
-    def delete_user(self, user):
-        # self.users.remove(user)
-        pass
-
-    def calc_user_balance(self, user):
-        pass # la funxion de ver cuánto te deben / debes en este grupo
-
-    def __init__(self, **kwargs):
-        self.generate_list_of_users_names()
+        return balance
 
     def __str__(self):
-        # TODO un poco mas mejor
         return self.name
 
 
 class Transaction(models.Model):
 
-    primkey = models.UUIDField(primary_key=True, editable=False, default=str(uuid.uuid4()))
     name = models.CharField(max_length=55, blank=False)
-    desc = models.TextField(max_length=280, blank=False) # si esto peta, charfield con widget=forms.Textarea
+    desc = models.TextField(max_length=280, blank=False)
 
-    user_group = models.ForeignKey(UserGroup, on_delete=models.CASCADE)
-    elements = models.ManyToManyField('Element', help_text="Enter thangz to pay for")
+    primkey = models.UUIDField(primary_key=True, editable=False, default=uuid.uuid4)
 
-    preciototal = None # TODO...
+    user_group = models.ForeignKey(UserGroup, blank=False, on_delete=models.CASCADE, help_text="Grupo al cual pertenence la transaccion.")
+    payers = models.ManyToManyField(User, blank=False, help_text="Usuarios entre los que pagar la transaccion.")
+    elements = models.ManyToManyField('Element', blank=False, help_text="Introduce elementos de la transaccion.")
 
-    # FOREIGN KEY PERO LIMITADAAAAAAAAAAAAAAAAAAAAAAA
-    owner = models.CharField(max_length=55)
+    # 1,2;3,4 --> el producto1 es compartido por los payers 1 y 2, el producto2 es compartido por los payers 3 y 4...
+    mapping = models.CharField(max_length=55, blank=False, help_text="Para definir que paga cada usuario seguir el siguiente formato: 1,2;2,3,4. ; por cada producto. , por cada usuario responsable.")
 
-    def calc_user_balance(self):
-        pass
+    preciototal = None
+    payers_elements_mapping = None
+
+    def total_price(self):
+        if self.preciototal == None:
+            for element in self.elements.all():
+                self.preciototal = self.preciototal + element.price
+
+        return self.preciototal
+
+    def accounts(self):
+        if self.payers_elements_mapping == None:
+            payer_counter = 1
+            self.payers_elements_mapping = {}
+            for payer in self.payers.all():
+                element_counter = 0
+                self.payers_elements_mapping[payer.name] = 0
+                for product in self.elements.all():
+                    if str(payer_counter) in self.mapping.split(";")[element_counter]:
+                        self.payers_elements_mapping[payer.name] = self.payers_elements_mapping[payer.name] + product.price/len(self.mapping.split(";")[element_counter].split(","))
+                    element_counter = element_counter + 1
+                payer_counter = payer_counter + 1
+
+        return self.payers_elements_mapping
+
+    def user_account(self, user="user2"):
+        if self.payers_elements_mapping == None:
+            self.accounts()
+
+        return self.payers_elements_mapping[user]
 
     def __str__(self):
-        # TODO un poco mas mejor
         return self.name
 
 
 class Element(models.Model):
 
-    primkey = models.UUIDField(primary_key=True, editable=False, default=str(uuid.uuid4()))
     name = models.CharField(max_length=55, blank=False)
-    desc = models.TextField(max_length=280, blank=False) # si esto peta, charfield con widget=forms.Textarea
+    desc = models.TextField(max_length=280, blank=False)
     price = models.IntegerField(validators=[vals.MinValueValidator(limit_value=0, message="Only positive integers allowed")])
+
+    primkey = models.UUIDField(primary_key=True, editable=False, default=uuid.uuid4)
+
+    def __str__(self):
+        return self.name

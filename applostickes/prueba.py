@@ -16,7 +16,6 @@ lista_usuarios = {
 }
 
 for user in lista_usuarios.keys():
-    lista_usuarios.get(user)
     for product in lista_productos.keys():
         if user in lista_productos.get(product)[1]:
             lista_usuarios[user] = lista_usuarios[user] + lista_productos.get(product)[0]/len(lista_productos.get(product)[1])

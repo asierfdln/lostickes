@@ -2,8 +2,9 @@ from django.contrib import admin
 
 # Register your models here.
 
-# from .models import Departamento, Habilidad, Empleado
+from .models import User, UserGroup, Transaction, Element
 
-# admin.site.register(Departamento)
-# admin.site.register(Habilidad)
-# admin.site.register(Empleado)
+admin.site.register(User)
+admin.site.register(UserGroup)
+admin.site.register(Transaction)
+admin.site.register(Element)
