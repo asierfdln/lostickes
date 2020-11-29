@@ -112,9 +112,7 @@ def groups(request):
 
 
 def debts(request):
-    context = {
-        'posts': postsDebt
-    }
+    context = {}
 
     groups_of_user = User.objects.get(name=USER).usergroup_set.all()
     context['debts'] = {}
@@ -133,17 +131,18 @@ def debts(request):
 
 
 def createGroup(request):
+    context = {}
+
     form = UserGroupForm(request.POST)
     if form.is_valid():
         # comprobaciones logicas
         form.save()
         return HttpResponseRedirect('/groups/')
 
-    context = {
-        'nameClass': 'Create group',
-        'title': 'Create group',
-        'form': form
-    }
+    context['form'] = form
+    context['title'] = 'Create group'
+    context['nameClass'] = 'Create group'
+
     return render(request, 'applostickes/createGroup.html', context)
 
 
@@ -158,19 +157,19 @@ def group(request, groupName):
     return render(request, 'applostickes/group.html', context)
 
 
-# TODO guardar referencia de pagina de la que vienes, group/{nombre_de_grupo}
-def createDebt(request):
+def createDebt(request, goback_group):
+    context = {}
+
     form = TransactionForm(request.POST)
     if form.is_valid():
         # comprobaciones logicas
         form.save()
-        return HttpResponseRedirect('/groups/')
+        return HttpResponseRedirect(f'/group/{goback_group}')
 
-    context = {
-        'nameClass': 'Create debt',
-        'title': 'Create debt',
-        'form': form
-    }
+    context['form'] = form
+    context['title'] = 'Create group'
+    context['nameClass'] = 'Create group'
+
     return render(request, 'applostickes/createDebt.html', context)
 
 def debt(request, debtName):
