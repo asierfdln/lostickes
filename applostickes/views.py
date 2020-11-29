@@ -191,9 +191,14 @@ def debt(request, debtName):
         lista_nombres.append(payer.name)
     context['debt'].append(lista_nombres)
     context['debt'].append([])
-    contador_mapping = trani.mapping
+    contador_mapping = 0
     for element in trani.elements.all():
-        context['debt'][6].append([element.name, element.price])
+        nums_responsables = trani.mapping.split(";")[contador_mapping].split(",")
+        lista_responsables = []
+        for num in nums_responsables:
+            lista_responsables.append(lista_nombres[int(num)-1])
+        context['debt'][6].append([element.name, lista_responsables, element.price])
+        contador_mapping = contador_mapping + 1
 
     context['title'] = 'Debt'
     context['nameClass'] = 'Debt'

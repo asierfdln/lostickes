@@ -51,10 +51,19 @@
       {% for element in debt.6 %}
       <div class="row">
         <div class="col">
-          <p>{{ element.0 }}</p>
+          <p class="text-muted">{{ element.0 }}</p>
         </div>
         <div class="col">
-          <small style="float: right;" class="text-muted">{{ element.1 }}</small>
+          {% for responsible in element.1 %}
+          {% if forloop.last %}
+          <p class="text-muted">{{ responsible }}</p>
+          {% else %}
+          <p class="text-muted">{{ responsible }}, </p>
+          {% endif %}
+          {% endfor %}
+        </div>
+        <div class="col">
+          <small style="float: right;" class="text-muted">{{ element.2 }}</small>
         </div>
       </div>
       {% endfor %}
