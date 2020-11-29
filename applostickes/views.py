@@ -104,14 +104,15 @@ def group(request, groupName):
     return render(request, 'applostickes/group.html', context)
 
 
-def createDebt(request):
+# TODO volver al group/{gruponame}
+def createDebt(request): # (request, gruponame)
     context = {}
 
     form = TransactionForm(request.POST)
     if form.is_valid():
         # comprobaciones logicas
         form.save()
-        return HttpResponseRedirect(f'/debts/')
+        return HttpResponseRedirect(f'/debts/') # f'/group/{gruponame}'
 
     context['form'] = form
     context['title'] = 'Create group'
