@@ -9,12 +9,16 @@
     <h1 style="text-align: center;">Tickount</h1>
     <div id="centro" class="col-md-8">
         <div class="content-section">
-            <div class="content-section">
-                <p><h3><a class="article-title" href="{% url 'user' %}">Login</a></h3></p>
-            </div>
-            <div class="content-section">
-                <p><h3><a class="article-title" href="{% url 'user' %}">Register</a></h3></p>
-            </div>
+            <a role="button" class="article-title" href="{% url 'user' %}">
+                <div class="content-section">
+                    <p><h3>Login</h3></p>
+                </div>
+            </a>
+            <a role="button" class="article-title" href="{% url 'user' %}">
+                <div class="content-section">
+                    <p><h3>Register</h3></p>
+                </div>
+            </a>
         </div>
     </div>
 {% endblock content %}
