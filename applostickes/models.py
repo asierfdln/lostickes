@@ -149,27 +149,27 @@ class TransactionForm(ModelForm):
     # TODO no rendirnos como debiles ante esta wea
     # TODO o con ajax como pros
 
-    # def clean(self):
-    #     cleaned_data = super().clean()
-    #     user_group_cleaned = cleaned_data['user_group'] # CREO que esto devuelve un objeto de tipo UserGroup
-    #     payers_cleaned = cleaned_data['payers'] # CREO que esto devuelve una lista de Users
+    def clean(self):
+        cleaned_data = super(TransactionForm, self).clean()
+        user_group_cleaned = cleaned_data.get('user_group') # CREO que esto devuelve un objeto de tipo UserGroup
+        payers_cleaned = cleaned_data.get('payers') # CREO que esto devuelve una lista de Users
 
-    #     string_grupo = user_group_cleaned.name
+        string_grupo = user_group_cleaned.name
 
-    #     booleano_payers_dentro = True
-    #     for payer in payers_cleaned:
-    #         booleano_usergroup_encontrado = False
-    #         for usergroup in payer.usergroup_set.all():
-    #             if string_grupo == usergroup.name:
-    #                 # usuario correcto
-    #                 booleano_usergroup_encontrado = True
-    #                 break
-    #             else:
-    #                 # usuario de momento no correcto, hay que seguir mirando
-    #                 pass
-    #         if not booleano_usergroup_encontrado:
-    #             booleano_payers_dentro = False
-    #             break
+        booleano_payers_dentro = True
+        for payer in payers_cleaned:
+            booleano_usergroup_encontrado = False
+            for usergroup in payer.usergroup_set.all():
+                if string_grupo == usergroup.name:
+                    # usuario correcto
+                    booleano_usergroup_encontrado = True
+                    break
+                else:
+                    # usuario de momento no correcto, hay que seguir mirando
+                    pass
+            if not booleano_usergroup_encontrado:
+                booleano_payers_dentro = False
+                break
 
-    #     if not booleano_payers_dentro:
-    #         raise ValidationError("Hay usuarios pagadores que no estan en el grupo de la transaccion.")
+        if not booleano_payers_dentro:
+            raise ValidationError("Hay usuarios pagadores que no estan en el grupo de la transaccion.")

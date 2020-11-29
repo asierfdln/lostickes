@@ -14,7 +14,7 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-md border-right">
+        <div class="col-md">
           <p style="justify-content: center;">Balance: {{ group.2 }}</p>
         </div>
       </div>
@@ -25,7 +25,7 @@
   <article class="media content-section">
     <div class="media-body">
       <div style="display: inline;" class="row">
-        <div class="col">
+        <div class="col-sm-4">
           <p>
             <a class="article-title" href="{% url 'createDebt' %}">
               Create new debt
@@ -41,49 +41,51 @@
   </article>
 </div>
 {% for transaction in group.3 %}
-<div style="justify-content: center;" class="row">
-  <article class="media content-section col-md-12">
-    <div class="media-body">
-      <div class="article-metadata">
+<a class="article-title" role="button" href="{% url 'debt' transaction.0 %}">
+  <div style="justify-content: center;" class="row">
+    <article class="media content-section col-md-12">
+      <div class="media-body">
+        <div class="article-metadata">
+          <div class="row">
+            <div class="col border-right">
+              <h4>{{ transaction.0 }}</h4>
+            </div>
+            <div class="col">
+              <small class="text-muted">{{ transaction.1 }}</small>
+            </div>
+          </div>
+        </div>
+        <div class="article-metadata">
+          <div class="row">
+            <div class="col">
+              <p class="text-muted">Cost: {{ transaction.2 }}</p>
+            </div>
+          </div>
+        </div>
+        <div class="article-metadata">
+          <div class="row">
+            <div class="col">
+              <p class="text-muted">Balance: {{ transaction.3 }}</p>
+            </div>
+          </div>
+        </div>
         <div class="row">
+          {% for user_name in transaction.4 %}
+          {% if forloop.last %}
+          <div class="col">
+            <p class="text-muted">{{ user_name }}</p>
+          </div>
+          {% else %}
           <div class="col border-right">
-            <h4>{{ transaction.0 }}</h4>
+            <p class="text-muted">{{ user_name }}</p>
           </div>
-          <div class="col">
-            <small class="text-muted">{{ transaction.1 }}</small>
-          </div>
+          {% endif %}
+          {% endfor %}
         </div>
       </div>
-      <div class="article-metadata">
-        <div class="row">
-          <div class="col">
-            <p>Cost: {{ transaction.2 }}</p>
-          </div>
-        </div>
-      </div>
-      <div class="article-metadata">
-        <div class="row">
-          <div class="col">
-            <p>Balance: {{ transaction.3 }}</p>
-          </div>
-        </div>
-      </div>
-      <div class="row">
-        {% for user_name in transaction.4 %}
-        {% if forloop.last %}
-        <div class="col">
-          <p>{{ user_name }}</p>
-        </div>
-        {% else %}
-        <div class="col border-right">
-          <p>{{ user_name }}</p>
-        </div>
-        {% endif %}
-        {% endfor %}
-      </div>
-    </div>
-  </article>
-</div>
+    </article>
+  </div>
+</a>
 {% endfor %}
 {% endblock %}
 {% block side %}
