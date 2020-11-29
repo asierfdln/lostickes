@@ -73,6 +73,24 @@ class UserGroupForm(ModelForm):
         fields = "__all__"
 
 
+class Element(models.Model):
+
+    name = models.CharField(max_length=55, blank=False)
+    desc = models.TextField(max_length=280, blank=False)
+    price = models.IntegerField(validators=[vals.MinValueValidator(limit_value=0, message="Only positive integers allowed")])
+
+    primkey = models.UUIDField(primary_key=True, editable=False, default=uuid.uuid4)
+
+    def __str__(self):
+        return self.name
+
+
+class ElementForm(ModelForm):
+    class Meta:
+        model = Element
+        fields = "__all__"
+
+
 class Transaction(models.Model):
 
     name = models.CharField(max_length=55, blank=False)
@@ -82,7 +100,7 @@ class Transaction(models.Model):
 
     user_group = models.ForeignKey(UserGroup, blank=False, on_delete=models.CASCADE, help_text="Grupo al cual pertenence la transaccion.")
     payers = models.ManyToManyField(User, blank=False, help_text="Usuarios entre los que pagar la transaccion.")
-    elements = models.ManyToManyField('Element', blank=False, help_text="Introduce elementos de la transaccion.")
+    elements = models.ManyToManyField(Element, blank=False, help_text="Introduce elementos de la transaccion.")
 
     # 1,2;3,4 --> el producto1 es compartido por los payers 1 y 2, el producto2 es compartido por los payers 3 y 4...
     mapping = models.CharField(max_length=55, blank=False, help_text="Para definir que paga cada usuario seguir el siguiente formato: 1,2;2,3,4. ; por cada producto. , por cada usuario responsable.")
@@ -122,25 +140,7 @@ class Transaction(models.Model):
         return self.name
 
 
-# class TransactionForm(ModelForm):
-#     class Meta:
-#         model = Transaction
-#         fields = "__all__"
-
-
-class Element(models.Model):
-
-    name = models.CharField(max_length=55, blank=False)
-    desc = models.TextField(max_length=280, blank=False)
-    price = models.IntegerField(validators=[vals.MinValueValidator(limit_value=0, message="Only positive integers allowed")])
-
-    primkey = models.UUIDField(primary_key=True, editable=False, default=uuid.uuid4)
-
-    def __str__(self):
-        return self.name
-
-
-class ElementForm(ModelForm):
+class TransactionForm(ModelForm):
     class Meta:
-        model = Element
-        fields = "__all__"
+        model = Transaction
+        fields = '__all__'

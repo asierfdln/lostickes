@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
-from .models import UserGroupForm
-# from .models import TransactionForm
+from .models import UserGroupForm, TransactionForm
+from .models import User, Transaction
 
 posts = [
     {
@@ -64,6 +64,8 @@ postsDebt = [
     
 ]
 
+USER = "user2"
+
 def about(request):
     return render(request, 'applostickes/about.html', {'title': 'About'})
 
@@ -73,10 +75,21 @@ def main(request):
 
 
 def user(request):
-    context = {
-        'title': 'User',
-        'nameClass': 'User'
-    }
+    context = {}
+
+    groups_to_display = User.objects.get(name=USER).usergroup_set.all()
+    context['groups'] = {}
+    for group in groups_to_display:
+        context['groups'][group.name] = group.user_balance(user=USER)
+
+    transactions_to_display = User.objects.get(name=USER).transaction_set.all()
+    context['transactions'] = {}
+    for transaction in transactions_to_display:
+        context['transactions'][transaction.name] = transaction.user_account(user=USER)
+
+    context['title'] = 'User'
+    context['nameClass'] = 'User'
+
     return render(request, 'applostickes/user.html', context)
 
 
@@ -125,19 +138,19 @@ def group(request, groupName):
 
 
 # TODO guardar referencia de pagina de la que vienes, group/{nombre_de_grupo}
-# def createDebt(request):
-#     form = TransactionForm(request.POST)
-#     if form.is_valid():
-#         # comprobaciones logicas
-#         form.save()
-#         return HttpResponseRedirect('/groups/')
+def createDebt(request):
+    form = TransactionForm(request.POST)
+    if form.is_valid():
+        # comprobaciones logicas
+        form.save()
+        return HttpResponseRedirect('/groups/')
 
-#     context = {
-#         'nameClass': 'Create debt',
-#         'title': 'Create debt',
-#         'form': form
-#     }
-#     return render(request, 'applostickes/createDebt.html', context)
+    context = {
+        'nameClass': 'Create debt',
+        'title': 'Create debt',
+        'form': form
+    }
+    return render(request, 'applostickes/createDebt.html', context)
 
 def debt(request, debtName):
     context = {

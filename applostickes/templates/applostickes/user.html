@@ -1,59 +1,40 @@
 {% extends "applostickes/base.html" %}
 {% block content %}
 <div class="col-md-12">
-  <a id="btnLeft" class="article-title" href="{% url 'groups' %}">
+  <a class="article-title" href="{% url 'groups' %}">
     <article class="media content-section">
       <div class="media-body">
         <div class="article-metadata">
           <h3>Groups</h3>
         </div>
+        {% for group_name, group_balance in groups.items %}
         <div class="article-metadata">
-          <p style="display: inline">Group 1</p>
-          <small style="float: right;" class="text-muted">Balance total</small>
+          <p style="display: inline" class="text-muted">{{ group_name }}</p>
+          <small style="float: right;" class="text-muted">Balance: {{ group_balance }}</small>
         </div>
-        <div class="article-metadata">
-          <p style="display: inline;">Group 2</p>
-          <small style="float: right;" class="text-muted">Balance total</small>
-        </div>
-        <div class="article-metadata">
-          <p style="display: inline;">Group 3</p>
-          <small style="float: right;" class="text-muted">Balance total</small>
-        </div>
+        {% endfor %}
       </div>
     </article>
-  </a>   
-
-<br>
+  </a>
   <a class="article-title" href="{% url 'debts' %}">
     <article class="media content-section">
       <div class="media-body">
         <div class="article-metadata">
           <h3>Debts</h3>
         </div>
+        {% for transaction_name, transaction_balance in transactions.items %}
         <div class="article-metadata">
-          <p style="display: inline;">Debt 1</p>
-          <small style="float: right;" class="text-muted">Balance</small>
+          <p style="display: inline;" class="text-muted">{{ transaction_name }}</p>
+          <small style="float: right;" class="text-muted">Balance: {{ transaction_balance }}</small>
         </div>
-        <div class="article-metadata">
-          <p style="display: inline;">Debt 2</p>
-          <small style="float: right;" class="text-muted">Balance</small>
-        </div>
-        <div class="article-metadata">
-          <p style="display: inline;">Debt 3</p>
-          <small style="float: right;" class="text-muted">Balance</small>
-        </div>
+        {% endfor %}
       </div>
     </article>
-  </a>  
+  </a>
 </div>
-  
-
-
 {% endblock content %}
 {% block side %}
-
-
-<div class="col-md-4">
+<!-- <div class="col-md-4">
   <a id="createGroup" type="button" class="btn btn-block" href="{% url 'createGroup' %}">
     <article class="media content-section">
       <div class="media-body">
@@ -67,11 +48,21 @@
             <path fill-rule="evenodd" d="M8 5.5a.5.5 0 0 1 .5.5v1.5H10a.5.5 0 0 1 0 1H8.5V10a.5.5 0 0 1-1 0V8.5H6a.5.5 0 0 1 0-1h1.5V6a.5.5 0 0 1 .5-.5z"/>
           </svg>
         </h2>
-      
-        
       </div>
     </article>
   </a>
-<a id="pay" type="button" class="btn btn-outline-secondary btn-block" href="#">Pay debt</a>
+</div> -->
+<div class="col-md-4">
+  <div class="content-section">
+    <h3>Options</h3>
+    <p class='text-muted'>
+      <ul class="list-group">
+        <li class="list-group-item list-group-item-light"><a class="article-title" href="{% url 'user' %}">Home</a></li>
+        <li class="list-group-item list-group-item-light"><a class="article-title" href="{% url 'groups' %}">Groups</a></li>
+        <li class="list-group-item list-group-item-light"><a class="article-title" href="{% url 'debts' %}">Debts</a></li>
+        <li class="list-group-item list-group-item-light"><a class="article-title" href="{% url 'createGroup' %}">Create group</a></li>
+      </ul>
+    </p>
+  </div>
 </div>
 {% endblock side %}
