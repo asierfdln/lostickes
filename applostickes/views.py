@@ -64,7 +64,7 @@ postsDebt = [
     
 ]
 
-USER = "user2"
+USER = "user2" # simulacion de inicio de sesion
 
 def about(request):
     return render(request, 'applostickes/about.html', {'title': 'About'})
