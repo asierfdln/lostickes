@@ -110,6 +110,7 @@ class Transaction(models.Model):
 
     def total_price(self):
         if self.preciototal == None:
+            self.preciototal = 0
             for element in self.elements.all():
                 self.preciototal = self.preciototal + element.price
 

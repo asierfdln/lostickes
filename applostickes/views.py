@@ -94,20 +94,41 @@ def user(request):
 
 
 def groups(request):
-    context = {
-        'posts': posts,
-        'title': 'Groups',
-        'nameClass': 'Groups'
-    }
+    context = {}
+
+    groups_to_display = User.objects.get(name=USER).usergroup_set.all()
+    context['groups'] = {}
+    for group in groups_to_display:
+        context['groups'][group.name] = [group.desc, group.user_balance(user=USER), []]
+        transactions_of_group = group.transaction_set.all()
+        for tr in transactions_of_group:
+            if tr.payers.get(name=USER):
+                context['groups'][group.name][2].append([tr.name, tr.user_account(user=USER)])
+
+    context['title'] = 'Groups'
+    context['nameClass'] = 'Groups'
+
     return render(request, 'applostickes/groups.html', context)
 
 
 def debts(request):
     context = {
-        'posts': postsDebt,
-        'title': 'Debts',
-        'nameClass': 'Debts'
+        'posts': postsDebt
     }
+
+    groups_of_user = User.objects.get(name=USER).usergroup_set.all()
+    context['debts'] = {}
+    for group in groups_of_user:
+        transactions_of_group = group.transaction_set.all()
+        for tr in transactions_of_group:
+            if tr.payers.get(name=USER):
+                context['debts'][tr.name] = [tr.desc, group.name, tr.total_price(), tr.user_account(user=USER), []]
+                for user in tr.payers.all():
+                    context['debts'][tr.name][4].append(user.name)
+
+    context['title'] = 'Debts'
+    context['nameClass'] = 'Debts'
+
     return render(request, 'applostickes/debts.html', context)
 
 

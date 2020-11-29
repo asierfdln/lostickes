@@ -1,56 +1,55 @@
 {% extends "applostickes/base.html" %}
-
 {% block content %}
-
-{% for post in posts %}
-<div class="row">
-  <article class="media content-section col-md-12">
-    <div class="media-body">
-      <div class="article-metadata">
+{% for group_name, group_list in groups.items %}
+<a class="article-title" href="{% url 'group' group_name %}">
+  <div class="row">
+    <article class="media content-section col-md-12">
+      <div class="media-body">
+        <div class="article-metadata">
+          <div class="row">
+            <div class="col-xs-6 col-sm-2 border-right">
+              <h4>{{ group_name }}</h4>
+            </div>
+            <div class="col">
+              <small class="text-muted">{{ group_list.0 }}</small>
+            </div>
+          </div>
+        </div>
+        <div class="article-metadata">
+          <div class="row">
+            <div class="col-xs-12 col-sm-12">
+              <p style="justify-content: center;" class="text-muted">Balance de grupo: {{ group_list.1 }}</p>
+            </div>
+          </div>
+        </div>
+        {% for transaction in group_list.2 %}
         <div class="row">
-          <div class="col-xs-6 col-sm-2 border-right">
-            <a class="mr-2" href="{% url 'group' post.groupName %}">{{ post.groupName }}</a>
+          <div class="col col-md-auto">
+            <p class="text-muted">{{ transaction.0 }}</p>
           </div>
-          <hr>
-          <div class="col-xs-6 col-sm-7">
-            <small class="text-muted">{{ post.description }}</small>
-          </div>
-        </div>
-      </div>
-      <div class="article-metadata">
-        <div class="row">
-          <div class="col-xs-12 col-sm-12">
-            <p style="justify-content: center;">Balance: {{ post.balance }}</p>
+          <div class="col">
+            <small style="float: right;" class="text-muted">Balance de deuda: {{ transaction.1 }}</small>
           </div>
         </div>
-      </div>
-      {% for post in posts %}
-      <div class="row">
-        <div class="col-xs-12 col-sm-12">
-          <p style="justify-content: center;">{{post.debt}}: {{ post.debtBalance }}</p>
+        {% endfor %}
         </div>
-      </div>
-       {% endfor %} 
-      </div>
-  </article>
-  
-</div>
-  
+    </article>
+  </div>
+</a>
 {% endfor %}
-
 {% endblock content %}
 {%block side %}
 <div class="col-md-4">
-        <div class="content-section">
-          <h3>Options</h3>
-          <p class='text-muted'>
-            <ul class="list-group">
-              <li class="list-group-item list-group-item-light"><a class="article-title" href="{% url 'user' %}">Home</a></li>
-              <li class="list-group-item list-group-item-light"><a class="article-title" href="">Groups</a></li>
-              <li class="list-group-item list-group-item-light"><a class="article-title" href="{% url 'debts' %}">Debts</a></li>
-              <li class="list-group-item list-group-item-light"><a class="article-title" href="{% url 'createGroup' %}">Create group</a></li>
-            </ul>
-          </p>
-        </div>
+  <div class="content-section">
+    <h3>Options</h3>
+    <p class='text-muted'>
+      <ul class="list-group">
+        <li class="list-group-item list-group-item-light"><a class="article-title" href="{% url 'user' %}">Home</a></li>
+        <li class="list-group-item list-group-item-light"><a class="article-title" href="#">Groups</a></li>
+        <li class="list-group-item list-group-item-light"><a class="article-title" href="{% url 'debts' %}">Debts</a></li>
+        <li class="list-group-item list-group-item-light"><a class="article-title" href="{% url 'createGroup' %}">Create group</a></li>
+      </ul>
+    </p>
+  </div>
 </div>
 {% endblock side %}

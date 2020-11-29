@@ -1,8 +1,5 @@
 {% extends "applostickes/base.html" %}
-    
-
 {% block content %}
-
 {% for post in posts %}
 <div class="row justify-content:center">
   <article class="media content-section col-md-12">
@@ -12,7 +9,6 @@
           <div class="col border-right">
             <a class="mr-2" href="{% url 'debt' post.debtName %}">{{ post.debtName }}</a>
           </div>
-          <hr>
           <div class="col border-right">
             <small class="text-muted">{{ post.description }}</small>
           </div>
@@ -42,7 +38,6 @@
           </div>
         </div>
       </div>
-      
       <div class="row">
         <div class="col border-right">
           <a class="mr-2" href="#">{{ post.user1 }}</a>
@@ -61,25 +56,21 @@
       </div> 
       </div>
   </article>
-  
 </div>
 {% endfor %}
-
-<p>Pero con info de las deudas</p>
-
 {% endblock content %}
 {%block side %}
 <div class="col-md-4">
-        <div class="content-section">
-          <h3>Options</h3>
-          <p class='text-muted'>
-            <ul class="list-group">
-              <li class="list-group-item list-group-item-light"><a class="article-title" href="{% url 'user' %}">Home</a></li>
-              <li class="list-group-item list-group-item-light"><a class="article-title" href="{% url 'groups' %}">Groups</a></li>
-              <li class="list-group-item list-group-item-light"><a class="article-title" href="">Debts</a></li>
-              <li class="list-group-item list-group-item-light"><a class="article-title" href="{% url 'createGroup' %}">Create group</a></li>
-            </ul>
-          </p>
-        </div>
+  <div class="content-section">
+    <h3>Options</h3>
+    <p class='text-muted'>
+      <ul class="list-group">
+        <li class="list-group-item list-group-item-light"><a class="article-title" href="{% url 'user' %}">Home</a></li>
+        <li class="list-group-item list-group-item-light"><a class="article-title" href="{% url 'groups' %}">Groups</a></li>
+        <li class="list-group-item list-group-item-light"><a class="article-title" href="#">Debts</a></li>
+        <li class="list-group-item list-group-item-light"><a class="article-title" href="{% url 'createGroup' %}">Create group</a></li>
+      </ul>
+    </p>
+  </div>
 </div>
 {% endblock side %}
