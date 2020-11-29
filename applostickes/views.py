@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from .models import UserGroupForm, TransactionForm
-from .models import User, Transaction
+from .models import User, UserGroup, Transaction
 
 posts = [
     {
@@ -147,30 +147,39 @@ def createGroup(request):
 
 
 def group(request, groupName):
-    context = {
-        'posts': groupName,
-        'info': postsDebt,
-        'nameClass': 'Group',
-        'title': 'Group'
-    }
+    context = {}
+
+    group = UserGroup.objects.get(name=groupName)
+    context['group'] = [group.name, group.desc, group.user_balance(user=USER), []]
+    for transaction in group.transaction_set.all():
+        lista_nombres = []
+        for payer in transaction.payers.all():
+            lista_nombres.append(payer.name)
+        if USER in lista_nombres:
+            context['group'][3].append([transaction.name, transaction.desc, transaction.total_price(), transaction.user_account(user=USER), lista_nombres])
+
+    context['title'] = 'Group'
+    context['nameClass'] = 'Group'
 
     return render(request, 'applostickes/group.html', context)
 
 
-def createDebt(request, goback_group):
+# TODO return patras al group.html del que has venio
+def createDebt(request):
     context = {}
 
     form = TransactionForm(request.POST)
     if form.is_valid():
         # comprobaciones logicas
         form.save()
-        return HttpResponseRedirect(f'/group/{goback_group}')
+        return HttpResponseRedirect(f'/debts/')
 
     context['form'] = form
     context['title'] = 'Create group'
     context['nameClass'] = 'Create group'
 
     return render(request, 'applostickes/createDebt.html', context)
+
 
 def debt(request, debtName):
     context = {
