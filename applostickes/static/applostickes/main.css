@@ -95,3 +95,9 @@ a.article-title:hover {
 #pay{
   margin: auto;
 }
+
+#sidebar{ 
+  width: 380px; 
+  position: fixed; 
+  margin-left: 760px;
+}
