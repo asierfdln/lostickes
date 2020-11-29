@@ -150,9 +150,9 @@ class TransactionForm(ModelForm):
     # TODO o con ajax como pros
 
     # def clean(self):
-    #     cleaned_data = super().clean()
-    #     user_group_cleaned = cleaned_data['user_group'] # CREO que esto devuelve un objeto de tipo UserGroup
-    #     payers_cleaned = cleaned_data['payers'] # CREO que esto devuelve una lista de Users
+    #     cleaned_data = super(TransactionForm, self).clean()
+    #     user_group_cleaned = cleaned_data.get('user_group') # CREO que esto devuelve un objeto de tipo UserGroup
+    #     payers_cleaned = cleaned_data.get('payers') # CREO que esto devuelve una lista de Users
 
     #     string_grupo = user_group_cleaned.name
 
