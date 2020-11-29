@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
+from django.forms import ValidationError
 from .models import UserGroupForm, TransactionForm
 from .models import User, UserGroup, Transaction
 
@@ -111,8 +112,34 @@ def createDebt(request): # (request, gruponame)
     form = TransactionForm(request.POST)
     if form.is_valid():
         # comprobaciones logicas
-        form.save()
-        return HttpResponseRedirect(f'/debts/') # f'/group/{gruponame}'
+        user_group_object = form.cleaned_data['user_group']
+        payers_object = form.cleaned_data['payers']
+
+        string_grupo = user_group_object.name
+
+        booleano_payers_dentro = True
+        for payer in payers_object:
+            booleano_usergroup_encontrado = False
+            for usergroup in payer.usergroup_set.all():
+                if string_grupo == usergroup.name:
+                    # usuario correcto
+                    booleano_usergroup_encontrado = True
+                    break
+                else:
+                    # usuario de momento no correcto, hay que seguir mirando
+                    pass
+            if not booleano_usergroup_encontrado:
+                booleano_payers_dentro = False
+                break
+
+        if not booleano_payers_dentro:
+            form.add_error(
+                field='payers',
+                error=ValidationError("Hay usuario/s pagadores que no estan en el grupo de la transaccion.")
+            )
+        else:
+            form.save()
+            return HttpResponseRedirect(f'/debts/') # f'/group/{gruponame}'
 
     context['form'] = form
     context['title'] = 'Create group'
