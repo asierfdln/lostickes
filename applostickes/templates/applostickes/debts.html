@@ -40,10 +40,17 @@
       </div>
       <div class="row">
         {% for user_name in trans_list.4 %}
+        {% if forloop.last %}
+        <div class="col">
+          <a class="mr-2">{{ user_name }}</a>
+        </div>
+        <hr>
+        {% else %}
         <div class="col border-right">
           <a class="mr-2">{{ user_name }}</a>
         </div>
         <hr>
+        {% endif %}
         {% endfor %}
       </div>
     </div>
