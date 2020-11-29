@@ -7,7 +7,8 @@ urlpatterns = [
     path('user/', views.user, name='user'),
     path('groups/', views.groups, name='groups'),
     path('debts/', views.debts, name='debts'),
-    path('create/', views.createGroup, name='createGroup'),
+    path('createGroup/', views.createGroup, name='createGroup'),
+    path('createDebt/', views.createGroup, name='createDebt'),
     path('group/<str:groupName>', views.group, name='group'),
     path('debt/<str:debtName>', views.debt, name='debt'),
 ]

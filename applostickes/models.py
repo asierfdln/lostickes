@@ -1,6 +1,7 @@
 # import string, random, hashlib
 import uuid
 from django.db import models
+from django.forms import ModelForm
 from django.core import validators as vals
 
 # Create your models here.
@@ -40,6 +41,12 @@ class User(models.Model):
         return self.name
 
 
+class UserForm(ModelForm):
+    class Meta:
+        model = User
+        fields = "__all__"
+
+
 class UserGroup(models.Model):
 
     name = models.CharField(max_length=55, blank=False)
@@ -58,6 +65,12 @@ class UserGroup(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class UserGroupForm(ModelForm):
+    class Meta:
+        model = UserGroup
+        fields = "__all__"
 
 
 class Transaction(models.Model):
@@ -109,6 +122,12 @@ class Transaction(models.Model):
         return self.name
 
 
+# class TransactionForm(ModelForm):
+#     class Meta:
+#         model = Transaction
+#         fields = "__all__"
+
+
 class Element(models.Model):
 
     name = models.CharField(max_length=55, blank=False)
@@ -119,3 +138,9 @@ class Element(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class ElementForm(ModelForm):
+    class Meta:
+        model = Element
+        fields = "__all__"
