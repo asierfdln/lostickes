@@ -56,9 +56,9 @@
         <div class="col">
           {% for responsible in element.1 %}
           {% if forloop.last %}
-          <p class="text-muted">{{ responsible }}</p>
+          <span class="text-muted">{{ responsible }}</span>
           {% else %}
-          <p class="text-muted">{{ responsible }}, </p>
+          <span class="text-muted">{{ responsible }}, </span>
           {% endif %}
           {% endfor %}
         </div>
