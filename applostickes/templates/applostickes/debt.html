@@ -2,8 +2,14 @@
 {% block content %}
 
 
-{% for i in info %}
-        {% if i.debtName == posts %}
+{% for trans_name, trans_list in debts.items %}
+    {% if trans_list.1 == trans_list.2 %}
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a href="#">{{trans_list.1}}</a></li>
+              <li class="breadcrumb-item active" aria-current="page">{{trans_name}}</li>
+            </ol>
+        </nav>
         <h3>{{i.groupName}} >> {{i.debtName}} </h3>
             <div style="justify-content: center;" class="row">
                 <article class="media content-section col-md-12">
@@ -70,7 +76,7 @@
                 </article>
                 
             </div>
-        {% endif %}
+            {% endif %}
     {% endfor %}
 
 

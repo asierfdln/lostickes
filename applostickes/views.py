@@ -182,11 +182,17 @@ def createDebt(request):
 
 
 def debt(request, debtName):
-    context = {
-        'posts': debtName,
-        'info': postsDebt,
-        'nameClass': 'Debt',
-        'title': 'Debt'
-    }
+    context = {}
+    transaction = Transaction.objects.get(name=debtName)
+    context['debts'] = {}
+    for group in groups_of_user:
+        transaction_of_group = group.transaction_set.get(name=debtName)
+        if transaction_of_group.payers.get(name=USER):
+            context['debts'][transaction_of_group.name] = [transaction_of_group.desc, str(transaction_of_group.user_group), group.name, transaction_of_group.total_price(), transaction_of_group.user_account(user=USER), []]
+            for user in transaction_of_group.payers.all():
+                context['debts'][transaction_of_group.name][5].append(user.name)
+
+    context['title'] = 'Debt'
+    context['nameClass'] = 'Debt'
 
     return render(request, 'applostickes/debt.html', context)
