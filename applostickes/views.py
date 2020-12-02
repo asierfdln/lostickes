@@ -70,15 +70,18 @@ def groups(request):
 
 
 def debts(request):
+
+    global user_to_work_with
+
     context = {}
 
-    groups_of_user = User.objects.get(name=USER).usergroup_set.all()
+    groups_of_user = user_to_work_with.usergroup_set.all()
     context['debts'] = {}
     for group in groups_of_user:
         transactions_of_group = group.transaction_set.all()
         for tr in transactions_of_group:
-            if tr.payers.get(name=USER):
-                context['debts'][tr.name] = [tr.desc, group.name, tr.total_price(), tr.user_account(user=USER), []]
+            if tr.payers.get(primkey=user_to_work_with.primkey):
+                context['debts'][tr.name] = [tr.desc, group.name, tr.total_price(), tr.user_account(user_pk=user_to_work_with.primkey), []]
                 for user in tr.payers.all():
                     context['debts'][tr.name][4].append(user.name)
 
@@ -88,7 +91,7 @@ def debts(request):
     return render(request, 'applostickes/debts.html', context)
 
 
-def createGroup(request):
+def createGroup(request): # TODO @asier
     context = {}
 
     form = UserGroupForm(request.POST)
@@ -122,8 +125,7 @@ def group(request, groupName):
     return render(request, 'applostickes/group.html', context)
 
 
-# TODO volver al group/{gruponame}
-def createDebt(request): # (request, gruponame)
+def createDebt(request): # (request, gruponame) # TODO @asier volver al group/{gruponame}
     context = {}
 
     form = TransactionForm(request.POST)
