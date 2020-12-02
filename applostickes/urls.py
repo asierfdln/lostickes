@@ -9,6 +9,6 @@ urlpatterns = [
     path('debts/', views.debts, name='debts'),
     path('createGroup/', views.createGroup, name='createGroup'),
     path('createDebt/', views.createDebt, name='createDebt'),
-    path('group/<str:groupName>', views.group, name='group'),
+    path('group/<str:groupName>-<str:group_identifier>', views.group, name='group'),
     path('debt/<str:debtName>', views.debt, name='debt'),
 ]

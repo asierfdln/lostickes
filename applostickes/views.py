@@ -16,6 +16,7 @@ userpks = {
 
 user_to_work_with = None
 
+
 def about(request): # TODO @iraxe lo de about en movil se va con lo de la cuenta...
     return render(request, 'applostickes/about.html', {'title': 'About'})
 
@@ -57,7 +58,7 @@ def groups(request):
     groups_to_display = user_to_work_with.usergroup_set.all()
     context['groups'] = {}
     for group in groups_to_display:
-        context['groups'][group.name] = [group.desc, group.user_balance(user_pk=user_to_work_with.primkey), []]
+        context['groups'][group.name] = [group.desc, group.user_balance(user_pk=user_to_work_with.primkey), [], group.get_ugidentifier()]
         transactions_of_group = group.transaction_set.all()
         for tr in transactions_of_group:
             if tr.payers.get(primkey=user_to_work_with.primkey):
@@ -108,20 +109,26 @@ def createGroup(request): # TODO @asier
     return render(request, 'applostickes/createGroup.html', context)
 
 
-def group(request, groupName): # TODO @asier con fecha de creacion del grupo tb porque nice nice...
+def group(request, groupName, group_identifier):
 
     global user_to_work_with
 
     context = {}
 
-    group = UserGroup.objects.get(name=groupName) # TODO con primkey
-    context['group'] = [group.name, group.desc, group.user_balance(user=USER), []]
-    for transaction in group.transaction_set.all():
+    groups_of_user = user_to_work_with.usergroup_set.all()
+    group_to_display = None
+    for group in groups_of_user:
+        if group_identifier in str(group.primkey):
+            group_to_display = group
+            break
+
+    context['group'] = [group_to_display.name, group_to_display.desc, group_to_display.user_balance(user_pk=user_to_work_with.primkey), []]
+    for transaction in group_to_display.transaction_set.all():
         lista_nombres = []
         for payer in transaction.payers.all():
             lista_nombres.append(payer.name)
-        if USER in lista_nombres:
-            context['group'][3].append([transaction.name, transaction.desc, transaction.total_price(), transaction.user_account(user=USER), lista_nombres])
+        if user_to_work_with.name in lista_nombres:
+            context['group'][3].append([transaction.name, transaction.desc, transaction.total_price(), transaction.user_account(user_pk=user_to_work_with.primkey), lista_nombres])
 
     context['title'] = 'Group'
     context['nameClass'] = 'Group'
@@ -177,7 +184,7 @@ def debt(request, debtName):
     context = {}
 
     trani = Transaction.objects.get(name=debtName) # TODO con primkey
-    context['debt'] = [trani.user_group.name, trani.name, trani.desc, trani.total_price(), trani.user_account(user=USER)]
+    context['debt'] = [trani.user_group.name, trani.name, trani.desc, trani.total_price(), trani.user_account(user=USER)] # user_pk=user_to_work_with.primkey
     lista_nombres = []
     for payer in trani.payers.all():
         lista_nombres.append(payer.name)

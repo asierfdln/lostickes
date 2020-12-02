@@ -17,25 +17,27 @@ class User(models.Model):
     name = models.CharField(max_length=55, blank=False)
     email = models.EmailField(max_length=105, unique=True, blank=False)
 
-    """
-    -------------------------------------------------------
-    SOBRE MI CABEZONERIA Y LAS PRIMARY KEYS UNICAS A MANIJA
-    -------------------------------------------------------
-
-    Intentar definir una primkey que dependa de name + email + _random_noise tiene dos problemas:
-        - (1) no puedes acceder al texto de name/email tal y como esta definido ahora mismo
-        - (2) necesitas que la utilizacion de todas las funciones del modulo de random sean utilizadas
-              dentro del metodo __init__ de la clase, ya que si no todos los objetos de la clase User
-              tendran el mismo _random_noise, cosa que no nos interesa a la hora de generar primkeys unicas.
-              Y, aunque puedas tener _random_noise disponible, tampoco puedes definir un 
-              UUIDField dentro del constructor __init__ porque Django se rompe...
-    """
-
     # _random_noise = ''.join((random.choice(string.ascii_letters + string.digits) for i in range(10)))
     # _string_key = f'{_random_noise}' # TODO añadir name y email
     # _key = hashlib.sha256(bytes(_string_key, 'utf-8')).hexdigest()
     # primkey = models.UUIDField(primary_key=True, editable=False, default=_key[:16])
     primkey = models.UUIDField(primary_key=True, editable=False, default=uuid.uuid4)
+
+    """
+        -------------------------------------------------------
+        SOBRE MI CABEZONERIA Y LAS PRIMARY KEYS UNICAS A MANIJA
+        -------------------------------------------------------
+
+        Intentar definir una primkey que dependa de name + email + _random_noise tiene dos problemas:
+            - (1) no puedes acceder al texto de name/email tal y como esta definido ahora mismo porque son 
+                fields que son creados en si al mismo tiempo que el propio valor de primkey...
+            - (2) necesitas que la utilizacion de todas las funciones del modulo de random sean utilizadas
+                dentro del metodo __init__ de la clase, ya que si no todos los objetos de la clase User
+                tendran el mismo _random_noise, cosa que no nos interesa a la hora de generar primkeys unicas.
+                Y, aunque puedas tener _random_noise disponible, tampoco puedes definir un 
+                UUIDField dentro del constructor __init__ porque Django se rompe...
+
+    """
 
     def __str__(self):
         return self.name
@@ -56,12 +58,43 @@ class UserGroup(models.Model):
 
     users = models.ManyToManyField(User, blank=False, help_text="Usuarios pertenecientes al grupo.")
 
+    ugidentifier = None
+
+    """
+        ----------------------------------------------------------
+        PENSAMIENTOS ACERCA DE ESTA MINIPRIMARYKEY DE ugidentifier
+        ----------------------------------------------------------
+
+        Este identificador (como su nombre apunta) esta pensado para ser usado en la view de group(). La 
+        idea es que, antes que hacer una query del grupo clickado en groups() en la view de group() con la 
+        primkey del propio grupo (lo cual implicaria tener la primkey de los grupos por ahi en las 
+        plantillas para que todo quisqui las vea, cosa mala...), es mejor pasar como parametro a la vista 
+        group() un identificador no clave (es decir, a partir del cual no se pueda inferir todo el 
+        importante campo de la clave primaria de uuid del grupo del cual proviene) que identifique 
+        univocamente a un grupo de entre todos los demas, cosa que la fecha de creacion del grupo o su 
+        nombre o el nombre+fechadecreacion no pueden hacer.
+
+        Para ello, estamos "confiando" en que los campos primkey uuid de los grupos son robustos ante 
+        colisiones parciales, es decir, que los (arbitrarios) primeros 8 caracteres de los campos de 
+        primkey no se repiten de grupo a grupo y, por lo tanto, sirven como identificadores univocos de 
+        los grupos sin llegar a ser una clara filtracion de como funciona nuestra base de datos por debajo. 
+        Este acto de confianza ha conllevado algo de lectura de la literatura acerca de UUID, preguntar 
+        a @asier sobre el tema...
+
+    """
+
     def user_balance(self, user_pk):
         balance = 0
         for transaction in Transaction.objects.filter(user_group=self):
             balance = balance + transaction.user_account(user_pk=user_pk)
 
         return balance
+
+    def get_ugidentifier(self):
+        if self.ugidentifier == None:
+            self.ugidentifier = str(self.primkey)[:8]
+
+        return self.ugidentifier
 
     def __str__(self):
         return self.name
