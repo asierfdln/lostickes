@@ -56,11 +56,21 @@ def groups(request):
     groups_to_display = user_to_work_with.usergroup_set.all()
     context['groups'] = {}
     for group in groups_to_display:
-        context['groups'][group.name] = [group.desc, group.user_balance(user_pk=user_to_work_with.primkey), [], group.get_ugidentifier()]
+        context['groups'][group.name] = [
+            group.desc,
+            group.user_balance(user_pk=user_to_work_with.primkey),
+            [],
+            group.get_ugidentifier(),
+        ]
         transactions_of_group = group.transaction_set.all()
         for tr in transactions_of_group:
             if tr.payers.get(primkey=user_to_work_with.primkey):
-                context['groups'][group.name][2].append([tr.name, tr.user_account(user_pk=user_to_work_with.primkey)])
+                context['groups'][group.name][2].append(
+                    [
+                        tr.name,
+                        tr.user_account(user_pk=user_to_work_with.primkey)
+                    ]
+                )
 
     context['title'] = 'Groups'
     context['nameClass'] = 'Groups'
@@ -128,7 +138,12 @@ def group(request, groupName, group_identifier):
             group_to_display = group
             break
 
-    context['group'] = [group_to_display.name, group_to_display.desc, group_to_display.user_balance(user_pk=user_to_work_with.primkey), []]
+    context['group'] = [
+        group_to_display.name,
+        group_to_display.desc,
+        group_to_display.user_balance(user_pk=user_to_work_with.primkey),
+        [],
+    ]
     for transaction in group_to_display.transaction_set.all():
         lista_nombres = []
         for payer in transaction.payers.all():
@@ -151,7 +166,7 @@ def group(request, groupName, group_identifier):
     return render(request, 'applostickes/group.html', context)
 
 
-def createDebt(request): # (request, gruponame) # TODO @asier volver al group/{gruponame}
+def createDebt(request): # (request, gruponame) # TODO @asier volver al group/{gruponame} # TODO @asier @victor wtf xk mensajes...
 
     context = {}
 
