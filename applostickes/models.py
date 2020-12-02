@@ -61,9 +61,9 @@ class UserGroup(models.Model):
     ugidentifier = None
 
     """
-        ----------------------------------------------------------
-        PENSAMIENTOS ACERCA DE ESTA MINIPRIMARYKEY DE ugidentifier
-        ----------------------------------------------------------
+        ------------------------------------------------------------------------------------------
+        PENSAMIENTOS ACERCA DE ESTA MINIPRIMARYKEY DE ugidentifier (tb aplicable a Transaction...)
+        ------------------------------------------------------------------------------------------
 
         Este identificador (como su nombre apunta) esta pensado para ser usado en la view de group(). La 
         idea es que, antes que hacer una query del grupo clickado en groups() en la view de group() con la 

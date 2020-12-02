@@ -5,8 +5,6 @@ from .models import UserGroupForm, TransactionForm
 from .models import User, UserGroup, Transaction
 
 
-USER = "user2" # simulacion de inicio de sesion
-
 userpks = {
     'user1': '7a8ae656-8b99-469d-a2b7-86774262b155',
     'user2': 'a80b2c81-0453-4acd-b5b5-26ae5b3ab16a',
@@ -82,7 +80,15 @@ def debts(request):
         transactions_of_group = group.transaction_set.all()
         for tr in transactions_of_group:
             if tr.payers.get(primkey=user_to_work_with.primkey):
-                context['debts'][tr.name] = [tr.desc, group.name, tr.total_price(), tr.user_account(user_pk=user_to_work_with.primkey), [], tr.get_tridentifier(), group.get_ugidentifier()]
+                context['debts'][tr.name] = [
+                    tr.desc,
+                    group.name,
+                    tr.total_price(),
+                    tr.user_account(user_pk=user_to_work_with.primkey),
+                    [],
+                    tr.get_tridentifier(),
+                    group.get_ugidentifier(),
+                ]
                 for user in tr.payers.all():
                     context['debts'][tr.name][4].append(user.name)
 
@@ -128,7 +134,16 @@ def group(request, groupName, group_identifier):
         for payer in transaction.payers.all():
             lista_nombres.append(payer.name)
         if user_to_work_with.name in lista_nombres:
-            context['group'][3].append([transaction.name, transaction.desc, transaction.total_price(), transaction.user_account(user_pk=user_to_work_with.primkey), lista_nombres, transaction.get_tridentifier()])
+            context['group'][3].append(
+                [
+                    transaction.name,
+                    transaction.desc,
+                    transaction.total_price(),
+                    transaction.user_account(user_pk=user_to_work_with.primkey),
+                    lista_nombres,
+                    transaction.get_tridentifier(),
+                ]
+            )
 
     context['title'] = 'Group'
     context['nameClass'] = 'Group'
@@ -179,28 +194,35 @@ def createDebt(request): # (request, gruponame) # TODO @asier volver al group/{g
     return render(request, 'applostickes/createDebt.html', context)
 
 
-def debt(request, debtName):
+def debt(request, debtName, transaction_identifier):
 
     global user_to_work_with
 
     context = {}
 
-    trani = Transaction.objects.get(name=debtName) # TODO con primkey
+    groups_of_user = user_to_work_with.usergroup_set.all()
+    transaction_to_display = None
+    for group in groups_of_user:
+        for transaction in group.transaction_set.all():
+            if transaction_identifier in str(transaction.primkey):
+                transaction_to_display = transaction
+                break
+
     context['debt'] = [
-        trani.user_group.name,
-        trani.user_group.get_ugidentifier(),
-        trani.name,
-        trani.desc,
-        trani.total_price(),
-        trani.user_account(user_pk=user_to_work_with.primkey),
+        transaction_to_display.user_group.name,
+        transaction_to_display.user_group.get_ugidentifier(),
+        transaction_to_display.name,
+        transaction_to_display.desc,
+        transaction_to_display.total_price(),
+        transaction_to_display.user_account(user_pk=user_to_work_with.primkey),
         [],
         [],
     ]
-    for payer in trani.payers.all():
+    for payer in transaction_to_display.payers.all():
         context['debt'][6].append(payer.name)
     contador_mapping = 0
-    for element in trani.elements.all():
-        nums_responsables = trani.mapping.split(";")[contador_mapping].split(",")
+    for element in transaction_to_display.elements.all():
+        nums_responsables = transaction_to_display.mapping.split(";")[contador_mapping].split(",")
         lista_responsables = []
         for num in nums_responsables:
             lista_responsables.append(context['debt'][6][int(num)-1])

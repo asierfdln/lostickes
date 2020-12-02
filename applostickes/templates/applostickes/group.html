@@ -37,7 +37,7 @@
   </div>
 </a>
 {% for transaction in group.3 %}
-<a class="article-title" role="button" href="{% url 'debt' transaction.0 %}">
+<a class="article-title" role="button" href="{% url 'debt' debtName=transaction.0 transaction_identifier=transaction.5 %}">
   <div style="justify-content: center;" class="row">
     <article class="media content-section col-md-12">
       <div class="media-body">
