@@ -49,16 +49,19 @@ def user(request): # TODO @iraxe eliminar barra del final de los cuadradicos
 
 
 def groups(request):
+
+    global user_to_work_with
+
     context = {}
 
-    groups_to_display = User.objects.get(name=USER).usergroup_set.all()
+    groups_to_display = user_to_work_with.usergroup_set.all()
     context['groups'] = {}
     for group in groups_to_display:
-        context['groups'][group.name] = [group.desc, group.user_balance(user=USER), []]
+        context['groups'][group.name] = [group.desc, group.user_balance(user_pk=user_to_work_with.primkey), []]
         transactions_of_group = group.transaction_set.all()
         for tr in transactions_of_group:
-            if tr.payers.get(name=USER):
-                context['groups'][group.name][2].append([tr.name, tr.user_account(user=USER)])
+            if tr.payers.get(primkey=user_to_work_with.primkey):
+                context['groups'][group.name][2].append([tr.name, tr.user_account(user_pk=user_to_work_with.primkey)])
 
     context['title'] = 'Groups'
     context['nameClass'] = 'Groups'
