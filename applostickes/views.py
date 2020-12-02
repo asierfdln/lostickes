@@ -7,6 +7,13 @@ from .models import User, UserGroup, Transaction
 
 USER = "user2" # simulacion de inicio de sesion
 
+userpks = {
+    'user1': '7a8ae656-8b99-469d-a2b7-86774262b155',
+    'user2': 'a80b2c81-0453-4acd-b5b5-26ae5b3ab16a',
+    'user3': '85dbf8ed-98c7-477f-a396-9ff9d6b6a030',
+    'user4': 'f7225a3d-7b47-4b43-b177-59cbb499958d',
+}
+
 def about(request):
     return render(request, 'applostickes/about.html', {'title': 'About'})
 
@@ -15,18 +22,20 @@ def main(request):
     return render(request, 'applostickes/main.html', {'title': 'Main'})
 
 
-def user(request):
+def user(request): # TODO eliminar barra del final de los cuadradicos
     context = {}
 
-    groups_to_display = User.objects.get(name=USER).usergroup_set.all()
+    user_to_work_with = User.objects.get(primkey=userpks['user2']) # TODO esto con la pagina de login y una 'global' ezpz
+
+    groups_to_display = user_to_work_with.usergroup_set.all()
     context['groups'] = {}
     for group in groups_to_display:
-        context['groups'][group.name] = group.user_balance(user=USER)
+        context['groups'][group.name] = group.user_balance(user_pk=user_to_work_with.primkey)
 
-    transactions_to_display = User.objects.get(name=USER).transaction_set.all()
+    transactions_to_display = user_to_work_with.transaction_set.all()
     context['transactions'] = {}
     for transaction in transactions_to_display:
-        context['transactions'][transaction.name] = transaction.user_account(user=USER)
+        context['transactions'][transaction.name] = transaction.user_account(user_pk=user_to_work_with.primkey)
 
     context['title'] = 'User'
     context['nameClass'] = 'User'

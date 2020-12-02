@@ -56,10 +56,10 @@ class UserGroup(models.Model):
 
     users = models.ManyToManyField(User, blank=False, help_text="Usuarios pertenecientes al grupo.")
 
-    def user_balance(self, user="user2"):
+    def user_balance(self, user_pk):
         balance = 0
         for transaction in Transaction.objects.filter(user_group=self):
-            balance = balance + transaction.user_account(user=user)
+            balance = balance + transaction.user_account(user_pk=user_pk)
 
         return balance
 
@@ -122,20 +122,20 @@ class Transaction(models.Model):
             self.payers_elements_mapping = {}
             for payer in self.payers.all():
                 element_counter = 0
-                self.payers_elements_mapping[payer.name] = 0
+                self.payers_elements_mapping[payer.primkey] = 0
                 for product in self.elements.all():
                     if str(payer_counter) in self.mapping.split(";")[element_counter]:
-                        self.payers_elements_mapping[payer.name] = self.payers_elements_mapping[payer.name] + product.price/len(self.mapping.split(";")[element_counter].split(","))
+                        self.payers_elements_mapping[payer.primkey] = self.payers_elements_mapping[payer.primkey] + product.price/len(self.mapping.split(";")[element_counter].split(","))
                     element_counter = element_counter + 1
                 payer_counter = payer_counter + 1
 
         return self.payers_elements_mapping
 
-    def user_account(self, user="user2"):
+    def user_account(self, user_pk):
         if self.payers_elements_mapping == None:
             self.accounts()
 
-        return self.payers_elements_mapping[user]
+        return self.payers_elements_mapping[user_pk]
 
     def __str__(self):
         return self.name
