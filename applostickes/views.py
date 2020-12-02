@@ -14,6 +14,8 @@ userpks = {
     'user4': 'f7225a3d-7b47-4b43-b177-59cbb499958d',
 }
 
+user_to_work_with = None
+
 def about(request):
     return render(request, 'applostickes/about.html', {'title': 'About'})
 
@@ -22,10 +24,13 @@ def main(request):
     return render(request, 'applostickes/main.html', {'title': 'Main'})
 
 
-def user(request): # TODO eliminar barra del final de los cuadradicos
-    context = {}
+def user(request): # TODO @iraxe eliminar barra del final de los cuadradicos
 
-    user_to_work_with = User.objects.get(primkey=userpks['user2']) # TODO esto con la pagina de login y una 'global' ezpz
+    global user_to_work_with
+
+    user_to_work_with = User.objects.get(primkey=userpks['user2']) # TODO esto con la pagina de login
+
+    context = {}
 
     groups_to_display = user_to_work_with.usergroup_set.all()
     context['groups'] = {}
