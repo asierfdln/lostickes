@@ -16,7 +16,7 @@ userpks = {
 
 user_to_work_with = None
 
-def about(request):
+def about(request): # TODO @iraxe lo de about en movil se va con lo de la cuenta...
     return render(request, 'applostickes/about.html', {'title': 'About'})
 
 
@@ -92,6 +92,7 @@ def debts(request):
 
 
 def createGroup(request): # TODO @asier
+
     context = {}
 
     form = UserGroupForm(request.POST)
@@ -107,7 +108,10 @@ def createGroup(request): # TODO @asier
     return render(request, 'applostickes/createGroup.html', context)
 
 
-def group(request, groupName):
+def group(request, groupName): # TODO @asier con fecha de creacion del grupo tb porque nice nice...
+
+    global user_to_work_with
+
     context = {}
 
     group = UserGroup.objects.get(name=groupName) # TODO con primkey
@@ -126,6 +130,7 @@ def group(request, groupName):
 
 
 def createDebt(request): # (request, gruponame) # TODO @asier volver al group/{gruponame}
+
     context = {}
 
     form = TransactionForm(request.POST)
@@ -168,6 +173,7 @@ def createDebt(request): # (request, gruponame) # TODO @asier volver al group/{g
 
 
 def debt(request, debtName):
+
     context = {}
 
     trani = Transaction.objects.get(name=debtName) # TODO con primkey
