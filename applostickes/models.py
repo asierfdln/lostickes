@@ -140,6 +140,7 @@ class Transaction(models.Model):
 
     preciototal = None
     payers_elements_mapping = None
+    tridentifier = None
 
     def total_price(self):
         if self.preciototal == None:
@@ -169,6 +170,12 @@ class Transaction(models.Model):
             self.accounts()
 
         return self.payers_elements_mapping[user_pk]
+
+    def get_tridentifier(self):
+        if self.tridentifier == None:
+            self.tridentifier = str(self.primkey)[:8]
+
+        return self.tridentifier
 
     def __str__(self):
         return self.name

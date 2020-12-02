@@ -82,7 +82,7 @@ def debts(request):
         transactions_of_group = group.transaction_set.all()
         for tr in transactions_of_group:
             if tr.payers.get(primkey=user_to_work_with.primkey):
-                context['debts'][tr.name] = [tr.desc, group.name, tr.total_price(), tr.user_account(user_pk=user_to_work_with.primkey), []]
+                context['debts'][tr.name] = [tr.desc, group.name, tr.total_price(), tr.user_account(user_pk=user_to_work_with.primkey), [], tr.get_tridentifier(), group.get_ugidentifier()]
                 for user in tr.payers.all():
                     context['debts'][tr.name][4].append(user.name)
 
@@ -128,7 +128,7 @@ def group(request, groupName, group_identifier):
         for payer in transaction.payers.all():
             lista_nombres.append(payer.name)
         if user_to_work_with.name in lista_nombres:
-            context['group'][3].append([transaction.name, transaction.desc, transaction.total_price(), transaction.user_account(user_pk=user_to_work_with.primkey), lista_nombres])
+            context['group'][3].append([transaction.name, transaction.desc, transaction.total_price(), transaction.user_account(user_pk=user_to_work_with.primkey), lista_nombres, transaction.get_tridentifier()])
 
     context['title'] = 'Group'
     context['nameClass'] = 'Group'
@@ -181,22 +181,30 @@ def createDebt(request): # (request, gruponame) # TODO @asier volver al group/{g
 
 def debt(request, debtName):
 
+    global user_to_work_with
+
     context = {}
 
     trani = Transaction.objects.get(name=debtName) # TODO con primkey
-    context['debt'] = [trani.user_group.name, trani.name, trani.desc, trani.total_price(), trani.user_account(user=USER)] # user_pk=user_to_work_with.primkey
-    lista_nombres = []
+    context['debt'] = [
+        trani.user_group.name,
+        trani.user_group.get_ugidentifier(),
+        trani.name,
+        trani.desc,
+        trani.total_price(),
+        trani.user_account(user_pk=user_to_work_with.primkey),
+        [],
+        [],
+    ]
     for payer in trani.payers.all():
-        lista_nombres.append(payer.name)
-    context['debt'].append(lista_nombres)
-    context['debt'].append([])
+        context['debt'][6].append(payer.name)
     contador_mapping = 0
     for element in trani.elements.all():
         nums_responsables = trani.mapping.split(";")[contador_mapping].split(",")
         lista_responsables = []
         for num in nums_responsables:
-            lista_responsables.append(lista_nombres[int(num)-1])
-        context['debt'][6].append([element.name, lista_responsables, element.price])
+            lista_responsables.append(context['debt'][6][int(num)-1])
+        context['debt'][7].append([element.name, lista_responsables, element.price])
         contador_mapping = contador_mapping + 1
 
     context['title'] = 'Debt'

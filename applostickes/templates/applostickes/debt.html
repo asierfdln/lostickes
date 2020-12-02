@@ -2,8 +2,8 @@
 {% block content %}
 <nav aria-label="breadcrumb">
   <ol class="breadcrumb">
-    <li class="breadcrumb-item"><a href="{% url 'group' debt.0 %}">{{ debt.0 }}</a></li>
-    <li class="breadcrumb-item active" aria-current="page">{{ debt.1 }}</li>
+    <li class="breadcrumb-item"><a href="{% url 'group' groupName=debt.0 group_identifier=debt.1 %}">{{ debt.0 }}</a></li>
+    <li class="breadcrumb-item active" aria-current="page">{{ debt.2 }}</li>
   </ol>
 </nav>
 <div style="justify-content: center;" class="row">
@@ -12,30 +12,30 @@
       <div class="article-metadata">
         <div class="row">
           <div class="col border-right">
-            <h4>{{ debt.1 }}</h4>
+            <h4>{{ debt.2 }}</h4>
           </div>
           <div class="col">
-            <small class="text-muted">{{ debt.2 }}</small>
+            <small class="text-muted">{{ debt.3 }}</small>
           </div>
         </div>
       </div>
       <div class="article-metadata">
         <div class="row">
           <div class="col">
-            <p>Cost: {{ debt.3 }}</p>
+            <p>Cost: {{ debt.4 }}</p>
           </div>
         </div>
       </div>
       <div class="article-metadata">
         <div class="row">
           <div class="col">
-            <p>Balance: {{ debt.4 }}</p>
+            <p>Balance: {{ debt.5 }}</p>
           </div>
         </div>
       </div>
       <div class="article-metadata">
         <div class="row">
-          {% for user_name in debt.5 %}
+          {% for user_name in debt.6 %}
           {% if forloop.last %}
           <div class="col">
             <p>{{ user_name }}</p>
@@ -48,7 +48,7 @@
           {% endfor %}
         </div>
       </div>
-      {% for element in debt.6 %}
+      {% for element in debt.7 %}
       <div class="row">
         <div class="col">
           <p class="text-muted">{{ element.0 }}</p>
