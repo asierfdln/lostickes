@@ -1,62 +1,63 @@
-<!-- TODO @iraxe bloque link a deuda y texto de grupo como link a grupo -->
 {% extends "applostickes/base.html" %}
 {% block content %}
 {% for trans_name, trans_list in debts.items %}
-<div class="row justify-content:center">
-  <article class="media content-section col-md-12">
-    <div class="media-body">
-      <div class="article-metadata">
-        <div class="row">
-          <div class="col border-right">
-            <h4>
-              <a class="mr-2" href="{% url 'debt' debtName=trans_name transaction_identifier=trans_list.5 %}">
-                {{ trans_name }}
-              </a>
-            </h4>
+<div class="row">
+  <div class="col-md-12">
+    <a role="button" class="article-title" href="{% url 'debt' debtName=trans_name transaction_identifier=trans_list.5 %}">
+      <article class="content-section">
+        <div class="article-metadata">
+          <div class="row">
+            <div style="display: inline;" class="col border-right">
+              <h4 class="mr-2" style="display: inline;">{{ trans_name }}</h4>
+            </div>
+            <div style="display: inline;" class="col border-right">
+              <small class="text-muted mr-2">{{ trans_list.0 }}</small>
+            </div>
+            <div class="col">
+              <a class="mr-2" href="{% url 'group' groupName=trans_list.1 group_identifier=trans_list.6 %}">{{ trans_list.1 }}</a>
+            </div>
           </div>
-          <div class="col border-right">
-            <small class="text-muted">{{ trans_list.0 }}</small>
-          </div>
-          <div class="col">
-            <a class="mr-2" href="{% url 'group' groupName=trans_list.1 group_identifier=trans_list.6 %}">{{ trans_list.1 }}</a>
-          </div>
+          
         </div>
-      </div>
-      <div class="article-metadata">
-        <div class="row">
-          <div class="col-md-auto">
-            <p style="justify-content: right;">Cost:</p>
+        <a role="button" class="article-title" href="{% url 'debt' debtName=trans_name transaction_identifier=trans_list.5 %}">
+          <div class="article-metadata">
+            <div class="row">
+              <div class="col">
+                <p style="display: inline;">Coste:</p>
+              </div>
+              <div class="col">
+                <p style="display: inline; float: right;">{{ trans_list.2 }}</p>
+              </div>
+            </div>
           </div>
-          <div class="col-md-auto">
-            <p style="justify-content: center;">{{ trans_list.2 }}</p>
+          <div class="article-metadata">
+            <div class="row">
+              <div class="col">
+                <p style="display: inline;">Balance:</p>
+              </div>
+              <div class="col">
+                <p style="display: inline; float: right;">{{ trans_list.3 }}</p>
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
-      <div class="article-metadata">
-        <div class="row">
-          <div class="col-md-auto">
-            <p style="justify-content: right;">Balance:</p>
+          <div class="row">
+            
+            {% for user_name in trans_list.4 %}
+            {% if forloop.last %}
+            <div class="col">
+              <p class="mr-2">{{ user_name }}</p>
+            </div>
+            {% else %}
+            <div class="col border-right">
+              <p class="mr-2">{{ user_name }}</p>
+            </div>
+            {% endif %}
+            {% endfor %}
           </div>
-          <div class="col-md-auto">
-            <p style="justify-content: center;">{{ trans_list.3 }}</p>
-          </div>
-        </div>
-      </div>
-      <div class="row">
-        {% for user_name in trans_list.4 %}
-        {% if forloop.last %}
-        <div class="col">
-          <a class="mr-2">{{ user_name }}</a>
-        </div>
-        {% else %}
-        <div class="col border-right">
-          <a class="mr-2">{{ user_name }}</a>
-        </div>
-        {% endif %}
-        {% endfor %}
-      </div>
-    </div>
-  </article>
+        </a>
+      </article>
+    </a>
+  </div>
 </div>
 {% endfor %}
 {% endblock content %}
