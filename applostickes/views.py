@@ -24,7 +24,7 @@ def main(request):
     return render(request, 'applostickes/main.html', {'title': 'Main'})
 
 
-def user(request): # TODO @iraxe eliminar barra del final de los cuadradicos
+def user(request):
 
     global user_to_work_with
 

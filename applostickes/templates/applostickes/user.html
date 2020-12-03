@@ -8,10 +8,18 @@
           <h3>Groups</h3>
         </div>
         {% for group_name, group_balance in groups.items %}
+        {% if forloop.last %}
+        <div>
+          <p style="display: inline" class="text-muted">{{ group_name }}</p>
+          <small style="float: right;" class="text-muted">Balance: {{ group_balance }}</small>
+        </div>
+        {% else %}
         <div class="article-metadata">
           <p style="display: inline" class="text-muted">{{ group_name }}</p>
           <small style="float: right;" class="text-muted">Balance: {{ group_balance }}</small>
         </div>
+        
+        {% endif %}
         {% endfor %}
       </div>
     </article>
@@ -23,10 +31,18 @@
           <h3>Debts</h3>
         </div>
         {% for transaction_name, transaction_balance in transactions.items %}
+        {% if forloop.last %}
+        <div>
+          <p style="display: inline;" class="text-muted">{{ transaction_name }}</p>
+          <small style="float: right;" class="text-muted">Balance: {{ transaction_balance }}</small>
+        </div>
+        {% else %}
+        
         <div class="article-metadata">
           <p style="display: inline;" class="text-muted">{{ transaction_name }}</p>
           <small style="float: right;" class="text-muted">Balance: {{ transaction_balance }}</small>
         </div>
+        {% endif %}
         {% endfor %}
       </div>
     </article>
