@@ -109,7 +109,7 @@ def debts(request):
     return render(request, 'applostickes/debts.html', context)
 
 
-def createGroup(request): # TODO @asier
+def createGroup(request):
 
     context = {}
 
