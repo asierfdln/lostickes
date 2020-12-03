@@ -13,6 +13,7 @@ userpks = {
 }
 
 user_to_work_with = None
+from_group_to_create_debt_string_for_redirecting = None
 
 
 def about(request): # TODO @iraxe lo de about en movil se va con lo de la cuenta...
@@ -127,7 +128,9 @@ def createGroup(request): # TODO @asier
 
 def group(request, groupName, group_identifier):
 
-    global user_to_work_with
+    global user_to_work_with, from_group_to_create_debt_string_for_redirecting
+
+    from_group_to_create_debt_string_for_redirecting = f'{groupName}-{group_identifier}'
 
     context = {}
 
@@ -166,7 +169,9 @@ def group(request, groupName, group_identifier):
     return render(request, 'applostickes/group.html', context)
 
 
-def createDebt(request): # (request, gruponame) # TODO @asier volver al group/{gruponame} # TODO @asier @victor wtf xk mensajes...
+def createDebt(request): # TODO @victor wtf xk mensajes...
+
+    global user_to_work_with, from_group_to_create_debt_string_for_redirecting
 
     context = {}
 
@@ -200,7 +205,7 @@ def createDebt(request): # (request, gruponame) # TODO @asier volver al group/{g
             )
         else:
             form.save()
-            return HttpResponseRedirect(f'/debts/') # f'/group/{gruponame}'
+            return HttpResponseRedirect(f'/group/{from_group_to_create_debt_string_for_redirecting}')
 
     context['form'] = form
     context['title'] = 'Create group'
