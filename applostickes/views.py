@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from django.forms import ValidationError
+import applostickes
 from .models import UserGroupForm, TransactionForm
 from .models import User, UserGroup, Transaction
 
@@ -13,10 +14,9 @@ userpks = {
 }
 
 user_to_work_with = None
-from_group_to_create_debt_string_for_redirecting = None
 
 
-def about(request): # TODO @iraxe lo de about en movil se va con lo de la cuenta...
+def about(request):
     return render(request, 'applostickes/about.html', {'title': 'About'})
 
 
@@ -125,7 +125,7 @@ def createGroup(request):
 
     context = {}
 
-    form = UserGroupForm(request.POST)
+    form = UserGroupForm(request.POST) # TODO @asier creo que es esto lo que falla y da todos los errores de formulario
 
     if form.is_valid():
         form.save()
@@ -140,9 +140,9 @@ def createGroup(request):
 
 def group(request, groupName, group_identifier):
 
-    global user_to_work_with, from_group_to_create_debt_string_for_redirecting
+    global user_to_work_with
 
-    from_group_to_create_debt_string_for_redirecting = f'{groupName}-{group_identifier}'
+    applostickes.from_group_to_createDebt_string = f'{groupName}-{group_identifier}'
 
     context = {}
 
@@ -189,14 +189,14 @@ def group(request, groupName, group_identifier):
 
 def createDebt(request): # TODO @victor wtf xk mensajes...
 
-    global user_to_work_with, from_group_to_create_debt_string_for_redirecting
+    global user_to_work_with
 
     context = {}
 
-    form = TransactionForm(request.POST)
+    form = TransactionForm(request.POST) # TODO @asier creo que es esto lo que falla y da todos los errores de formulario
 
     if form.is_valid():
-        # TODO @asier meter lo de transaction.user_group = from_group_to_create_debt_string_for_redirecting...
+        # TODO @asier meter lo de transaction.user_group = from_group_to_createDebt_string...
         user_group_object = form.cleaned_data['user_group']
         payers_object = form.cleaned_data['payers']
 
@@ -225,7 +225,7 @@ def createDebt(request): # TODO @victor wtf xk mensajes...
             )
         else:
             form.save()
-            return HttpResponseRedirect(f'/group/{from_group_to_create_debt_string_for_redirecting}')
+            return HttpResponseRedirect(f'/group/{applostickes.from_group_to_createDebt_string}')
 
     context['form'] = form
     context['title'] = 'Create group'

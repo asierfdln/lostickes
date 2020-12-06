@@ -1,16 +1,13 @@
 # import string, random, hashlib
 import uuid
 from django.db import models
-from django.forms import ModelForm
+from django.forms import ModelForm, ModelMultipleChoiceField
 from django.core import validators as vals
+import applostickes
+# from .views import from_group_to_create_debt_string_for_redirecting # TODO @asier ojo...
 
 # Create your models here.
 
-"""
-
-Operamos bajo el supuesto de que el user2 nunca ha pagado nada, por lo que debe pagar siempre
-
-"""
 
 class User(models.Model):
 
@@ -46,7 +43,7 @@ class User(models.Model):
 class UserForm(ModelForm):
     class Meta:
         model = User
-        fields = "__all__"
+        fields = '__all__'
 
 
 class UserGroup(models.Model):
@@ -103,7 +100,7 @@ class UserGroup(models.Model):
 class UserGroupForm(ModelForm):
     class Meta:
         model = UserGroup
-        fields = "__all__"
+        fields = '__all__'
 
 
 class Element(models.Model):
@@ -121,7 +118,7 @@ class Element(models.Model):
 class ElementForm(ModelForm):
     class Meta:
         model = Element
-        fields = "__all__"
+        fields = '__all__'
 
 
 class Transaction(models.Model):
@@ -185,3 +182,13 @@ class TransactionForm(ModelForm):
     class Meta:
         model = Transaction
         fields = '__all__'
+        # fields = ['name', 'desc', 'elements', 'mapping'] # TODO @asier mapping
+
+    # payers = ModelMultipleChoiceField(
+    #     queryset=User.objects.filter(
+    #         usergroup__in=UserGroup.objects.filter(
+    #             # primkey__contains='56f3cf4b'
+    #             primkey__contains=applostickes.from_group_to_createDebt_string.split('-')[1]
+    #         )
+    #     )
+    # )
