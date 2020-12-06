@@ -34,11 +34,13 @@ def user(request):
 
     groups_to_display = user_to_work_with.usergroup_set.all()
     context['groups'] = {}
+
     for group in groups_to_display:
         context['groups'][group.name] = group.user_balance(user_pk=user_to_work_with.primkey)
 
     transactions_to_display = user_to_work_with.transaction_set.all()
     context['transactions'] = {}
+
     for transaction in transactions_to_display:
         context['transactions'][transaction.name] = transaction.user_account(user_pk=user_to_work_with.primkey)
 
@@ -56,14 +58,18 @@ def groups(request):
 
     groups_to_display = user_to_work_with.usergroup_set.all()
     context['groups'] = {}
+
     for group in groups_to_display:
+
         context['groups'][group.name] = [
             group.desc,
             group.user_balance(user_pk=user_to_work_with.primkey),
             [],
             group.get_ugidentifier(),
         ]
+
         transactions_of_group = group.transaction_set.all()
+
         for tr in transactions_of_group:
             if tr.payers.get(primkey=user_to_work_with.primkey):
                 context['groups'][group.name][2].append(
@@ -87,10 +93,15 @@ def debts(request):
 
     groups_of_user = user_to_work_with.usergroup_set.all()
     context['debts'] = {}
+
     for group in groups_of_user:
+
         transactions_of_group = group.transaction_set.all()
+
         for tr in transactions_of_group:
+
             if tr.payers.get(primkey=user_to_work_with.primkey):
+
                 context['debts'][tr.name] = [
                     tr.desc,
                     group.name,
@@ -100,6 +111,7 @@ def debts(request):
                     tr.get_tridentifier(),
                     group.get_ugidentifier(),
                 ]
+
                 for user in tr.payers.all():
                     context['debts'][tr.name][4].append(user.name)
 
@@ -114,8 +126,8 @@ def createGroup(request):
     context = {}
 
     form = UserGroupForm(request.POST)
+
     if form.is_valid():
-        # comprobaciones logicas
         form.save()
         return HttpResponseRedirect('/groups/')
 
@@ -136,6 +148,7 @@ def group(request, groupName, group_identifier):
 
     groups_of_user = user_to_work_with.usergroup_set.all()
     group_to_display = None
+
     for group in groups_of_user:
         if group_identifier in str(group.primkey):
             group_to_display = group
@@ -147,11 +160,16 @@ def group(request, groupName, group_identifier):
         group_to_display.user_balance(user_pk=user_to_work_with.primkey),
         [],
     ]
+
     for transaction in group_to_display.transaction_set.all():
+
         lista_nombres = []
+
         for payer in transaction.payers.all():
             lista_nombres.append(payer.name)
+
         if user_to_work_with.name in lista_nombres:
+
             context['group'][3].append(
                 [
                     transaction.name,
@@ -176,24 +194,26 @@ def createDebt(request): # TODO @victor wtf xk mensajes...
     context = {}
 
     form = TransactionForm(request.POST)
+
     if form.is_valid():
-        # comprobaciones logicas
+        # TODO @asier meter lo de transaction.user_group = from_group_to_create_debt_string_for_redirecting...
         user_group_object = form.cleaned_data['user_group']
         payers_object = form.cleaned_data['payers']
 
         string_grupo = user_group_object.name
-
         booleano_payers_dentro = True
+
         for payer in payers_object:
+
             booleano_usergroup_encontrado = False
+
             for usergroup in payer.usergroup_set.all():
                 if string_grupo == usergroup.name:
-                    # usuario correcto
                     booleano_usergroup_encontrado = True
                     break
                 else:
-                    # usuario de momento no correcto, hay que seguir mirando
                     pass
+
             if not booleano_usergroup_encontrado:
                 booleano_payers_dentro = False
                 break
@@ -222,6 +242,7 @@ def debt(request, debtName, transaction_identifier):
 
     groups_of_user = user_to_work_with.usergroup_set.all()
     transaction_to_display = None
+
     for group in groups_of_user:
         for transaction in group.transaction_set.all():
             if transaction_identifier in str(transaction.primkey):
@@ -238,14 +259,20 @@ def debt(request, debtName, transaction_identifier):
         [],
         [],
     ]
+
     for payer in transaction_to_display.payers.all():
         context['debt'][6].append(payer.name)
+
     contador_mapping = 0
+
     for element in transaction_to_display.elements.all():
+
         nums_responsables = transaction_to_display.mapping.split(";")[contador_mapping].split(",")
         lista_responsables = []
+
         for num in nums_responsables:
             lista_responsables.append(context['debt'][6][int(num)-1])
+
         context['debt'][7].append([element.name, lista_responsables, element.price])
         contador_mapping = contador_mapping + 1
 
