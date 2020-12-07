@@ -1,4 +1,5 @@
 from django.shortcuts import render
+# from django.shortcuts import redirect
 from django.http import HttpResponseRedirect
 from django.forms import ValidationError
 import applostickes
@@ -130,6 +131,7 @@ def createGroup(request):
     if form.is_valid():
         form.save()
         return HttpResponseRedirect('/groups/')
+        # return redirect('place')
 
     context['form'] = form
     context['title'] = 'Create group'
@@ -187,45 +189,52 @@ def group(request, groupName, group_identifier):
     return render(request, 'applostickes/group.html', context)
 
 
-def createDebt(request): # TODO @victor wtf xk mensajes...
+def createDebt(request):
 
     global user_to_work_with
 
     context = {}
 
-    form = TransactionForm(request.POST) # TODO @asier creo que es esto lo que falla y da todos los errores de formulario
+    if request.method == 'POST':
 
-    if form.is_valid():
-        # TODO @asier meter lo de transaction.user_group = from_group_to_createDebt_string...
-        user_group_object = form.cleaned_data['user_group']
-        payers_object = form.cleaned_data['payers']
+        form = TransactionForm(request.POST)
 
-        string_grupo = user_group_object.name
-        booleano_payers_dentro = True
+        if form.is_valid():
+            # TODO @asier meter lo de transaction.user_group = from_group_to_createDebt_string...
+            user_group_object = form.cleaned_data['user_group']
+            payers_object = form.cleaned_data['payers']
 
-        for payer in payers_object:
+            string_grupo = user_group_object.name
+            booleano_payers_dentro = True
 
-            booleano_usergroup_encontrado = False
+            for payer in payers_object:
 
-            for usergroup in payer.usergroup_set.all():
-                if string_grupo == usergroup.name:
-                    booleano_usergroup_encontrado = True
+                booleano_usergroup_encontrado = False
+
+                for usergroup in payer.usergroup_set.all():
+                    if string_grupo == usergroup.name:
+                        booleano_usergroup_encontrado = True
+                        break
+                    else:
+                        pass
+
+                if not booleano_usergroup_encontrado:
+                    booleano_payers_dentro = False
                     break
-                else:
-                    pass
 
-            if not booleano_usergroup_encontrado:
-                booleano_payers_dentro = False
-                break
+            if not booleano_payers_dentro:
+                form.add_error(
+                    field='payers',
+                    error=ValidationError("Hay usuario/s pagadores que no estan en el grupo de la transaccion.")
+                )
+            else:
+                form.save()
+                return HttpResponseRedirect(f'/group/{applostickes.from_group_to_createDebt_string}')
+                # return redirect('place')
 
-        if not booleano_payers_dentro:
-            form.add_error(
-                field='payers',
-                error=ValidationError("Hay usuario/s pagadores que no estan en el grupo de la transaccion.")
-            )
-        else:
-            form.save()
-            return HttpResponseRedirect(f'/group/{applostickes.from_group_to_createDebt_string}')
+    else:
+
+        form = TransactionForm()
 
     context['form'] = form
     context['title'] = 'Create group'
