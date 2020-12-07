@@ -1,1 +1,1 @@
-from_group_to_createDebt_string = '-'
+from_group_to_createDebt_string = None

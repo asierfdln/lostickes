@@ -1,10 +1,9 @@
 # import string, random, hashlib
 import uuid
 from django.db import models
-from django.forms import ModelForm, ModelMultipleChoiceField
+from django import forms
 from django.core import validators as vals
 import applostickes
-# from .views import from_group_to_create_debt_string_for_redirecting # TODO @asier ojo...
 
 # Create your models here.
 
@@ -13,6 +12,11 @@ class User(models.Model):
 
     name = models.CharField(max_length=55, blank=False)
     email = models.EmailField(max_length=105, unique=True, blank=False)
+
+
+    # TODO HACER __init__ con:
+        # def __init__(self, *args, **kwargs):
+        #     super().__init__(*args, **kwargs)
 
     # _random_noise = ''.join((random.choice(string.ascii_letters + string.digits) for i in range(10)))
     # _string_key = f'{_random_noise}' # TODO añadir name y email
@@ -40,7 +44,7 @@ class User(models.Model):
         return self.name
 
 
-class UserForm(ModelForm):
+class UserForm(forms.ModelForm):
     class Meta:
         model = User
         fields = '__all__'
@@ -97,7 +101,7 @@ class UserGroup(models.Model):
         return self.name
 
 
-class UserGroupForm(ModelForm):
+class UserGroupForm(forms.ModelForm):
     class Meta:
         model = UserGroup
         fields = '__all__'
@@ -115,7 +119,7 @@ class Element(models.Model):
         return self.name
 
 
-class ElementForm(ModelForm):
+class ElementForm(forms.ModelForm):
     class Meta:
         model = Element
         fields = '__all__'
@@ -178,17 +182,46 @@ class Transaction(models.Model):
         return self.name
 
 
-class TransactionForm(ModelForm):
+class TransactionForm(forms.ModelForm):
     class Meta:
         model = Transaction
         fields = '__all__'
-        # fields = ['name', 'desc', 'elements', 'mapping'] # TODO @asier mapping
 
-    # payers = ModelMultipleChoiceField(
-    #     queryset=User.objects.filter(
-    #         usergroup__in=UserGroup.objects.filter(
-    #             # primkey__contains='56f3cf4b'
-    #             primkey__contains=applostickes.from_group_to_createDebt_string.split('-')[1]
-    #         )
-    #     )
+    user_group = forms.ModelChoiceField(
+        empty_label=None,
+        queryset=None,
+        widget=forms.Select,
+    )
+
+    # payer = forms.ModelMultipleChoiceField(
+    #     queryset=None,
+    #     widget=forms.Select,
     # )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        # name
+        # desc
+        # primkey
+        # user_group
+        # payers
+        # PAYER....................
+        # elements
+        # mapping
+
+        usergroup_tofilterwith = UserGroup.objects.filter(
+            primkey__contains=applostickes.from_group_to_createDebt_string.split('-')[1]
+        )
+
+        peoples_paying = User.objects.filter(
+            usergroup__in=usergroup_tofilterwith
+        )
+
+        self.fields['user_group'].queryset = usergroup_tofilterwith
+        self.fields['user_group'].initial = usergroup_tofilterwith[0]
+        self.fields['user_group'].help_text = 'Grupo al cual pertenence la transaccion.'
+        self.fields['payers'].queryset = peoples_paying
+        self.fields['payers'].help_text = 'Usuarios entre los que pagar la transaccion.'
+
+        # self.fields['payer'].queryset = peoples_paying
