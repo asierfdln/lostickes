@@ -3,30 +3,106 @@
 <form method="POST">
   {% csrf_token %}
   {% for field in form %}
-    {% if field.errors %}
-    <strong><h4 style="color: red;">{{ field.errors }}</h4></strong>
-    {% endif %}
-    {{ field.label_tag }}<br />
-    {{ field }}<br />
-    {% if field.help_text %}
-      {{ field.help_text|safe }}<br /><br />
-    {% endif %}
+  {% if field.errors %}
+  <strong>
+    <h4 style="color: red;">{{ field.errors }}</h4>
+  </strong>
+  {% endif %}
+  {{ field.label_tag }}<br />
+  {% if forloop.counter == 5 %}
+  <ul style="list-style: none;">
+    {% for li in field %}
+    <li>
+      {{ li }}
+      <ul>
+        <label for="checkall_id_elements_{{ forloop.counter0 }}">
+          <input type="checkbox" id="checkall_id_elements_{{ forloop.counter0 }}">
+          All
+        </label>
+        {% for people in lista_peoples %}
+        <label for="{{ people.1 }}">
+          <input type="checkbox" name="id_elements_{{ forloop.parentloop.counter0 }}" value="{{ people.0 }}"
+            id="{{ people.1 }}" />
+          {{ people.2 }}
+        </label>
+        {% endfor %}
+        <script type="text/javascript">
+          $(document).ready(function () {
+            // comenzamos con checkboxes deshabilitados
+            $('input[id="checkall_id_elements_{{ forloop.counter0 }}"]').each(function () {
+              $(this).prop("disabled", true);
+            });
+            $('input[name="id_elements_{{ forloop.counter0 }}"]').each(function () {
+              $(this).prop("disabled", true);
+            });
+            // codigo para habilitar/deshabilitar checkboxes con cada elemento.checkbox
+            $("#id_elements_{{ forloop.counter0 }}").click(function () {
+              if ($('#id_elements_{{ forloop.counter0 }}').is(":checked")) {
+                $('input[id="checkall_id_elements_{{ forloop.counter0 }}"]').each(function () {
+                  $(this).prop("disabled", false);
+                });
+                $('input[name="id_elements_{{ forloop.counter0 }}"]').each(function () {
+                  $(this).prop("disabled", false);
+                });
+              } else {
+                $('input[id="checkall_id_elements_{{ forloop.counter0 }}"]').each(function () {
+                  $(this).prop("disabled", true);
+                });
+                $('input[name="id_elements_{{ forloop.counter0 }}"]').each(function () {
+                  $(this).prop("disabled", true);
+                });
+              }
+            });
+            // codigo de checkbox All
+            $('#checkall_id_elements_{{ forloop.counter0 }}').click(function () {
+              if ($('#checkall_id_elements_{{ forloop.counter0 }}').is(":checked")) {
+                $('input[name="id_elements_{{ forloop.counter0 }}"]').each(function () {
+                  $(this).prop("checked", true);
+                });
+              } else {
+                $('input[name="id_elements_{{ forloop.counter0 }}"]').each(function () {
+                  $(this).prop("checked", false);
+                });
+              }
+            });
+            // codigo de cada checkbox independiente
+            $('input[name="id_elements_{{ forloop.counter0 }}"]').bind('change', function () {
+              if ($('input[name="id_elements_{{ forloop.counter0 }}"]').filter(':not(:checked)').length == 0) {
+                $('#checkall_id_elements_{{ forloop.counter0 }}').prop("checked", true);
+              } else {
+                $('#checkall_id_elements_{{ forloop.counter0 }}').prop("checked", false);
+              }
+            });
+          });
+        </script>
+      </ul>
+    </li>
+    {% endfor %}
+  </ul><br />
+  {% else %}
+  {{ field }}<br />
+  {% endif %}
+  {% if field.help_text %}
+  {{ field.help_text|safe }}<br /><br />
+  {% endif %}
   {% endfor %}
   <input type="submit" value="Cancel" onclick="history.back()" />
   <input type="submit" value="Submit" /><br /><br />
 </form>
 {% endblock content %}
-{%block side %}
+{% block side %}
 <div id="sidebar" class="col-md-4">
   <div class="content-section">
     <h3>Options</h3>
     <p class='text-muted'>
-      <ul class="list-group">
-        <li class="list-group-item list-group-item-light"><a class="article-title" href="{% url 'user' %}">Home</a></li>
-        <li class="list-group-item list-group-item-light"><a class="article-title" href="{% url 'groups' %}">Groups</a></li>
-        <li class="list-group-item list-group-item-light"><a class="article-title" href="{% url 'debts' %}">Debts</a></li>
-        <li class="list-group-item list-group-item-light"><a class="article-title" href="{% url 'createGroup' %}">Create group</a></li>
-      </ul>
+    <ul class="list-group">
+      <li class="list-group-item list-group-item-light"><a class="article-title" href="{% url 'user' %}">Home</a></li>
+      <li class="list-group-item list-group-item-light"><a class="article-title" href="{% url 'groups' %}">Groups</a>
+      </li>
+      <li class="list-group-item list-group-item-light"><a class="article-title" href="{% url 'debts' %}">Debts</a></li>
+      <li class="list-group-item list-group-item-light"><a class="article-title" href="{% url 'createGroup' %}">Create
+          group</a></li>
+    </ul>
     </p>
   </div>
 </div>

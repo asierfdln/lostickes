@@ -1,7 +1,7 @@
 from django.shortcuts import render
 # from django.shortcuts import redirect
 from django.http import HttpResponseRedirect
-from django.forms import ValidationError
+from django import forms
 import applostickes
 from .models import UserGroupForm, TransactionForm
 from .models import User, UserGroup, Transaction
@@ -131,7 +131,7 @@ def createGroup(request):
     if form.is_valid():
         form.save()
         return HttpResponseRedirect('/groups/')
-        # return redirect('place')
+        # return redirect('place') # TODO @asier
 
     context['form'] = form
     context['title'] = 'Create group'
@@ -195,10 +195,26 @@ def createDebt(request):
 
     context = {}
 
+    lista_peoples = []
+
+    if request.method != 'POST':
+
+        peoples_paying = User.objects.filter(
+            usergroup__in=UserGroup.objects.filter(
+                primkey__contains=applostickes.from_group_to_createDebt_string.split('-')[1]
+            )
+        )
+
+        contador = 0
+        for people in peoples_paying:
+            lista_peoples.append([people.get_uidentifier(), f'id_peoples_{contador}', people.name])
+            contador = contador + 1
+
+        context['lista_peoples'] = lista_peoples
+
     form = TransactionForm(request.POST or None)
 
     if form.is_valid():
-        # TODO @asier meter lo de transaction.user_group = from_group_to_createDebt_string...
         user_group_object = form.cleaned_data['user_group']
         payers_object = form.cleaned_data['payers']
 
@@ -223,12 +239,13 @@ def createDebt(request):
         if not booleano_payers_dentro:
             form.add_error(
                 field='payers',
-                error=ValidationError("Hay usuario/s pagadores que no estan en el grupo de la transaccion.")
+                error=forms.ValidationError('Hay usuario/s pagadores que no estan en el grupo de la transaccion.')
             )
         else:
             form.save()
             return HttpResponseRedirect(f'/group/{applostickes.from_group_to_createDebt_string}')
-            # return redirect('place')
+            # return redirect('place') # TODO @asier
+
 
     context['form'] = form
     context['title'] = 'Create group'

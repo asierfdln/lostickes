@@ -40,6 +40,14 @@ class User(models.Model):
 
     """
 
+    uidentifier = None
+
+    def get_uidentifier(self):
+        if self.uidentifier == None:
+            self.uidentifier = str(self.primkey)[:8]
+
+        return self.uidentifier
+
     def __str__(self):
         return self.name
 
@@ -193,20 +201,24 @@ class TransactionForm(forms.ModelForm):
         widget=forms.Select,
     )
 
-    # payer = forms.ModelMultipleChoiceField(
-    #     queryset=None,
-    #     widget=forms.Select,
-    # )
+    payer = forms.ModelMultipleChoiceField(
+        queryset=None,
+        widget=forms.Select,
+    )
+
+    elements = forms.ModelMultipleChoiceField(
+        queryset=Element.objects.all(),
+        widget=forms.CheckboxSelectMultiple
+    )
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
         # name
         # desc
-        # primkey
         # user_group
+        # payer
         # payers
-        # PAYER....................
         # elements
         # mapping
 
@@ -221,7 +233,8 @@ class TransactionForm(forms.ModelForm):
         self.fields['user_group'].queryset = usergroup_tofilterwith
         self.fields['user_group'].initial = usergroup_tofilterwith[0]
         self.fields['user_group'].help_text = 'Grupo al cual pertenence la transaccion.'
+
         self.fields['payers'].queryset = peoples_paying
         self.fields['payers'].help_text = 'Usuarios entre los que pagar la transaccion.'
 
-        # self.fields['payer'].queryset = peoples_paying
+        self.fields['payer'].queryset = peoples_paying
