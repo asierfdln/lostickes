@@ -28,13 +28,6 @@
         {% endfor %}
         <script type="text/javascript">
           $(document).ready(function () {
-            // comenzamos con checkboxes deshabilitados
-            $('input[id="checkall_id_elements_{{ forloop.counter0 }}"]').each(function () {
-              $(this).prop("disabled", true);
-            });
-            $('input[name="people_paying_element_{{ forloop.counter0 }}"]').each(function () {
-              $(this).prop("disabled", true);
-            });
             // codigo para habilitar/deshabilitar checkboxes con cada elemento.checkbox
             $("#id_elements_{{ forloop.counter0 }}").click(function () {
               if ($('#id_elements_{{ forloop.counter0 }}').is(":checked")) {
@@ -53,7 +46,7 @@
                 });
               }
             });
-            // codigo de checkbox All
+            // codigo de checkbox "All"
             $('#checkall_id_elements_{{ forloop.counter0 }}').click(function () {
               if ($('#checkall_id_elements_{{ forloop.counter0 }}').is(":checked")) {
                 $('input[name="people_paying_element_{{ forloop.counter0 }}"]').each(function () {
@@ -65,7 +58,7 @@
                 });
               }
             });
-            // codigo de cada checkbox independiente
+            // codigo de cada checkbox independiente cuando le das a "All"
             $('input[name="people_paying_element_{{ forloop.counter0 }}"]').bind('change', function () {
               if ($('input[name="people_paying_element_{{ forloop.counter0 }}"]').filter(':not(:checked)').length == 0) {
                 $('#checkall_id_elements_{{ forloop.counter0 }}').prop("checked", true);
@@ -73,6 +66,16 @@
                 $('#checkall_id_elements_{{ forloop.counter0 }}').prop("checked", false);
               }
             });
+            // comenzamos con checkboxes checkeados
+            $('#checkall_id_elements_{{ forloop.counter0 }}').click()
+            // comenzamos con checkboxes deshabilitados
+            $('input[id="checkall_id_elements_{{ forloop.counter0 }}"]').each(function () {
+              $(this).prop("disabled", true);
+            });
+            $('input[name="people_paying_element_{{ forloop.counter0 }}"]').each(function () {
+              $(this).prop("disabled", true);
+            });
+            // TODO @asier asegurarse de que no están vacios los checkboxes si esta seleccionado el elemento superior...
           });
         </script>
       </ul>

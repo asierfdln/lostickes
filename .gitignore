@@ -1,6 +1,8 @@
-.idea/
+.idea/*
 
 .vscode/*
+
+txtmagiko.txt
 
 applostickes/__pycache__/*
 
