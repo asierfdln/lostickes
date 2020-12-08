@@ -146,6 +146,7 @@ class Transaction(models.Model):
 
     # 1,2;3,4 --> el producto1 es compartido por los payers 1 y 2, el producto2 es compartido por los payers 3 y 4...
     mapping = models.CharField(max_length=55, blank=False, help_text="Para definir que paga cada usuario seguir el siguiente formato: 1,2;2,3,4. ; por cada producto. , por cada usuario responsable.")
+    # TODO @asier definir en el mapping quien leches es el pagador con un "(1..n)-1,2;3,4..."
 
     preciototal = None
     payers_elements_mapping = None
@@ -201,7 +202,8 @@ class TransactionForm(forms.ModelForm):
         widget=forms.Select,
     )
 
-    payer = forms.ModelMultipleChoiceField(
+    payer = forms.ModelChoiceField(
+        empty_label=None,
         queryset=None,
         widget=forms.Select,
     )

@@ -207,12 +207,15 @@ def createDebt(request):
 
         contador = 0
         for people in peoples_paying:
-            lista_peoples.append([people.get_uidentifier(), f'id_peoples_{contador}', people.name])
+            lista_peoples.append([people.primkey, f'id_peoples_{contador}', people.name]) # TODO @asier WTF primkey FORMS?!?!?!?!?!
             contador = contador + 1
 
         context['lista_peoples'] = lista_peoples
 
     form = TransactionForm(request.POST or None)
+
+    print('wasa<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<')
+    print(request.POST)
 
     if form.is_valid():
         user_group_object = form.cleaned_data['user_group']
