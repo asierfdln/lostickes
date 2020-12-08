@@ -21,7 +21,7 @@
         </label>
         {% for people in lista_peoples %}
         <label for="{{ people.1 }}">
-          <input type="checkbox" name="id_elements_{{ forloop.parentloop.counter0 }}" value="{{ people.0 }}"
+          <input type="checkbox" name="people_paying_element_{{ forloop.parentloop.counter0 }}" value="{{ people.0 }}"
             id="{{ people.1 }}" />
           {{ people.2 }}
         </label>
@@ -32,7 +32,7 @@
             $('input[id="checkall_id_elements_{{ forloop.counter0 }}"]').each(function () {
               $(this).prop("disabled", true);
             });
-            $('input[name="id_elements_{{ forloop.counter0 }}"]').each(function () {
+            $('input[name="people_paying_element_{{ forloop.counter0 }}"]').each(function () {
               $(this).prop("disabled", true);
             });
             // codigo para habilitar/deshabilitar checkboxes con cada elemento.checkbox
@@ -41,14 +41,14 @@
                 $('input[id="checkall_id_elements_{{ forloop.counter0 }}"]').each(function () {
                   $(this).prop("disabled", false);
                 });
-                $('input[name="id_elements_{{ forloop.counter0 }}"]').each(function () {
+                $('input[name="people_paying_element_{{ forloop.counter0 }}"]').each(function () {
                   $(this).prop("disabled", false);
                 });
               } else {
                 $('input[id="checkall_id_elements_{{ forloop.counter0 }}"]').each(function () {
                   $(this).prop("disabled", true);
                 });
-                $('input[name="id_elements_{{ forloop.counter0 }}"]').each(function () {
+                $('input[name="people_paying_element_{{ forloop.counter0 }}"]').each(function () {
                   $(this).prop("disabled", true);
                 });
               }
@@ -56,18 +56,18 @@
             // codigo de checkbox All
             $('#checkall_id_elements_{{ forloop.counter0 }}').click(function () {
               if ($('#checkall_id_elements_{{ forloop.counter0 }}').is(":checked")) {
-                $('input[name="id_elements_{{ forloop.counter0 }}"]').each(function () {
+                $('input[name="people_paying_element_{{ forloop.counter0 }}"]').each(function () {
                   $(this).prop("checked", true);
                 });
               } else {
-                $('input[name="id_elements_{{ forloop.counter0 }}"]').each(function () {
+                $('input[name="people_paying_element_{{ forloop.counter0 }}"]').each(function () {
                   $(this).prop("checked", false);
                 });
               }
             });
             // codigo de cada checkbox independiente
-            $('input[name="id_elements_{{ forloop.counter0 }}"]').bind('change', function () {
-              if ($('input[name="id_elements_{{ forloop.counter0 }}"]').filter(':not(:checked)').length == 0) {
+            $('input[name="people_paying_element_{{ forloop.counter0 }}"]').bind('change', function () {
+              if ($('input[name="people_paying_element_{{ forloop.counter0 }}"]').filter(':not(:checked)').length == 0) {
                 $('#checkall_id_elements_{{ forloop.counter0 }}').prop("checked", true);
               } else {
                 $('#checkall_id_elements_{{ forloop.counter0 }}').prop("checked", false);

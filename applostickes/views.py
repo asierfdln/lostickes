@@ -205,9 +205,9 @@ def createDebt(request):
             )
         )
 
-        contador = 0
+        contador = 1
         for people in peoples_paying:
-            lista_peoples.append([people.primkey, f'id_peoples_{contador}', people.name]) # TODO @asier WTF primkey FORMS?!?!?!?!?!
+            lista_peoples.append([people.primkey, f'people_{contador}', people.name]) # TODO @asier WTF primkey FORMS?!?!?!?!?!
             contador = contador + 1
 
         context['lista_peoples'] = lista_peoples
