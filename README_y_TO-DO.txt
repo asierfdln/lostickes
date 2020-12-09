@@ -27,8 +27,12 @@ COSAS PENDIENTES PARA LA SIGUIENTE ENTREGA
 
 -- TODO --
 
+@iraxe los popup forms https://pypi.org/project/django-popup-forms/
+
 eurosdubidu en COste DESPUES DE QUE IRAXE HAGA LAS TEMPLATES METES LOS EUROS 
 DONDEQUIERAS MIJO
+
+-> PAGAR (signals o refresh?? boton con funcionalidad??.............)
 
 -> payer
 --> eliminar field mapping de la form porque lo generamos en la view de 
