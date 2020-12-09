@@ -99,22 +99,27 @@ def debts(request):
 
         transactions_of_group = group.transaction_set.all()
 
-        for tr in transactions_of_group:
+        for transaction in transactions_of_group:
 
-            if tr.payers.get(primkey=user_to_work_with.primkey):
+            if transaction.payers.get(primkey=user_to_work_with.primkey):
 
-                context['debts'][tr.name] = [
-                    tr.desc,
+                context['debts'][transaction.name] = [
+                    transaction.desc,
                     group.name,
-                    tr.total_price(),
-                    tr.user_account(user_pk=user_to_work_with.primkey),
+                    transaction.total_price(),
+                    transaction.user_account(user_pk=user_to_work_with.primkey),
                     [],
-                    tr.get_tridentifier(),
+                    transaction.get_tridentifier(),
                     group.get_ugidentifier(),
                 ]
 
-                for user in tr.payers.all():
-                    context['debts'][tr.name][4].append(user.name)
+                transaction_accounts = transaction.accounts()
+
+                for payer in transaction.payers.all():
+                    payer_name = payer.name
+                    if transaction_accounts[payer.primkey] < 0:
+                        payer_name = payer_name + ' (OWNER)'
+                    context['debts'][transaction.name][4].append(payer_name)
 
     context['title'] = 'Debts'
     context['nameClass'] = 'Debts'
@@ -166,9 +171,13 @@ def group(request, groupName, group_identifier):
     for transaction in group_to_display.transaction_set.all():
 
         lista_nombres = []
+        transaction_accounts = transaction.accounts()
 
         for payer in transaction.payers.all():
-            lista_nombres.append(payer.name)
+            payer_name = payer.name
+            if transaction_accounts[payer.primkey] < 0:
+                payer_name = payer_name + ' (OWNER)'
+            lista_nombres.append(payer_name)
 
         if user_to_work_with.name in lista_nombres:
 
@@ -291,8 +300,13 @@ def debt(request, debtName, transaction_identifier):
         [],
     ]
 
+    transaction_accounts = transaction.accounts()
+
     for payer in transaction_to_display.payers.all():
-        context['debt'][6].append(payer.name)
+        payer_name = payer.name
+        if transaction_accounts[payer.primkey] < 0:
+            payer_name = payer_name + ' (OWNER)'
+        context['debt'][6].append(payer_name)
 
     contador_mapping = 0
 
