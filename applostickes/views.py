@@ -179,7 +179,7 @@ def group(request, groupName, group_identifier):
                 payer_name = payer_name + ' (OWNER)'
             lista_nombres.append(payer_name)
 
-        if user_to_work_with.name in lista_nombres:
+        if user_to_work_with.name in lista_nombres or (user_to_work_with.name + ' (OWNER)') in lista_nombres:
 
             context['group'][3].append(
                 [
