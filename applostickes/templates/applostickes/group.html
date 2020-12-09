@@ -15,7 +15,13 @@
       </div>
       <div class="row">
         <div class="col-md">
+          {% if group.2 > 0 %}
+          <p style="justify-content: center;">Balance (debes): {{ group.2 }}</p>
+          {% elif group.2 == 0 %}
           <p style="justify-content: center;">Balance: {{ group.2 }}</p>
+          {% else %}
+          <p style="justify-content: center;">Balance (te deben): {{ group.2 }}</p>
+          {% endif %}
         </div>
       </div>
     </div>
@@ -58,14 +64,20 @@
         <div class="article-metadata">
           <div class="row">
             <div class="col">
-              <p class="text-muted">Cost: {{ transaction.2 }}</p>
+              <p class="text-muted">Coste: {{ transaction.2 }}</p>
             </div>
           </div>
         </div>
         <div class="article-metadata">
           <div class="row">
             <div class="col">
+              {% if transaction.3 > 0 %}
+              <p class="text-muted">Balance (debes): {{ transaction.3 }}</p>
+              {% elif transaction.3 == 0 %}
               <p class="text-muted">Balance: {{ transaction.3 }}</p>
+              {% else %}
+              <p class="text-muted">Balance (te deben): {{ transaction.3 }}</p>
+              {% endif %}
             </div>
           </div>
         </div>

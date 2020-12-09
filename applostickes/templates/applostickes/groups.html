@@ -18,7 +18,13 @@
         <div class="article-metadata">
           <div class="row">
             <div class="col-xs-12 col-sm-12">
+              {% if group_list.1 > 0 %}
+              <p style="justify-content: center;" class="text-muted">Balance de grupo (debes): {{ group_list.1 }}</p>
+              {% elif group_list.1 == 0 %}
               <p style="justify-content: center;" class="text-muted">Balance de grupo: {{ group_list.1 }}</p>
+              {% else %}
+              <p style="justify-content: center;" class="text-muted">Balance de grupo (te deben): {{ group_list.1 }}</p>
+              {% endif %}
             </div>
           </div>
         </div>
@@ -28,7 +34,13 @@
             <p class="text-muted">{{ transaction.0 }}</p>
           </div>
           <div class="col">
+            {% if transaction.1 > 0 %}
+            <small style="float: right;" class="text-muted">Balance de deuda (debes): {{ transaction.1 }}</small>
+            {% elif transaction.1 == 0 %}
             <small style="float: right;" class="text-muted">Balance de deuda: {{ transaction.1 }}</small>
+            {% else %}
+            <small style="float: right;" class="text-muted">Balance de deuda (te deben): {{ transaction.1 }}</small>
+            {% endif %}
           </div>
         </div>
         {% endfor %}

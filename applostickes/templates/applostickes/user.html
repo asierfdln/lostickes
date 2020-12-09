@@ -11,12 +11,24 @@
         {% if forloop.last %}
         <div>
           <p style="display: inline" class="text-muted">{{ group_name }}</p>
+          {% if group_balance > 0 %}
+          <small style="float: right;" class="text-muted">Balance (debes): {{ group_balance }}</small>
+          {% elif group_balance == 0 %}
           <small style="float: right;" class="text-muted">Balance: {{ group_balance }}</small>
+          {% else %}
+          <small style="float: right;" class="text-muted">Balance (te deben): {{ group_balance }}</small>
+          {% endif %}
         </div>
         {% else %}
         <div class="article-metadata">
           <p style="display: inline" class="text-muted">{{ group_name }}</p>
+          {% if group_balance > 0 %}
+          <small style="float: right;" class="text-muted">Balance (debes): {{ group_balance }}</small>
+          {% elif group_balance == 0 %}
           <small style="float: right;" class="text-muted">Balance: {{ group_balance }}</small>
+          {% else %}
+          <small style="float: right;" class="text-muted">Balance (te deben): {{ group_balance }}</small>
+          {% endif %}
         </div>
         {% endif %}
         {% endfor %}
@@ -33,13 +45,24 @@
         {% if forloop.last %}
         <div>
           <p style="display: inline;" class="text-muted">{{ transaction_name }}</p>
+          {% if transaction_balance > 0 %}
+          <small style="float: right;" class="text-muted">Balance (debes): {{ transaction_balance }}</small>
+          {% elif transaction_balance == 0 %}
           <small style="float: right;" class="text-muted">Balance: {{ transaction_balance }}</small>
+          {% else %}
+          <small style="float: right;" class="text-muted">Balance (te deben): {{ transaction_balance }}</small>
+          {% endif %}
         </div>
         {% else %}
-
         <div class="article-metadata">
           <p style="display: inline;" class="text-muted">{{ transaction_name }}</p>
+          {% if transaction_balance > 0 %}
+          <small style="float: right;" class="text-muted">Balance (debes): {{ transaction_balance }}</small>
+          {% elif transaction_balance == 0 %}
           <small style="float: right;" class="text-muted">Balance: {{ transaction_balance }}</small>
+          {% else %}
+          <small style="float: right;" class="text-muted">Balance (te deben): {{ transaction_balance }}</small>
+          {% endif %}
         </div>
         {% endif %}
         {% endfor %}

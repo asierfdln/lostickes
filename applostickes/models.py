@@ -162,16 +162,29 @@ class Transaction(models.Model):
 
     def accounts(self):
         if self.payers_elements_mapping == None:
+
+            # calculamos lo que tiene que pagar cada payer (el que paga tb)
             payer_counter = 1
+            payer_responsible_primkey = None
             self.payers_elements_mapping = {}
             for payer in self.payers.all():
                 element_counter = 0
                 self.payers_elements_mapping[payer.primkey] = 0
                 for product in self.elements.all():
-                    if str(payer_counter) in self.mapping.split(";")[element_counter]:
+                    if payer_responsible_primkey is None:
+                        if str(payer_counter) in self.mapping.split("-")[0]:
+                            payer_responsible_primkey = payer.primkey
+                    if str(payer_counter) in self.mapping.split("-")[1].split(";")[element_counter]:
                         self.payers_elements_mapping[payer.primkey] = self.payers_elements_mapping[payer.primkey] + product.price/len(self.mapping.split(";")[element_counter].split(","))
                     element_counter = element_counter + 1
                 payer_counter = payer_counter + 1
+
+            # calculamos lo que se le debe al que paga la cuenta
+            lista_payers_quedeben_primkeys = list(self.payers_elements_mapping.keys())
+            lista_payers_quedeben_primkeys.remove(payer_responsible_primkey)
+            self.payers_elements_mapping[payer_responsible_primkey] = 0
+            for payer_quedebe_primkey in lista_payers_quedeben_primkeys:
+                self.payers_elements_mapping[payer_responsible_primkey] = self.payers_elements_mapping[payer_responsible_primkey] - self.payers_elements_mapping[payer_quedebe_primkey]
 
         return self.payers_elements_mapping
 

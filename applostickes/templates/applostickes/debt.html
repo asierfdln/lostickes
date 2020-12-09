@@ -23,14 +23,20 @@
       <div class="article-metadata">
         <div class="row">
           <div class="col">
-            <p>Cost: {{ debt.4 }}</p>
+            <p>Coste: {{ debt.4 }}</p>
           </div>
         </div>
       </div>
       <div class="article-metadata">
         <div class="row">
           <div class="col">
+            {% if debt.5 > 0 %}
+            <p>Balance (debes): {{ debt.5 }}</p>
+            {% elif debt.5 == 0 %}
             <p>Balance: {{ debt.5 }}</p>
+            {% else %}
+            <p>Balance (te deben): {{ debt.5 }}</p>
+            {% endif %}
           </div>
         </div>
       </div>
