@@ -1,5 +1,4 @@
 from django.shortcuts import render
-# from django.shortcuts import redirect
 from django.http import HttpResponseRedirect
 from django import forms
 import applostickes
@@ -29,7 +28,7 @@ def user(request):
 
     global user_to_work_with
 
-    user_to_work_with = User.objects.get(primkey=userpks['user1']) # TODO esto con la pagina de login
+    user_to_work_with = User.objects.get(primkey=userpks['user2']) # TODO esto con la pagina de login
 
     context = {}
 
@@ -136,12 +135,11 @@ def createGroup(request):
 
     context = {}
 
-    form = UserGroupForm(request.POST) # TODO @asier creo que es esto lo que falla y da todos los errores de formulario
+    form = UserGroupForm(request.POST or None)
 
     if form.is_valid():
         form.save()
         return HttpResponseRedirect('/groups/')
-        # return redirect('place') # TODO @asier
 
     context['form'] = form
     context['title'] = 'Create group'
@@ -213,25 +211,28 @@ def createDebt(request):
 
     lista_peoples = []
 
-    if request.method != 'POST':
+    # if request.method != 'POST': # ESTE IF LLEGARIA HASTA LA LINEA DE 'context['lista_peoples'] = lista_peoples'
+                                   # La razon por la que siempre cargamos la lista esta de peoples es que, si cometemos
+                                   # algun fallo en el formulario y salta un ValidationError, tenemos que tener la lista
+                                   # esa a mano...
 
-        peoples_paying = User.objects.filter(
-            usergroup__in=UserGroup.objects.filter(
-                primkey__contains=applostickes.from_group_to_createDebt_string.split('-')[1]
-            )
+    peoples_paying = User.objects.filter(
+        usergroup__in=UserGroup.objects.filter(
+            primkey__contains=applostickes.from_group_to_createDebt_string.split('-')[1]
         )
+    )
 
-        contador = 1
-        for people in peoples_paying:
-            lista_peoples.append([people.primkey, f'people_{contador}', people.name]) # TODO @asier WTF primkey FORMS?!?!?!?!?!
-            contador = contador + 1
+    contador = 1
+    for people in peoples_paying:
+        lista_peoples.append([people.primkey, f'people_{contador}', people.name]) # TODO @asier WTF primkey FORMS?!?!?!?!?!
+        contador = contador + 1
 
-        context['lista_peoples'] = lista_peoples
+    context['lista_peoples'] = lista_peoples
 
     form = TransactionForm(request.POST or None)
 
-    print('wasa<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<')
-    print(request.POST)
+    # print('wasa<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<')
+    # print(request.POST)
 
     if form.is_valid():
         user_group_object = form.cleaned_data['user_group']
@@ -261,7 +262,7 @@ def createDebt(request):
 
         if not booleano_payers_dentro:
             form.add_error(
-                field='payers',
+                field=None, # TODO @asier 'name'??
                 error=forms.ValidationError('Hay usuario/s pagadores que no estan en el grupo de la transaccion.')
             )
         else:
@@ -272,7 +273,6 @@ def createDebt(request):
             # form.save_m2m()
             form.save()
             return HttpResponseRedirect(f'/group/{applostickes.from_group_to_createDebt_string}')
-            # return redirect('place') # TODO @asier
 
     context['form'] = form
     context['title'] = 'Create group'

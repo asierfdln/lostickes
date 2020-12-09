@@ -14,12 +14,12 @@ class User(models.Model):
     email = models.EmailField(max_length=105, unique=True, blank=False)
 
 
-    # TODO HACER __init__ con:
+    # TODO @asier probar esto de __init__ con:
         # def __init__(self, *args, **kwargs):
         #     super().__init__(*args, **kwargs)
 
     # _random_noise = ''.join((random.choice(string.ascii_letters + string.digits) for i in range(10)))
-    # _string_key = f'{_random_noise}' # TODO añadir name y email
+    # _string_key = f'{_random_noise}' # TODO @asier añadir name y email
     # _key = hashlib.sha256(bytes(_string_key, 'utf-8')).hexdigest()
     # primkey = models.UUIDField(primary_key=True, editable=False, default=_key[:16])
     primkey = models.UUIDField(primary_key=True, editable=False, default=uuid.uuid4)
@@ -123,6 +123,10 @@ class Element(models.Model):
 
     primkey = models.UUIDField(primary_key=True, editable=False, default=uuid.uuid4)
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.name = self.name + ' - ' + str(self.price) + ' €'
+
     def __str__(self):
         return self.name
 
@@ -146,7 +150,6 @@ class Transaction(models.Model):
 
     # 1,2;3,4 --> el producto1 es compartido por los payers 1 y 2, el producto2 es compartido por los payers 3 y 4...
     mapping = models.CharField(max_length=55, blank=False, help_text="Para definir que paga cada usuario seguir el siguiente formato: 1,2;2,3,4. ; por cada producto. , por cada usuario responsable.")
-    # TODO @asier definir en el mapping quien leches es el pagador con un "(1..n)-1,2;3,4..."
 
     preciototal = None
     payers_elements_mapping = None
@@ -174,6 +177,10 @@ class Transaction(models.Model):
                     if payer_responsible_primkey is None:
                         if str(payer_counter) in self.mapping.split("-")[0]:
                             payer_responsible_primkey = payer.primkey
+                        # esta seria la parte donde metes el caso de el que paga pero que no tiene
+                        # ningun elemento asignado a su nombre en la transaccion
+                        # else:
+                        #     pass
                     if str(payer_counter) in self.mapping.split("-")[1].split(";")[element_counter]:
                         self.payers_elements_mapping[payer.primkey] = self.payers_elements_mapping[payer.primkey] + product.price/len(self.mapping.split(";")[element_counter].split(","))
                     element_counter = element_counter + 1
