@@ -18,7 +18,6 @@
           <p style="display: inline" class="text-muted">{{ group_name }}</p>
           <small style="float: right;" class="text-muted">Balance: {{ group_balance }}</small>
         </div>
-        
         {% endif %}
         {% endfor %}
       </div>
@@ -37,7 +36,7 @@
           <small style="float: right;" class="text-muted">Balance: {{ transaction_balance }}</small>
         </div>
         {% else %}
-        
+
         <div class="article-metadata">
           <p style="display: inline;" class="text-muted">{{ transaction_name }}</p>
           <small style="float: right;" class="text-muted">Balance: {{ transaction_balance }}</small>
@@ -54,12 +53,14 @@
   <div class="content-section">
     <h3>Options</h3>
     <p class='text-muted'>
-      <ul class="list-group">
-        <li class="list-group-item list-group-item-light"><a class="article-title" href="#">Home</a></li>
-        <li class="list-group-item list-group-item-light"><a class="article-title" href="{% url 'groups' %}">Groups</a></li>
-        <li class="list-group-item list-group-item-light"><a class="article-title" href="{% url 'debts' %}">Debts</a></li>
-        <li class="list-group-item list-group-item-light"><a class="article-title" href="{% url 'createGroup' %}">Create group</a></li>
-      </ul>
+    <ul class="list-group">
+      <li class="list-group-item list-group-item-light"><a class="article-title" href="#">Home</a></li>
+      <li class="list-group-item list-group-item-light"><a class="article-title" href="{% url 'groups' %}">Groups</a>
+      </li>
+      <li class="list-group-item list-group-item-light"><a class="article-title" href="{% url 'debts' %}">Debts</a></li>
+      <li class="list-group-item list-group-item-light"><a class="article-title" href="{% url 'createGroup' %}">Create
+          group</a></li>
+    </ul>
     </p>
   </div>
 </div>

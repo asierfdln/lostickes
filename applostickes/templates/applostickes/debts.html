@@ -3,7 +3,8 @@
 {% for trans_name, trans_list in debts.items %}
 <div class="row">
   <div class="col-md-12">
-    <a role="button" class="article-title" href="{% url 'debt' debtName=trans_name transaction_identifier=trans_list.5 %}">
+    <a role="button" class="article-title"
+      href="{% url 'debt' debtName=trans_name transaction_identifier=trans_list.5 %}">
       <article class="content-section">
         <div class="article-metadata">
           <div class="row">
@@ -14,12 +15,14 @@
               <small class="text-muted mr-2">{{ trans_list.0 }}</small>
             </div>
             <div style="text-align: right;" class="col">
-              <a class="mr-2" href="{% url 'group' groupName=trans_list.1 group_identifier=trans_list.6 %}">{{ trans_list.1 }}</a>
+              <a class="mr-2"
+                href="{% url 'group' groupName=trans_list.1 group_identifier=trans_list.6 %}">{{ trans_list.1 }}</a>
             </div>
           </div>
-          
+
         </div>
-        <a role="button" class="article-title" href="{% url 'debt' debtName=trans_name transaction_identifier=trans_list.5 %}">
+        <a role="button" class="article-title"
+          href="{% url 'debt' debtName=trans_name transaction_identifier=trans_list.5 %}">
           <div class="article-metadata">
             <div class="row">
               <div class="col">
@@ -41,7 +44,7 @@
             </div>
           </div>
           <div class="row">
-            
+
             {% for user_name in trans_list.4 %}
             {% if forloop.last %}
             <div class="col">
@@ -66,12 +69,14 @@
   <div class="content-section">
     <h3>Options</h3>
     <p class='text-muted'>
-      <ul class="list-group">
-        <li class="list-group-item list-group-item-light"><a class="article-title" href="{% url 'user' %}">Home</a></li>
-        <li class="list-group-item list-group-item-light"><a class="article-title" href="{% url 'groups' %}">Groups</a></li>
-        <li class="list-group-item list-group-item-light"><a class="article-title" href="#">Debts</a></li>
-        <li class="list-group-item list-group-item-light"><a class="article-title" href="{% url 'createGroup' %}">Create group</a></li>
-      </ul>
+    <ul class="list-group">
+      <li class="list-group-item list-group-item-light"><a class="article-title" href="{% url 'user' %}">Home</a></li>
+      <li class="list-group-item list-group-item-light"><a class="article-title" href="{% url 'groups' %}">Groups</a>
+      </li>
+      <li class="list-group-item list-group-item-light"><a class="article-title" href="#">Debts</a></li>
+      <li class="list-group-item list-group-item-light"><a class="article-title" href="{% url 'createGroup' %}">Create
+          group</a></li>
+    </ul>
     </p>
   </div>
 </div>

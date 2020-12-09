@@ -1,24 +1,28 @@
 {% extends "applostickes/base.html" %}
 {% block content %}
-   <style>
-       div{
+<style>
+    div {
         text-align: center;
         justify-content: center;
-       }
-   </style>
-    <h1 style="text-align: center;">Tickount</h1>
-    <div id="centro" class="col-md-8">
-        <div class="content-section">
-            <a role="button" class="article-title" href="{% url 'user' %}">
-                <div class="content-section">
-                    <p><h3>Login</h3></p>
-                </div>
-            </a>
-            <a role="button" class="article-title" href="{% url 'user' %}">
-                <div class="content-section">
-                    <p><h3>Register</h3></p>
-                </div>
-            </a>
-        </div>
+    }
+</style>
+<h1 style="text-align: center;">Tickount</h1>
+<div id="centro" class="col-md-8">
+    <div class="content-section">
+        <a role="button" class="article-title" href="{% url 'user' %}">
+            <div class="content-section">
+                <p>
+                <h3>Login</h3>
+                </p>
+            </div>
+        </a>
+        <a role="button" class="article-title" href="{% url 'user' %}">
+            <div class="content-section">
+                <p>
+                <h3>Register</h3>
+                </p>
+            </div>
+        </a>
     </div>
+</div>
 {% endblock content %}
