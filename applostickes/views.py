@@ -47,6 +47,7 @@ def user(request):
 
     context['title'] = 'User'
     context['nameClass'] = 'User'
+    context['username'] = user_to_work_with.name
 
     return render(request, 'applostickes/user.html', context)
 
@@ -82,6 +83,7 @@ def groups(request):
 
     context['title'] = 'Groups'
     context['nameClass'] = 'Groups'
+    context['username'] = user_to_work_with.name
 
     return render(request, 'applostickes/groups.html', context)
 
@@ -123,11 +125,14 @@ def debts(request):
 
     context['title'] = 'Debts'
     context['nameClass'] = 'Debts'
+    context['username'] = user_to_work_with.name
 
     return render(request, 'applostickes/debts.html', context)
 
 
 def createGroup(request):
+
+    global user_to_work_with
 
     context = {}
 
@@ -141,6 +146,7 @@ def createGroup(request):
     context['form'] = form
     context['title'] = 'Create group'
     context['nameClass'] = 'Create group'
+    context['username'] = user_to_work_with.name
 
     return render(request, 'applostickes/createGroup.html', context)
 
@@ -194,6 +200,7 @@ def group(request, groupName, group_identifier):
 
     context['title'] = 'Group'
     context['nameClass'] = 'Group'
+    context['username'] = user_to_work_with.name
 
     return render(request, 'applostickes/group.html', context)
 
@@ -270,6 +277,7 @@ def createDebt(request):
     context['form'] = form
     context['title'] = 'Create group'
     context['nameClass'] = 'Create group'
+    context['username'] = user_to_work_with.name
 
     return render(request, 'applostickes/createDebt.html', context)
 
@@ -323,5 +331,6 @@ def debt(request, debtName, transaction_identifier):
 
     context['title'] = 'Debt'
     context['nameClass'] = 'Debt'
+    context['username'] = user_to_work_with.name
 
     return render(request, 'applostickes/debt.html', context)
