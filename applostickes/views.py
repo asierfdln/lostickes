@@ -29,7 +29,7 @@ def user(request):
 
     global user_to_work_with
 
-    user_to_work_with = User.objects.get(primkey=userpks['user2']) # TODO esto con la pagina de login
+    user_to_work_with = User.objects.get(primkey=userpks['user1']) # TODO esto con la pagina de login
 
     context = {}
 
@@ -221,6 +221,10 @@ def createDebt(request):
         user_group_object = form.cleaned_data['user_group']
         payers_object = form.cleaned_data['payers']
 
+        # CTRL + D HERE SON (1)
+        # transaction_to_modify = form.save(commit=False)
+        # transaction_to_modify.mapping = CTRL + D HERE SON
+
         string_grupo = user_group_object.name
         booleano_payers_dentro = True
 
@@ -245,10 +249,14 @@ def createDebt(request):
                 error=forms.ValidationError('Hay usuario/s pagadores que no estan en el grupo de la transaccion.')
             )
         else:
+            # CTRL + D HERE SON (1)
+            # ver https://docs.djangoproject.com/en/3.0/topics/forms/modelforms/#the-save-method
+            # ver https://cdf.9vo.lt/3.0/django.forms.models/ModelForm.html#save
+            # transaction_to_modify.save()
+            # form.save_m2m()
             form.save()
             return HttpResponseRedirect(f'/group/{applostickes.from_group_to_createDebt_string}')
             # return redirect('place') # TODO @asier
-
 
     context['form'] = form
     context['title'] = 'Create group'
@@ -290,7 +298,7 @@ def debt(request, debtName, transaction_identifier):
 
     for element in transaction_to_display.elements.all():
 
-        nums_responsables = transaction_to_display.mapping.split(";")[contador_mapping].split(",")
+        nums_responsables = transaction_to_display.mapping.split("-")[1].split(";")[contador_mapping].split(",")
         lista_responsables = []
 
         for num in nums_responsables:
