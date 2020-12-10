@@ -188,9 +188,7 @@ class Transaction(models.Model):
 
             # calculamos lo que se le debe al que paga la cuenta
             lista_payers_quedeben_primkeys = list(self.payers_elements_mapping.keys())
-            print('uuuuu')
             print(payer_responsible_primkey)
-            print('uuuuu')
             lista_payers_quedeben_primkeys.remove(payer_responsible_primkey)
             self.payers_elements_mapping[payer_responsible_primkey] = 0
             for payer_quedebe_primkey in lista_payers_quedeben_primkeys:
@@ -217,7 +215,13 @@ class Transaction(models.Model):
 class TransactionForm(forms.ModelForm):
     class Meta:
         model = Transaction
-        fields = '__all__'
+        fields = [
+            'name',
+            'desc',
+            'user_group',
+            'payer',
+            'elements',
+        ]
 
     user_group = forms.ModelChoiceField(
         empty_label=None,
@@ -229,23 +233,17 @@ class TransactionForm(forms.ModelForm):
         empty_label=None,
         queryset=None,
         widget=forms.Select,
+        help_text='Miembro del grupo a pagar la transaccion.'
     )
 
     elements = forms.ModelMultipleChoiceField(
         queryset=Element.objects.all(),
-        widget=forms.CheckboxSelectMultiple
+        widget=forms.CheckboxSelectMultiple,
+        help_text='Introduce elementos de la transaccion.'
     )
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-
-        # name
-        # desc
-        # user_group    -- SOBRA --
-        # payer         -- METER --
-        # payers        -- SOBRA --
-        # elements
-        # mapping       -- SOBRA --
 
         usergroup_tofilterwith = UserGroup.objects.filter(
             primkey__contains=applostickes.from_group_to_createDebt_string.split('-')[1]
@@ -258,9 +256,5 @@ class TransactionForm(forms.ModelForm):
         self.fields['user_group'].queryset = usergroup_tofilterwith
         self.fields['user_group'].initial = usergroup_tofilterwith[0]
         self.fields['user_group'].help_text = 'Grupo al cual pertenence la transaccion.'
-
-        self.fields['payers'].queryset = peoples_paying
-        self.fields['payers'].initial = peoples_paying
-        self.fields['payers'].help_text = 'Usuarios entre los que pagar la transaccion.'
 
         self.fields['payer'].queryset = peoples_paying
