@@ -1,9 +1,10 @@
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from django import forms
-import applostickes
 from .models import UserGroupForm, TransactionForm
-from .models import User, UserGroup, Transaction
+from .models import User, UserGroup, Transaction, Element
+import applostickes
+# import pprint
 
 
 userpks = {
@@ -216,10 +217,12 @@ def createDebt(request):
                                    # algun fallo en el formulario y salta un ValidationError, tenemos que tener la lista
                                    # esa a mano...
 
+    usergroup_tofilterwith = UserGroup.objects.filter(
+        primkey__contains=applostickes.from_group_to_createDebt_string.split('-')[1]
+    )
+
     peoples_paying = User.objects.filter(
-        usergroup__in=UserGroup.objects.filter(
-            primkey__contains=applostickes.from_group_to_createDebt_string.split('-')[1]
-        )
+        usergroup__in=usergroup_tofilterwith
     )
 
     contador = 1
@@ -231,48 +234,117 @@ def createDebt(request):
 
     form = TransactionForm(request.POST or None)
 
-    # print('wasa<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<')
-    # print(request.POST)
-
     if form.is_valid():
-        user_group_object = form.cleaned_data['user_group']
-        payers_object = form.cleaned_data['payers']
 
-        # CTRL + D HERE SON (1)
-        # transaction_to_modify = form.save(commit=False)
-        # transaction_to_modify.mapping = CTRL + D HERE SON
+        # el request.POST es un QueryDict, asi que vamos a dejarnos de tonterias y juguemos solo con el dict(),
+        # hay que andarse con cuidado porque cada key tiene una LISTA de valores, aunque haya una sola cosa...
+        request_as_dict = dict(request.POST)
 
-        string_grupo = user_group_object.name
-        booleano_payers_dentro = True
+        # OBJETIVO -> generar un string tal que 1-1,2,3;2,3... a partir del request_as_dict
+        #
+        # si tenemos algo tal que
+        #    payer = (numero)
+        #    payer_element_distribution = (numeros y comas y puntosycomas)
+        #
+        # el mapping final tendra la pinta de mapping = f'{payer}-{payer_element_distribution}'
 
-        for payer in payers_object:
+        # La cuestion es que la numeracion del string de mapping sigue la logica de "de todos los
+        # usuarios que pagan, el que paga es el ((n)-), numerando todos los usuarios que pagan de
+        # 1 a m (1..m). Cada ";" significa uno de los elementos, y los numeros entre comas dicen
+        # los usuarios que han pagado ese elemento. De esta manera, "1-1,2;3,4" significa que los
+        # usuarios 1 y 2 comparten el elemento 1 de la compra, los usuarios 3 y 4 comparten el 
+        # elemento 2 de la compra y TODA la compra la paga el usuario 1 (no soportamos casos en 
+        # los que se comparten pagos a medias de la cuenta total, solo un alguien con los dineros 
+        # para pagar la cosa).
+        #
+        # La numeracion 1..m es de todos los usuarios involucrados en la compra, no necesariamente 
+        # todos los posibles usuarios que podrian haberse visto involucrados en la compra. Es decir,
+        # puede haber m usuarios en la transaccion de k usuarios totales registrados en el grupo 
+        # (such that m <= k) y estos pueden ser el primero del set total de usuarios del grupo, el 
+        # tercero, el decimoquinto y el trigesimocuarto usuarios del grupo (para un grupo con k > 
+        # 34 usuarios, claro...). En cualquier caso, el primero, tercero, decimoquinto y 
+        # trigesimocuarto usuarios del grupo seran, respectivamente, el 1,2,3 y 4 de nuestro string 
+        # de mapping. El orden de estos usuarios viene definido por Django (forma bonita de decir 
+        # que no sabemos que criterio utiliza, asi que nos abstraemos de la fiesta esta) y es 
+        # constante en la definicion de objetos con esos valores (como las listas del diccionario 
+        # de request.POST, ejem ejem...), por lo que necesitamos extraer todos los usuarios 
+        # involucrados en la compra ORDENADOS tal y como vienen ordenados en el set total de 
+        # usuarios del grupo al cual pertenece la transaccion para poder hacer una correlacion 
+        # correcta de 1 -> primer_usuario, 2 -> tercer_usuario, 3 -> decimoquinto_usuario y 
+        # 4 -> trigesimocuarto_usuario. Para ello, hacemos lo siguiente:
 
-            booleano_usergroup_encontrado = False
+        # extraemos las listas de usuarios involucrados en la compra
+        dict_de_elementos = {}
+        for key in request_as_dict.keys():
+            if 'people_paying_element_' in key:
+                dict_de_elementos[key] = request_as_dict[key]
 
-            for usergroup in payer.usergroup_set.all():
-                if string_grupo == usergroup.name:
-                    booleano_usergroup_encontrado = True
-                    break
-                else:
-                    pass
+        # obtenemos una lista de todos usuarios que pagan (repetidos)
+        lista_de_todos_lospayers = []
+        for key in dict_de_elementos.keys():
+            lista_de_todos_lospayers.extend(dict_de_elementos[key])
 
-            if not booleano_usergroup_encontrado:
-                booleano_payers_dentro = False
-                break
+        # eliminamos los duplicados (los sets en python son colecciones con esta propiedad)
+        # no es necesario, pero las comprobaciones por "in" son mas rapidas con sets (me 
+        # quiere sonar que lo lei en algun lado...)
+        set_de_todos_lospayers = set(lista_de_todos_lospayers)
 
-        if not booleano_payers_dentro:
-            form.add_error(
-                field=None, # TODO @asier 'name'??
-                error=forms.ValidationError('Hay usuario/s pagadores que no estan en el grupo de la transaccion.')
-            )
+        # cogemos la lista de usuarios del grupo y los que no esten en el set los vamos quitando,
+        # de tal forma que mantenemos el orden chachi que Django hace de los usuarios
+        peoples_fromgroup_primkey_list = []
+        for person_paying in peoples_paying:
+            peoples_fromgroup_primkey_list.append(str(person_paying.primkey))
+
+        peoples_paying_really = peoples_fromgroup_primkey_list.copy() # jejeeeee, cuidao que python a veces es gracioso
+        for potential_payer in peoples_fromgroup_primkey_list:
+            if potential_payer not in set_de_todos_lospayers:
+                peoples_paying_really.remove(potential_payer)
+
+        # OJO al conjuro...
+        #    >>> ','.join(sorted('3,2,1,'[0:(len('3,2,1,')-1)].split(',')))
+        #    '1,2,3'
+
+        # y ahora jugamos un poco con los indices
+        payer_element_distribution = ''
+        for key in dict_de_elementos.keys():
+            element_distribution = ''
+            for usuario_pagador in dict_de_elementos[key]:
+                if usuario_pagador in peoples_paying_really:
+                    element_distribution = element_distribution + f'{peoples_paying_really.index(usuario_pagador) + 1},'
+            element_distribution = ','.join(sorted(element_distribution[0:(len(element_distribution)-1)].split(',')))
+            payer_element_distribution = payer_element_distribution + element_distribution + ';'
+
+        # quitamos el ultimo ';'
+        payer_element_distribution = payer_element_distribution[0:(len(payer_element_distribution)-1)]
+
+        # ahora, para el encargado de pagar la cuenta, tenemos dos casos:
+        #   (1) el que paga tiene cosas suyas en la cuenta
+        #   (2) el que paga no tiene cosas suyas en la cuenta
+        # 
+        # para el caso (1) solo con un .index() suficiente, en el caso (2) ponemos la
+        # primkey (sin '-', puestas como '#'...) como parte de 'payer' del 'mapping' y
+        # hacemos la gestion de eso ya bien en la funcion de accounts() de Transaction...
+
+        payer = ''
+        # ojo al tema de las listas, [0]...
+        if request_as_dict['payer'][0] in peoples_paying_really:
+            payer = str(peoples_paying_really.index(request_as_dict['payer'][0]) + 1)
         else:
-            # CTRL + D HERE SON (1)
-            # ver https://docs.djangoproject.com/en/3.0/topics/forms/modelforms/#the-save-method
-            # ver https://cdf.9vo.lt/3.0/django.forms.models/ModelForm.html#save
-            # transaction_to_modify.save()
-            # form.save_m2m()
-            form.save()
-            return HttpResponseRedirect(f'/group/{applostickes.from_group_to_createDebt_string}')
+            payer = request_as_dict['payer'][0].replace('-', '#')
+
+        # string final
+        mapping = f'{payer}-{payer_element_distribution}'
+
+        transaction_to_modify = form.save(commit=False)
+        transaction_to_modify.mapping = mapping
+        transaction_to_modify.usergroup = usergroup_tofilterwith[0]
+
+        transaction_to_modify.save()
+
+        transaction_to_modify.payers.set(User.objects.filter(primkey__in=peoples_paying_really)) # set() porque lo dice Django
+        transaction_to_modify.elements.set(Element.objects.filter(primkey__in=request_as_dict['elements'])) # set() porque lo dice Django
+
+        return HttpResponseRedirect(f'/group/{applostickes.from_group_to_createDebt_string}')
 
     context['form'] = form
     context['title'] = 'Create group'

@@ -149,7 +149,7 @@ class Transaction(models.Model):
     elements = models.ManyToManyField(Element, blank=False, help_text="Introduce elementos de la transaccion.")
 
     # 1,2;3,4 --> el producto1 es compartido por los payers 1 y 2, el producto2 es compartido por los payers 3 y 4...
-    mapping = models.CharField(max_length=55, blank=False, help_text="Para definir que paga cada usuario seguir el siguiente formato: 1,2;2,3,4. ; por cada producto. , por cada usuario responsable.")
+    mapping = models.CharField(max_length=280, blank=False, help_text="Para definir que paga cada usuario seguir el siguiente formato: 1,2;2,3,4. ; por cada producto. , por cada usuario responsable.")
 
     preciototal = None
     payers_elements_mapping = None
@@ -175,23 +175,26 @@ class Transaction(models.Model):
                 self.payers_elements_mapping[payer.primkey] = 0
                 for product in self.elements.all():
                     if payer_responsible_primkey is None:
-                        if str(payer_counter) in self.mapping.split("-")[0]:
+                        if str(payer_counter) == self.mapping.split("-")[0]:
                             payer_responsible_primkey = payer.primkey
                         # esta seria la parte donde metes el caso de el que paga pero que no tiene
                         # ningun elemento asignado a su nombre en la transaccion
                         # else:
                         #     pass
                     if str(payer_counter) in self.mapping.split("-")[1].split(";")[element_counter]:
-                        self.payers_elements_mapping[payer.primkey] = self.payers_elements_mapping[payer.primkey] + product.price/len(self.mapping.split(";")[element_counter].split(","))
+                        self.payers_elements_mapping[payer.primkey] = round(self.payers_elements_mapping[payer.primkey], 2) + round(product.price/len(self.mapping.split(";")[element_counter].split(",")), 2)
                     element_counter = element_counter + 1
                 payer_counter = payer_counter + 1
 
             # calculamos lo que se le debe al que paga la cuenta
             lista_payers_quedeben_primkeys = list(self.payers_elements_mapping.keys())
+            print('uuuuu')
+            print(payer_responsible_primkey)
+            print('uuuuu')
             lista_payers_quedeben_primkeys.remove(payer_responsible_primkey)
             self.payers_elements_mapping[payer_responsible_primkey] = 0
             for payer_quedebe_primkey in lista_payers_quedeben_primkeys:
-                self.payers_elements_mapping[payer_responsible_primkey] = self.payers_elements_mapping[payer_responsible_primkey] - self.payers_elements_mapping[payer_quedebe_primkey]
+                self.payers_elements_mapping[payer_responsible_primkey] = round(self.payers_elements_mapping[payer_responsible_primkey], 2) - round(self.payers_elements_mapping[payer_quedebe_primkey], 2)
 
         return self.payers_elements_mapping
 
@@ -238,11 +241,11 @@ class TransactionForm(forms.ModelForm):
 
         # name
         # desc
-        # user_group
-        # payer
-        # payers
+        # user_group    -- SOBRA --
+        # payer         -- METER --
+        # payers        -- SOBRA --
         # elements
-        # mapping
+        # mapping       -- SOBRA --
 
         usergroup_tofilterwith = UserGroup.objects.filter(
             primkey__contains=applostickes.from_group_to_createDebt_string.split('-')[1]
@@ -257,6 +260,7 @@ class TransactionForm(forms.ModelForm):
         self.fields['user_group'].help_text = 'Grupo al cual pertenence la transaccion.'
 
         self.fields['payers'].queryset = peoples_paying
+        self.fields['payers'].initial = peoples_paying
         self.fields['payers'].help_text = 'Usuarios entre los que pagar la transaccion.'
 
         self.fields['payer'].queryset = peoples_paying
