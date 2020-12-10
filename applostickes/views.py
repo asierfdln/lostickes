@@ -173,6 +173,9 @@ def group(request, groupName, group_identifier):
         [],
     ]
 
+    # ERROR ECUNTRADO PO IRH LOOOOOOOOOL VERIFICAR QUE PRIMKEY ESTA EN LA TRANSACCION
+    # (no a este nivel, si no en user_balance, CRRRRRRRRREEEEEEOOOOOOOO)
+
     for transaction in group_to_display.transaction_set.all():
 
         lista_nombres = []
