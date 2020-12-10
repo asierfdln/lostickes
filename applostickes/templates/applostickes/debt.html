@@ -9,9 +9,15 @@
 </nav>
 <!-- TODO @iratxe LOSCOLORES -->
 <div style="justify-content: center;" class="row">
-  <article class="media content-section col-md-12" style="background-color: rgb(213, 255, 151);">
+  {% if debt.5 > 0 %}
+    <article class="media content-section col-md-12" style="background-color:  rgb(253, 193, 182);">
+  {% elif debt.5 == 0 %}
+    <article class="media content-section col-md-12" >
+  {% else %}
+    <article class="media content-section col-md-12" style="background-color: rgb(217, 248, 170);">
+  {% endif %}
     <div class="media-body">
-      <div class="article-metadata">
+      <div class="article-metadata border-bottom border-dark">
         <div class="row">
           <div class="col border-right border-dark">
             <h4>{{ debt.2 }}</h4>
@@ -21,7 +27,7 @@
           </div>
         </div>
       </div>
-      <div class="article-metadata">
+      <div class="article-metadata border-bottom border-dark">
         <div class="row">
           <div class="col">
             {% if debt.4 > 0 %}
@@ -34,7 +40,7 @@
           </div>
         </div>
       </div>
-      <div class="article-metadata">
+      <div class="article-metadata border-bottom border-dark">
         <div class="row">
           <div class="col">
             {% if debt.5 > 0 %}

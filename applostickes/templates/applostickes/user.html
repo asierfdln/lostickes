@@ -12,22 +12,22 @@
         <div>
           <p style="display: inline" class="text-muted">{{ group_name }}</p>
           {% if group_balance > 0 %}
-          <small style="float: right;" class="text-muted">Balance (debes): {{ group_balance }} €</small>
+          <small style="float: right; color: red;">Balance (debes): {{ group_balance }} €</small>
           {% elif group_balance == 0 %}
           <small style="float: right;" class="text-muted">Balance: 0.0 €</small><!-- por eso de que python no pilla decimales de 0 -->
           {% else %}
-          <small style="float: right;" class="text-muted">Balance (te deben): {{ group_balance }} €</small>
+          <small style="float: right; color: forestgreen;">Balance (te deben): {{ group_balance }} €</small>
           {% endif %}
         </div>
         {% else %}
         <div class="article-metadata">
           <p style="display: inline" class="text-muted">{{ group_name }}</p>
           {% if group_balance > 0 %}
-          <small style="float: right;" class="text-muted">Balance (debes): {{ group_balance }} €</small>
+          <small style="float: right; color: red;">Balance (debes): {{ group_balance }} €</small>
           {% elif group_balance == 0 %}
           <small style="float: right;" class="text-muted">Balance: 0.0 €</small><!-- por eso de que python no pilla decimales de 0 -->
           {% else %}
-          <small style="float: right;" class="text-muted">Balance (te deben): {{ group_balance }} €</small>
+          <small style="float: right; color: forestgreen;">Balance (te deben): {{ group_balance }} €</small>
           {% endif %}
         </div>
         {% endif %}
@@ -46,22 +46,22 @@
         <div>
           <p style="display: inline;" class="text-muted">{{ transaction_name }}</p>
           {% if transaction_balance > 0 %}
-          <small style="float: right;" class="text-muted">Balance (debes): {{ transaction_balance }} €</small>
+          <small style="float: right; color: red;">Balance (debes): {{ transaction_balance }} €</small>
           {% elif transaction_balance == 0 %}
           <small style="float: right;" class="text-muted">Balance: 0.0 €</small><!-- por eso de que python no pilla decimales de 0 -->
           {% else %}
-          <small style="float: right;" class="text-muted">Balance (te deben): {{ transaction_balance }} €</small>
+          <small style="float: right; color: forestgreen;">Balance (te deben): {{ transaction_balance }} €</small>
           {% endif %}
         </div>
         {% else %}
         <div class="article-metadata">
           <p style="display: inline;" class="text-muted">{{ transaction_name }}</p>
           {% if transaction_balance > 0 %}
-          <small style="float: right;" class="text-muted">Balance (debes): {{ transaction_balance }} €</small>
+          <small style="float: right; color: red;">Balance (debes): {{ transaction_balance }} €</small>
           {% elif transaction_balance == 0 %}
           <small style="float: right;" class="text-muted">Balance: 0.0 €</small><!-- por eso de que python no pilla decimales de 0 -->
           {% else %}
-          <small style="float: right;" class="text-muted">Balance (te deben): {{ transaction_balance }} €</small>
+          <small style="float: right; color: forestgreen;">Balance (te deben): {{ transaction_balance }} €</small>
           {% endif %}
         </div>
         {% endif %}
