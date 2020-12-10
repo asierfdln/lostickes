@@ -93,7 +93,26 @@
             //     }
             //   }
             // });
+            $('#btnSend').click(function(e){
+              if($("#id_elements_{{ forloop.counter0 }}").is(":checked")){
+                if($('#checkall_id_elements_{{ forloop.counter0 }}').is(":checked")){
+                }
+                else{
+                  if($('input[name="people_paying_element_{{ forloop.counter0 }}"]').filter(":checked").length > 1){
+                  }
+                  else{
+                    alert("Pick a group of payers. At least two.");
+                    e.preventDefault();
+                    return false;
+                  }
+                  
+                }
+              }
+            });
           });
+         
+            
+          
         </script>
       </ul>
     </li>
@@ -106,8 +125,8 @@
   {{ field.help_text|safe }}<br /><br />
   {% endif %}
   {% endfor %}<br />
-  <input type="submit" value="Cancel" onclick="history.back()" />
-  <input type="submit" value="Submit" id="submit_esta_wea" /><br /><br />
+  <input type="button" value="Cancel" onclick="history.back()" />
+  <input type="submit" value="Submit" id="btnSend" /><br /><br />
 </form>
 {% endblock content %}
 {% block side %}
