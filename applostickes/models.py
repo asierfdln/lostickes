@@ -177,10 +177,6 @@ class Transaction(models.Model):
                     if payer_responsible_primkey is None:
                         if str(payer_counter) == self.mapping.split("-")[0]:
                             payer_responsible_primkey = payer.primkey
-                        # esta seria la parte donde metes el caso de el que paga pero que no tiene
-                        # ningun elemento asignado a su nombre en la transaccion
-                        # else:
-                        #     pass
                     if str(payer_counter) in self.mapping.split("-")[1].split(";")[element_counter]:
                         self.payers_elements_mapping[payer.primkey] = round(self.payers_elements_mapping[payer.primkey], 2) + round(product.price/len(self.mapping.split(";")[element_counter].split(",")), 2)
                     element_counter = element_counter + 1
@@ -188,7 +184,6 @@ class Transaction(models.Model):
 
             # calculamos lo que se le debe al que paga la cuenta
             lista_payers_quedeben_primkeys = list(self.payers_elements_mapping.keys())
-            print(payer_responsible_primkey)
             lista_payers_quedeben_primkeys.remove(payer_responsible_primkey)
             self.payers_elements_mapping[payer_responsible_primkey] = 0
             for payer_quedebe_primkey in lista_payers_quedeben_primkeys:

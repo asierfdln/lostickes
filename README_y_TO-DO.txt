@@ -34,13 +34,6 @@ DONDEQUIERAS MIJO
 
 -> PAGAR (signals o refresh?? boton con funcionalidad??.............)
 
--> payer
---> eliminar field mapping de la form porque lo generamos en la view de 
-    createDebt (request.POST...)
---> eliminar payers tb porque lo sacamos todo de request.POST
---> cubrir caso de payer que no tiene nada en la transaccion (parte comentada de 
-    accounts())
-
 -> checkboxes
 --> asegurarse de que los checkboxes de los users estan clickados (por lo menos 
     uno...) cuando le damos a Submit si (1) el checkbox superior de elemento 
@@ -51,7 +44,6 @@ DONDEQUIERAS MIJO
 -> logins y usuarios (mirar video de logins de coreyschafer)
 
 -> EXTRAS
---> popforms para cosas (como en django admin)
 --> piechart con info de balances justo debajo del cosobox este que flota de 
     irache
 --> poner los divs clickables limitados cambiando div por <a>
