@@ -83,16 +83,7 @@
             $('input[name="people_paying_element_{{ forloop.counter0 }}"]').each(function () {
               $(this).prop("disabled", true);
             });
-            // TODO @iratxe asegurarse de que no están vacios los checkboxes si esta seleccionado el elemento superior...
-            // $('#submit_esta_wea').click(function () {
-            //   if un_elemento_de_los_de_leche_y_tal.ischecked() {
-            //     if uno_de_los_de_abajo_PORLOMENOS_de_esta_leche_o_lo_que_sea.ischecked() {
-            //       pues_no_hagas_nada_que_to_esta_bien()
-            //     } else {
-            //       SAKAME_UN_POPUP_DE_NOMEJODASHOMBRE_QUEMECHINGASELDJANGO()
-            //     }
-            //   }
-            // });
+            
             $('#btnSend').click(function(e){
               if($("#id_elements_{{ forloop.counter0 }}").is(":checked")){
                 if($('#checkall_id_elements_{{ forloop.counter0 }}').is(":checked")){
