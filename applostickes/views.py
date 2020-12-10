@@ -340,7 +340,6 @@ def createDebt(request):
 
         transaction_to_modify = form.save(commit=False)
         transaction_to_modify.mapping = mapping
-        transaction_to_modify.usergroup = usergroup_tofilterwith[0]
 
         transaction_to_modify.save()
 
