@@ -29,9 +29,6 @@ COSAS PENDIENTES PARA LA SIGUIENTE ENTREGA
 
 @iraxe los popup forms https://pypi.org/project/django-popup-forms/
 
-eurosdubidu en COste DESPUES DE QUE IRAXE HAGA LAS TEMPLATES METES LOS EUROS 
-DONDEQUIERAS MIJO
-
 -> PAGAR (signals o refresh?? boton con funcionalidad??.............)
 
 -> checkboxes

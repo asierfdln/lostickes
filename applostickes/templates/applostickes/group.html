@@ -16,11 +16,11 @@
       <div class="row">
         <div class="col-md">
           {% if group.2 > 0 %}
-          <p style="justify-content: center;">Balance (debes): {{ group.2 }}</p>
+          <p style="justify-content: center;">Balance (debes): {{ group.2 }} €</p>
           {% elif group.2 == 0 %}
-          <p style="justify-content: center;">Balance: {{ group.2 }}</p>
+          <p style="justify-content: center;">Balance: 0.0 €</p><!-- por eso de que python no pilla decimales de 0 -->
           {% else %}
-          <p style="justify-content: center;">Balance (te deben): {{ group.2 }}</p>
+          <p style="justify-content: center;">Balance (te deben): {{ group.2 }} €</p>
           {% endif %}
         </div>
       </div>
@@ -67,7 +67,13 @@
         <div class="article-metadata">
           <div class="row">
             <div class="col">
-              <p class="text-muted">Coste: {{ transaction.2 }}</p>
+              {% if transaction.2 > 0 %}
+              <p class="text-muted">Coste: {{ transaction.2 }} €</p>
+              {% elif transaction.2 == 0 %}
+              <p class="text-muted">Coste: 0.0 €</p><!-- por eso de que python no pilla decimales de 0 -->
+              {% else %}
+              <p class="text-muted">Coste: {{ transaction.2 }} €</p>
+              {% endif %}
             </div>
           </div>
         </div>
@@ -75,11 +81,11 @@
           <div class="row">
             <div class="col">
               {% if transaction.3 > 0 %}
-              <p class="text-muted">Balance (debes): {{ transaction.3 }}</p>
+              <p class="text-muted">Balance (debes): {{ transaction.3 }} €</p>
               {% elif transaction.3 == 0 %}
-              <p class="text-muted">Balance: {{ transaction.3 }}</p>
+              <p class="text-muted">Balance: 0.0 €</p><!-- por eso de que python no pilla decimales de 0 -->
               {% else %}
-              <p class="text-muted">Balance (te deben): {{ transaction.3 }}</p>
+              <p class="text-muted">Balance (te deben): {{ transaction.3 }} €</p>
               {% endif %}
             </div>
           </div>

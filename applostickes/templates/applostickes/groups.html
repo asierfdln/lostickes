@@ -19,11 +19,11 @@
           <div class="row">
             <div class="col-xs-12 col-sm-12">
               {% if group_list.1 > 0 %}
-              <p style="justify-content: center;" class="text-muted">Balance de grupo (debes): {{ group_list.1 }}</p>
+              <p style="justify-content: center;" class="text-muted">Balance de grupo (debes): {{ group_list.1 }} €</p>
               {% elif group_list.1 == 0 %}
-              <p style="justify-content: center;" class="text-muted">Balance de grupo: {{ group_list.1 }}</p>
+              <p style="justify-content: center;" class="text-muted">Balance de grupo: 0.0 €</p><!-- por eso de que python no pilla decimales de 0 -->
               {% else %}
-              <p style="justify-content: center;" class="text-muted">Balance de grupo (te deben): {{ group_list.1 }}</p>
+              <p style="justify-content: center;" class="text-muted">Balance de grupo (te deben): {{ group_list.1 }} €</p>
               {% endif %}
             </div>
           </div>
@@ -35,11 +35,11 @@
           </div>
           <div class="col">
             {% if transaction.1 > 0 %}
-            <small style="float: right;" class="text-muted">Balance de deuda (debes): {{ transaction.1 }}</small>
+            <small style="float: right;" class="text-muted">Balance de deuda (debes): {{ transaction.1 }} €</small>
             {% elif transaction.1 == 0 %}
-            <small style="float: right;" class="text-muted">Balance de deuda: {{ transaction.1 }}</small>
+            <small style="float: right;" class="text-muted">Balance de deuda: {{ transaction.1 }} €</small>
             {% else %}
-            <small style="float: right;" class="text-muted">Balance de deuda (te deben): {{ transaction.1 }}</small>
+            <small style="float: right;" class="text-muted">Balance de deuda (te deben): {{ transaction.1 }} €</small>
             {% endif %}
           </div>
         </div>

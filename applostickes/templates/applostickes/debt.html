@@ -24,7 +24,13 @@
       <div class="article-metadata">
         <div class="row">
           <div class="col">
-            <p>Coste: {{ debt.4 }}</p>
+            {% if debt.4 > 0 %}
+            <p>Coste: {{ debt.4 }} €</p>
+            {% elif debt.4 == 0 %}
+            <p>Coste: 0.0 €</p><!-- por eso de que python no pilla decimales de 0 -->
+            {% else %}
+            <p>Coste: {{ debt.4 }} €</p>
+            {% endif %}
           </div>
         </div>
       </div>
@@ -32,11 +38,11 @@
         <div class="row">
           <div class="col">
             {% if debt.5 > 0 %}
-            <p>Balance (debes): {{ debt.5 }}</p>
+            <p>Balance (debes): {{ debt.5 }} €</p>
             {% elif debt.5 == 0 %}
-            <p>Balance: {{ debt.5 }}</p>
+            <p>Balance: 0.0 €</p><!-- por eso de que python no pilla decimales de 0 -->
             {% else %}
-            <p>Balance (te deben): {{ debt.5 }}</p>
+            <p>Balance (te deben): {{ debt.5 }} €</p>
             {% endif %}
           </div>
         </div>

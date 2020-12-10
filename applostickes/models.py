@@ -97,7 +97,7 @@ class UserGroup(models.Model):
         for transaction in Transaction.objects.filter(user_group=self):
             balance = balance + transaction.user_account(user_pk=user_pk)
 
-        return balance
+        return round(balance, 2)
 
     def get_ugidentifier(self):
         if self.ugidentifier == None:
@@ -159,7 +159,7 @@ class Transaction(models.Model):
         if self.preciototal == None:
             self.preciototal = 0
             for element in self.elements.all():
-                self.preciototal = self.preciototal + element.price
+                self.preciototal = round(self.preciototal, 2) + round(element.price, 2)
 
         return self.preciototal
 
