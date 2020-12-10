@@ -94,8 +94,10 @@ class UserGroup(models.Model):
 
     def user_balance(self, user_pk):
         balance = 0
+        user_to_filter_transactionsofgroup_with = User.objects.get(primkey=user_pk)
         for transaction in Transaction.objects.filter(user_group=self):
-            balance = balance + transaction.user_account(user_pk=user_pk)
+            if user_to_filter_transactionsofgroup_with in transaction.payers.all():
+                balance = balance + transaction.user_account(user_pk=user_pk)
 
         return round(balance, 2)
 

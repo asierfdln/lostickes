@@ -29,7 +29,7 @@ def user(request):
 
     global user_to_work_with
 
-    user_to_work_with = User.objects.get(primkey=userpks['user2']) # TODO esto con la pagina de login
+    user_to_work_with = User.objects.get(primkey=userpks['user1']) # TODO esto con la pagina de login
 
     context = {}
 
@@ -73,7 +73,7 @@ def groups(request):
         transactions_of_group = group.transaction_set.all()
 
         for tr in transactions_of_group:
-            if tr.payers.get(primkey=user_to_work_with.primkey):
+            if tr.payers.filter(primkey=user_to_work_with.primkey):
                 context['groups'][group.name][2].append(
                     [
                         tr.name,
@@ -103,7 +103,7 @@ def debts(request):
 
         for transaction in transactions_of_group:
 
-            if transaction.payers.get(primkey=user_to_work_with.primkey):
+            if transaction.payers.filter(primkey=user_to_work_with.primkey):
 
                 context['debts'][transaction.name] = [
                     transaction.desc,
@@ -175,6 +175,7 @@ def group(request, groupName, group_identifier):
 
     # ERROR ECUNTRADO PO IRH LOOOOOOOOOL VERIFICAR QUE PRIMKEY ESTA EN LA TRANSACCION
     # (no a este nivel, si no en user_balance, CRRRRRRRRREEEEEEOOOOOOOO)
+    # jejeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
 
     for transaction in group_to_display.transaction_set.all():
 

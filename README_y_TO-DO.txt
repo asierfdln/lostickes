@@ -15,8 +15,6 @@ COSAS PENDIENTES PARA LA SIGUIENTE ENTREGA
 
  - Mejora de la interfaz gráfica de los formularios.
 
- - Cambio de color de elementos de deuda/grupo en función de balance.
-
  - Implementacion de sistema de usuarios (bien hecho, no como ahora visto todo 
    desde "USER" en views...). Subsecuente implementación de funcionalidad al
    botón de pagar. Botón de "Marcar como pagado" para el propietario de la deuda.
@@ -28,13 +26,13 @@ COSAS PENDIENTES PARA LA SIGUIENTE ENTREGA
 -- TODO --
 
 @iraxe los popup forms https://pypi.org/project/django-popup-forms/
+@iraxe cuando entras en http://localhost:8000/group/group1-56f3cf4b el "Balance" tb en colores
+@iraxe letras en negrita para verse mejor??
+
+-> el coso de "leche - 4 €"
+-> meter br en name
 
 -> PAGAR (signals o refresh?? boton con funcionalidad??.............)
-
--> checkboxes
---> asegurarse de que los checkboxes de los users estan clickados (por lo menos 
-    uno...) cuando le damos a Submit si (1) el checkbox superior de elemento 
-    está clickado.
 
 -> message forms (mirar video de logins de coreyschafer)
 
@@ -43,4 +41,3 @@ COSAS PENDIENTES PARA LA SIGUIENTE ENTREGA
 -> EXTRAS
 --> piechart con info de balances justo debajo del cosobox este que flota de 
     irache
---> poner los divs clickables limitados cambiando div por <a>
