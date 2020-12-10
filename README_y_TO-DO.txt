@@ -50,3 +50,4 @@ DONDEQUIERAS MIJO
 --> popforms para cosas (como en django admin)
 --> piechart con info de balances justo debajo del cosobox este que flota de 
     irache
+--> poner los divs clickables limitados cambiando div por <a>
