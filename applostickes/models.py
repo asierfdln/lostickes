@@ -221,7 +221,7 @@ class TransactionForm(forms.ModelForm):
     user_group = forms.ModelChoiceField(
         empty_label=None,
         queryset=None,
-        widget=forms.Select,
+        widget=forms.HiddenInput,
     )
 
     payer = forms.ModelChoiceField(

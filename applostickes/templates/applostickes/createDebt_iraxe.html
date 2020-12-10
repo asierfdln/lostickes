@@ -86,29 +86,27 @@
             $('input[name="people_paying_element_{{ forloop.counter0 }}"]').each(function () {
               $(this).prop("disabled", true);
             });
-            $('#btnSend').click(function (e) {
-              // si la leche esta checkiada, empieza la fiesta de las comprobaciones
-              if ($("#id_elements_{{ forloop.counter0 }}").is(":checked")) {
-                // si el All esta checkiado, todo gucci
-                if ($('#checkall_id_elements_{{ forloop.counter0 }}').is(":checked")) {
-                  // pass
+            
+            $('#btnSend').click(function(e){
+              if($("#id_elements_{{ forloop.counter0 }}").is(":checked")){
+                if($('#checkall_id_elements_{{ forloop.counter0 }}').is(":checked")){
                 }
-                // si no es el caso, comprobar que al menos 2 pepes y juanes estan marcaus
-                else {
-                  // si hay dos pepes, gud
-                  if ($('input[name="people_paying_element_{{ forloop.counter0 }}"]').filter(":checked").length > 1) {
-                    // pass
+                else{
+                  if($('input[name="people_paying_element_{{ forloop.counter0 }}"]').filter(":checked").length > 1){
                   }
-                  // si no hay dos juanes, no gud
-                  else {
+                  else{
                     alert("Pick a group of payers. At least two.");
                     e.preventDefault();
                     return false;
                   }
+                  
                 }
               }
             });
           });
+         
+            
+          
         </script>
       </ul>
     </li>
@@ -118,7 +116,7 @@
   {{ field }}<br />
   {% endif %}
   {% if forloop.counter == 3 %}
-  {% else %}
+  {% else %}  
     {% if field.help_text %}
     {{ field.help_text|safe }}<br /><br />
   {% endif %}
