@@ -4,7 +4,6 @@ from django import forms
 from .models import UserGroupForm, TransactionForm
 from .models import User, UserGroup, Transaction, Element
 import applostickes
-# import pprint
 
 
 userpks = {
@@ -173,10 +172,6 @@ def group(request, groupName, group_identifier):
         [],
     ]
 
-    # ERROR ECUNTRADO PO IRH LOOOOOOOOOL VERIFICAR QUE PRIMKEY ESTA EN LA TRANSACCION
-    # (no a este nivel, si no en user_balance, CRRRRRRRRREEEEEEOOOOOOOO)
-    # jejeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
-
     for transaction in group_to_display.transaction_set.all():
 
         lista_nombres = []
@@ -239,6 +234,8 @@ def createDebt(request):
     form = TransactionForm(request.POST or None)
 
     if form.is_valid():
+
+        todo_bien = True
 
         # el request.POST es un QueryDict, asi que vamos a dejarnos de tonterias y juguemos solo con el dict(),
         # hay que andarse con cuidado porque cada key tiene una LISTA de valores, aunque haya una sola cosa...
@@ -330,24 +327,44 @@ def createDebt(request):
         # hacemos la gestion de eso ya bien en la funcion de accounts() de Transaction...
 
         payer = ''
+
+        # DISCLAIMER:
+        #
+        # no consideramos el caso en el que un usuario que paga la transaccion no tiene 
+        # elementos suyos en la transaccion
+
         # ojo al tema de las listas, [0]...
         if request_as_dict['payer'][0] in peoples_paying_really:
             payer = str(peoples_paying_really.index(request_as_dict['payer'][0]) + 1)
         else:
-            payer = request_as_dict['payer'][0].replace('-', '#')
+            todo_bien = False
+            form.add_error(
+                field='elements',
+                error=forms.ValidationError('El pagador no tiene nada en la transaccion.')
+            )
 
         # string final
         mapping = f'{payer}-{payer_element_distribution}'
 
-        transaction_to_modify = form.save(commit=False)
-        transaction_to_modify.mapping = mapping
+        # sacamos error y volvemos
+        # if not todo_bien:
+        #     form.add_error(
+        #         field='elements',
+        #         error=forms.ValidationError('El pagador no tiene nada en la transaccion.')
+        #     )
 
-        transaction_to_modify.save()
+        if todo_bien:
 
-        transaction_to_modify.payers.set(User.objects.filter(primkey__in=peoples_paying_really)) # set() porque lo dice Django
-        transaction_to_modify.elements.set(Element.objects.filter(primkey__in=request_as_dict['elements'])) # set() porque lo dice Django
+            # empezamos a crear la transaccion porque todo ha ido super guay
+            transaction_to_modify = form.save(commit=False)
+            transaction_to_modify.mapping = mapping
 
-        return HttpResponseRedirect(f'/group/{applostickes.from_group_to_createDebt_string}')
+            transaction_to_modify.save()
+
+            transaction_to_modify.payers.set(User.objects.filter(primkey__in=peoples_paying_really)) # set() porque lo dice Django
+            transaction_to_modify.elements.set(Element.objects.filter(primkey__in=request_as_dict['elements'])) # set() porque lo dice Django
+
+            return HttpResponseRedirect(f'/group/{applostickes.from_group_to_createDebt_string}')
 
     context['form'] = form
     context['title'] = 'Create group'
@@ -383,7 +400,7 @@ def debt(request, debtName, transaction_identifier):
         [],
     ]
 
-    transaction_accounts = transaction.accounts()
+    transaction_accounts = transaction_to_display.accounts()
 
     for payer in transaction_to_display.payers.all():
         payer_name = payer.name
@@ -401,7 +418,7 @@ def debt(request, debtName, transaction_identifier):
         for num in nums_responsables:
             lista_responsables.append(context['debt'][6][int(num)-1])
 
-        context['debt'][7].append([element.name, lista_responsables, element.price])
+        context['debt'][7].append([element.name.split(" - ")[0], lista_responsables, element.price])
         contador_mapping = contador_mapping + 1
 
     context['title'] = 'Debt'

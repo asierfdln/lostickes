@@ -27,16 +27,21 @@ COSAS PENDIENTES PARA LA SIGUIENTE ENTREGA
 
 @iraxe los popup forms https://pypi.org/project/django-popup-forms/
 @iraxe cuando entras en http://localhost:8000/group/group1-56f3cf4b el "Balance" tb en colores
-@iraxe letras en negrita para verse mejor??
+@iraxe mirar video de clase de web de hoy y meter con vue la verga esta de elementos nuevos...
 
--> el coso de "leche - 4 €"
--> meter br en name
-
--> PAGAR (signals o refresh?? boton con funcionalidad??.............)
-
--> message forms (mirar video de logins de coreyschafer)
-
+-> createDEBt hacer bien lo de pagadores de la transaccion, no por cada leche
+-> AAAAAAAAAAAAAAAAA comprobacion server de checkboxes AAAAAAAAAAAAAAAAA
+-> modify debt, de clickar en una propia transaccion desde la vista de deuda y que te lleve a 
+   una vista de eliminacion de campos
+-> PAGAR
+--> boton que tenga codigo dentro y te redireccione a la pag web en la que estabas
+--> que aparezca el boton si eres deudor, no pagador
+---> que aparezca un boton de borrar deuda si eres pagador
+--> necesario un diccionario de score-settling en el que lleves cuenta de
+    {'primkey': [role, pagado/no]}, y en funcion del estado de ese dicc pues 
+    renderizas la cuenta o no
 -> logins y usuarios (mirar video de logins de coreyschafer)
+-> message forms (mirar video de logins de coreyschafer)
 
 -> EXTRAS
 --> piechart con info de balances justo debajo del cosobox este que flota de 

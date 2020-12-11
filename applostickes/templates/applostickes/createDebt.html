@@ -4,9 +4,9 @@
   {% csrf_token %}
   {% for field in form %}
   {% if field.errors %}
-  <strong>
-    <h4 style="color: red;">{{ field.errors }}</h4>
-  </strong>
+  <div class="alert alert-danger">
+      <span style="color: red;">{{ field.errors }}</span>
+  </div>
   {% endif %}
   {% if forloop.counter == 3 %}
   {% else %}
@@ -77,15 +77,19 @@
                 $('#checkall_id_elements_{{ forloop.counter0 }}').prop("checked", false);
               }
             });
-            // comenzamos con checkboxes checkeados
-            $('#checkall_id_elements_{{ forloop.counter0 }}').click()
-            // comenzamos con checkboxes deshabilitados
-            $('input[id="checkall_id_elements_{{ forloop.counter0 }}"]').each(function () {
-              $(this).prop("disabled", true);
-            });
-            $('input[name="people_paying_element_{{ forloop.counter0 }}"]').each(function () {
-              $(this).prop("disabled", true);
-            });
+            // cuando volvemos de una form no valida... (un poco ñapa)
+            // si esta el bisho checkeado, me habilitas todas las weas de debajo (All, pepe, juan...)
+            if ($('#id_elements_{{ forloop.counter0 }}').is(":checked")) {
+              $('#checkall_id_elements_{{ forloop.counter0 }}').click()
+            } else {
+              // comenzamos con checkboxes deshabilitados
+              $('input[id="checkall_id_elements_{{ forloop.counter0 }}"]').each(function () {
+                $(this).prop("disabled", true);
+              });
+              $('input[name="people_paying_element_{{ forloop.counter0 }}"]').each(function () {
+                $(this).prop("disabled", true);
+              });
+            }
             $('#btnSend').click(function (e) {
               // si la leche esta checkiada, empieza la fiesta de las comprobaciones
               if ($("#id_elements_{{ forloop.counter0 }}").is(":checked")) {
@@ -102,7 +106,7 @@
                   // si no hay dos juanes, no gud
                   else {
                     e.preventDefault();
-                    alert("Pick a group of payers. At least two.").one();
+                    alert("No puedes tener un único usuario en la transaccion.").one();
                   }
                 }
               }
@@ -123,8 +127,8 @@
   {% endif %}
   {% endif %}
   {% endfor %}<br />
-  <input type="button" value="Cancel" onclick="history.back()" />
-  <input type="submit" value="Submit" id="btnSend" /><br /><br />
+  <input type="button" value="Cancel" onclick="history.back()" class="btn btn-secondary" />
+  <input type="submit" value="Submit" id="btnSend" class="btn btn-success"/><br /><br />
 </form>
 {% endblock content %}
 {% block side %}

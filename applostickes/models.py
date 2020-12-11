@@ -121,7 +121,7 @@ class Element(models.Model):
 
     name = models.CharField(max_length=55, blank=False)
     desc = models.TextField(max_length=280, blank=False)
-    price = models.IntegerField(validators=[vals.MinValueValidator(limit_value=0, message="Only positive integers allowed")])
+    price = models.FloatField(validators=[vals.MinValueValidator(limit_value=0.009, message="Only positive integers allowed")])
 
     primkey = models.UUIDField(primary_key=True, editable=False, default=uuid.uuid4)
 
