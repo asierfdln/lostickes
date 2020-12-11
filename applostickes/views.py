@@ -301,6 +301,13 @@ def createDebt(request):
             if potential_payer not in set_de_todos_lospayers:
                 peoples_paying_really.remove(potential_payer)
 
+        if len(peoples_paying_really) == 1:
+            todo_bien = False
+            form.add_error(
+                field='elements',
+                error=forms.ValidationError('No puedes tener un único usuario en la transaccion.')
+            )
+
         # OJO al conjuro...
         #    >>> ','.join(sorted('3,2,1,'[0:(len('3,2,1,')-1)].split(',')))
         #    '1,2,3'
@@ -326,13 +333,12 @@ def createDebt(request):
         # primkey (sin '-', puestas como '#'...) como parte de 'payer' del 'mapping' y
         # hacemos la gestion de eso ya bien en la funcion de accounts() de Transaction...
 
-        payer = ''
-
         # DISCLAIMER:
         #
         # no consideramos el caso en el que un usuario que paga la transaccion no tiene 
         # elementos suyos en la transaccion
 
+        payer = ''
         # ojo al tema de las listas, [0]...
         if request_as_dict['payer'][0] in peoples_paying_really:
             payer = str(peoples_paying_really.index(request_as_dict['payer'][0]) + 1)

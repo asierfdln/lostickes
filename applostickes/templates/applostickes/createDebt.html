@@ -5,12 +5,15 @@
   {% for field in form %}
   {% if field.errors %}
   <div class="alert alert-danger">
-      <span style="color: red;">{{ field.errors }}</span>
+    <span style="color: red;">{{ field.errors }}</span>
   </div>
   {% endif %}
   {% if forloop.counter == 3 %}
+  {% elif forloop.counter == 5 %}
+  <div id="elements-alerts"></div>
+  {{ field.label_tag }}<br />
   {% else %}
-   {{ field.label_tag }}<br />
+  {{ field.label_tag }}<br />
   {% endif %}
   {% if forloop.counter == 5 %}
   <ul style="list-style: none;">
@@ -103,10 +106,20 @@
                   if ($('input[name="people_paying_element_{{ forloop.counter0 }}"]').filter(":checked").length > 1) {
                     // pass
                   }
-                  // si no hay dos juanes, no gud
+                  // si no hay dos juanes ENTODA LA TRANSACCION EN TOTAL...
                   else {
+                    $("#elements-alerts").prepend(
+                      '<div class="alert alert-danger">' +
+                        '<span style="color: red;">' +
+                          '<ul class="errorlist">' +
+                            '<li>' +
+                              'No puedes tener un único usuario en la transaccion.' +
+                            '</li>' +
+                          '</ul>' +
+                        '</span>' +
+                      '</div>'
+                    );
                     e.preventDefault();
-                    alert("No puedes tener un único usuario en la transaccion.").one();
                   }
                 }
               }
@@ -119,6 +132,9 @@
   </ul>
   {% else %}
   {{ field }}<br />
+    {% if forloop.counter == 1 %}
+    <br />
+    {% endif %}
   {% endif %}
   {% if forloop.counter == 3 %}
   {% else %}

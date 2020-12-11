@@ -29,10 +29,13 @@ COSAS PENDIENTES PARA LA SIGUIENTE ENTREGA
 @iraxe cuando entras en http://localhost:8000/group/group1-56f3cf4b el "Balance" tb en colores
 @iraxe mirar video de clase de web de hoy y meter con vue la verga esta de elementos nuevos...
 
--> createDEBt hacer bien lo de pagadores de la transaccion, no por cada leche
--> AAAAAAAAAAAAAAAAA comprobacion server de checkboxes AAAAAAAAAAAAAAAAA
--> modify debt, de clickar en una propia transaccion desde la vista de deuda y que te lleve a 
-   una vista de eliminacion de campos
+-> mover todo esto al boton de submit como tal
+    $('#btnSend').click(function (e) {...
+
+   (aka) el pagador no tiene nada en la transaccion EN CLIENTE
+   (aka) AAAAAAAAAAAAAAAAA comprobacion server de checkboxes AAAAAAAAAAAAAAAAA
+
+-> try-except en form.isvalid() para salir en cuanto "todo_bien = False"
 -> PAGAR
 --> boton que tenga codigo dentro y te redireccione a la pag web en la que estabas
 --> que aparezca el boton si eres deudor, no pagador
@@ -42,6 +45,8 @@ COSAS PENDIENTES PARA LA SIGUIENTE ENTREGA
     renderizas la cuenta o no
 -> logins y usuarios (mirar video de logins de coreyschafer)
 -> message forms (mirar video de logins de coreyschafer)
+-> modify debt, de clickar en una propia transaccion desde la vista de deuda y que te lleve a 
+   una vista de eliminacion de campos
 
 -> EXTRAS
 --> piechart con info de balances justo debajo del cosobox este que flota de 
