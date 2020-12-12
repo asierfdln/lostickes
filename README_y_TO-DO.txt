@@ -25,16 +25,31 @@ COSAS PENDIENTES PARA LA SIGUIENTE ENTREGA
 
 -- TODO --
 
-@iraxe los popup forms https://pypi.org/project/django-popup-forms/
 @iraxe cuando entras en http://localhost:8000/group/group1-56f3cf4b el "Balance" tb en colores
 @iraxe mirar video de clase de web de hoy y meter con vue la verga esta de elementos nuevos...
+
+    meter elementos nuevos para la transaccion con dos inputs:
+     - uno para el nombre del elemento (que no esté vasío cuando le des a click al boton de "añadir guayabas")
+     - otro para el precio (que el valor sea mayor de 0.009)
+
+@iraxe checkboxes de delete transactions: (TODO @asier pensar db si peta o no...)
+
+    (1) que el boton primero tenga el texto de "seleccionar transactions"
+    (2) click
+    (3) cambiar el texto del boton a delete transactions
+    (4) que salgan los checkboxes
+    (5) (seleccionas por lo menos uno para poder hacer lo de eliminar)
+    (6) que el boton tenga una view.func con solo codigo de eliminar de
+        base de datos las transacciones y te redirija a group/
+
+    (7*) idealmente, que solo el owner de las transacciones pueda borrar las transacciones...
+
 
 -> mover todo esto al boton de submit como tal
     $('#btnSend').click(function (e) {...
 
    (aka) el pagador no tiene nada en la transaccion EN CLIENTE
-   (aka) AAAAAAAAAAAAAAAAA comprobacion server de checkboxes AAAAAAAAAAAAAAAAA
-
+   (aka) solo un unico usuario involucrado en la transaccion
 
 -> PAGAR
 --> boton que tenga codigo dentro y te redireccione a la pag web en la que estabas
@@ -45,15 +60,13 @@ COSAS PENDIENTES PARA LA SIGUIENTE ENTREGA
     renderizas la cuenta o no
 -> logins y usuarios (mirar video de logins de coreyschafer)
 -> message forms (mirar video de logins de coreyschafer)
+--> piechart con info de balances justo debajo del cosobox este que flota de 
+    irache
 -> i18n
+-> modify debt, de clickar en una propia transaccion desde la vista de deuda y que te lleve a 
+   una vista de eliminacion de campos
 -> try-except en form.isvalid() para salir en cuanto "todo_bien = False"
 
     con clases de Exception tipo
     class ExceptionPayerNoEnTransaccion(Exception):
         pass
--> modify debt, de clickar en una propia transaccion desde la vista de deuda y que te lleve a 
-   una vista de eliminacion de campos
-
--> EXTRAS
---> piechart con info de balances justo debajo del cosobox este que flota de 
-    irache

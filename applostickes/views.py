@@ -28,7 +28,7 @@ def user(request):
 
     global user_to_work_with
 
-    user_to_work_with = User.objects.get(primkey=userpks['user1']) # TODO esto con la pagina de login
+    user_to_work_with = User.objects.get(primkey=userpks['user2']) # TODO esto con la pagina de login
 
     context = {}
 
@@ -133,6 +133,8 @@ def createGroup(request):
 
     global user_to_work_with
 
+    # TODO @asier html <select> para usuarios...
+
     context = {}
 
     form = UserGroupForm(request.POST or None)
@@ -232,7 +234,7 @@ def createDebt(request):
 
     contador = 1
     for people in peoples_paying:
-        lista_peoples.append([people.primkey, f'people_{contador}', people.name]) # TODO @asier WTF primkey FORMS?!?!?!?!?!
+        lista_peoples.append([people.primkey, f'persona_{contador}', people.name]) # TODO @asier WTF primkey FORMS?!?!?!?!?!
         contador = contador + 1
 
     context['lista_peoples'] = lista_peoples
@@ -307,6 +309,7 @@ def createDebt(request):
             if potential_payer not in set_de_todos_lospayers:
                 peoples_paying_really.remove(potential_payer)
 
+        # comprobamos el caso erroneo en el que la transaccion solo pertenece a una persona (no nos interesa...)
         if len(peoples_paying_really) == 1:
             todo_bien = False
             form.add_error(
@@ -342,7 +345,8 @@ def createDebt(request):
         # DISCLAIMER:
         #
         # no consideramos el caso en el que un usuario que paga la transaccion no tiene 
-        # elementos suyos en la transaccion
+        # elementos suyos en la transaccion (se puede arreglar añadiendo un elemento de 
+        # 0.01 € con vue supongo...)
 
         payer = ''
         # ojo al tema de las listas, [0]...
@@ -357,13 +361,6 @@ def createDebt(request):
 
         # string final
         mapping = f'{payer}-{payer_element_distribution}'
-
-        # sacamos error y volvemos
-        # if not todo_bien:
-        #     form.add_error(
-        #         field='elements',
-        #         error=forms.ValidationError('El pagador no tiene nada en la transaccion.')
-        #     )
 
         if todo_bien:
 

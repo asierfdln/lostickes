@@ -93,37 +93,37 @@
                 $(this).prop("disabled", true);
               });
             }
-            $('#btnSend').click(function (e) {
-              // si la leche esta checkiada, empieza la fiesta de las comprobaciones
-              if ($("#id_elements_{{ forloop.counter0 }}").is(":checked")) {
-                // si el All esta checkiado, todo gucci
-                if ($('#checkall_id_elements_{{ forloop.counter0 }}').is(":checked")) {
-                  // pass
-                }
-                // si no es el caso, comprobar que al menos 2 pepes y juanes estan marcaus
-                else {
-                  // si hay dos pepes, gud
-                  if ($('input[name="people_paying_element_{{ forloop.counter0 }}"]').filter(":checked").length > 1) {
-                    // pass
-                  }
-                  // si no hay dos juanes ENTODA LA TRANSACCION EN TOTAL...
-                  else {
-                    $("#elements-alerts").prepend(
-                      '<div class="alert alert-danger">' +
-                        '<span style="color: red;">' +
-                          '<ul class="errorlist">' +
-                            '<li>' +
-                              'No puedes tener un único usuario en la transaccion.' +
-                            '</li>' +
-                          '</ul>' +
-                        '</span>' +
-                      '</div>'
-                    );
-                    e.preventDefault();
-                  }
-                }
-              }
-            });
+            // $('#btnSend').click(function (e) {
+            //   // si la leche esta checkiada, empieza la fiesta de las comprobaciones
+            //   if ($("#id_elements_{{ forloop.counter0 }}").is(":checked")) {
+            //     // si el All esta checkiado, todo gucci
+            //     if ($('#checkall_id_elements_{{ forloop.counter0 }}').is(":checked")) {
+            //       // pass
+            //     }
+            //     // si no es el caso, comprobar que al menos 2 pepes y juanes estan marcaus
+            //     else {
+            //       // si hay dos pepes, gud
+            //       if ($('input[name="people_paying_element_{{ forloop.counter0 }}"]').filter(":checked").length > 1) {
+            //         // pass
+            //       }
+            //       // si no hay dos juanes ENTODA LA TRANSACCION EN TOTAL...
+            //       else {
+            //         $("#elements-alerts").prepend(
+            //           '<div class="alert alert-danger">' +
+            //             '<span style="color: red;">' +
+            //               '<ul class="errorlist">' +
+            //                 '<li>' +
+            //                   'No puedes tener un único usuario en la transaccion.' +
+            //                 '</li>' +
+            //               '</ul>' +
+            //             '</span>' +
+            //           '</div>'
+            //         );
+            //         e.preventDefault();
+            //       }
+            //     }
+            //   }
+            // });
           });
         </script>
       </ul>
@@ -145,6 +145,67 @@
   {% endfor %}<br />
   <input type="button" value="Cancel" onclick="history.back()" class="btn btn-secondary" />
   <input type="submit" value="Submit" id="btnSend" class="btn btn-success"/><br /><br />
+  <script type="text/javascript">
+    $(document).ready(function () {
+      $('#btnSend').click(function (e) {
+        var num_de_users_por_elemento = $("[id^=persona_]").length / $("[id^=id_elements_]").length;
+        console.log(num_de_users_por_elemento);
+        var array_users_implicados = [];
+        $('input[id^=persona_]').each(function() {
+          if (!array_users_implicados.includes($(this).val()) && $(this).prop('checked') && !$(this).prop('disabled')) {
+            array_users_implicados.push($(this).val())
+          }
+        });
+        console.log(array_users_implicados);
+        var user_pagador = $('select[id="id_payer"]').val();
+        console.log(user_pagador);
+        var primer_if_trig = 0;
+        if (array_users_implicados.length == 1) {
+          $("#elements-alerts").empty();
+          $("#elements-alerts").prepend(
+            '<div id="div-alert" class="alert alert-danger">' +
+              '<span style="color: red;">' +
+                '<ul class="errorlist">' +
+                  '<li>' +
+                    'No puedes tener un único usuario en la transaccion.' +
+                  '</li>' +
+                '</ul>' +
+              '</span>' +
+            '</div>'
+          );
+          primer_if_trig = 1
+          e.preventDefault();
+        }
+        if (!array_users_implicados.includes(user_pagador)) {
+          if (primer_if_trig == 1) {
+            $("#div-alert").prepend(
+              '<span style="color: red;">' +
+                '<ul class="errorlist">' +
+                  '<li>' +
+                    'El pagador no tiene nada en la transaccion.' +
+                  '</li>' +
+                '</ul>' +
+              '</span>'
+            );
+          } else {
+            $("#elements-alerts").empty();
+            $("#elements-alerts").prepend(
+              '<div class="alert alert-danger">' +
+                '<span style="color: red;">' +
+                  '<ul class="errorlist">' +
+                    '<li>' +
+                      'El pagador no tiene nada en la transaccion..' +
+                    '</li>' +
+                  '</ul>' +
+                '</span>' +
+              '</div>'
+            );
+            e.preventDefault();
+          }
+        }
+      });
+    });
+  </script>
 </form>
 {% endblock content %}
 {% block side %}
