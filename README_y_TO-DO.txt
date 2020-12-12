@@ -35,7 +35,7 @@ COSAS PENDIENTES PARA LA SIGUIENTE ENTREGA
    (aka) el pagador no tiene nada en la transaccion EN CLIENTE
    (aka) AAAAAAAAAAAAAAAAA comprobacion server de checkboxes AAAAAAAAAAAAAAAAA
 
--> try-except en form.isvalid() para salir en cuanto "todo_bien = False"
+
 -> PAGAR
 --> boton que tenga codigo dentro y te redireccione a la pag web en la que estabas
 --> que aparezca el boton si eres deudor, no pagador
@@ -45,6 +45,12 @@ COSAS PENDIENTES PARA LA SIGUIENTE ENTREGA
     renderizas la cuenta o no
 -> logins y usuarios (mirar video de logins de coreyschafer)
 -> message forms (mirar video de logins de coreyschafer)
+-> i18n
+-> try-except en form.isvalid() para salir en cuanto "todo_bien = False"
+
+    con clases de Exception tipo
+    class ExceptionPayerNoEnTransaccion(Exception):
+        pass
 -> modify debt, de clickar en una propia transaccion desde la vista de deuda y que te lleve a 
    una vista de eliminacion de campos
 

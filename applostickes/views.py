@@ -153,6 +153,9 @@ def group(request, groupName, group_identifier):
 
     global user_to_work_with
 
+    # TODO @asier checkear que no te han jodido con mangling de datos...
+    # UTILIZAR TEMA DE get_object_or_404()
+
     applostickes.from_group_to_createDebt_string = f'{groupName}-{group_identifier}'
 
     context = {}
@@ -206,6 +209,9 @@ def group(request, groupName, group_identifier):
 def createDebt(request):
 
     global user_to_work_with
+
+    # TODO @asier checkear que no te han jodido con mangling de datos (cuando llega la form...)...
+    # UTILIZAR TEMA DE get_object_or_404()
 
     context = {}
 
@@ -383,6 +389,9 @@ def createDebt(request):
 def debt(request, debtName, transaction_identifier):
 
     global user_to_work_with
+
+    # TODO @asier checkear que no te han jodido con mangling de datos...
+    # UTILIZAR TEMA DE get_object_or_404()
 
     context = {}
 
