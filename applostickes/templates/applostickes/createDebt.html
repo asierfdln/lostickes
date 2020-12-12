@@ -1,6 +1,6 @@
 {% extends "applostickes/base.html" %}
 {% block content %}
-<form method="POST">
+<form id="app" method="POST">
   {% csrf_token %}
   {% for field in form %}
   {% if field.errors %}
@@ -93,37 +93,6 @@
                 $(this).prop("disabled", true);
               });
             }
-            // $('#btnSend').click(function (e) {
-            //   // si la leche esta checkiada, empieza la fiesta de las comprobaciones
-            //   if ($("#id_elements_{{ forloop.counter0 }}").is(":checked")) {
-            //     // si el All esta checkiado, todo gucci
-            //     if ($('#checkall_id_elements_{{ forloop.counter0 }}').is(":checked")) {
-            //       // pass
-            //     }
-            //     // si no es el caso, comprobar que al menos 2 pepes y juanes estan marcaus
-            //     else {
-            //       // si hay dos pepes, gud
-            //       if ($('input[name="people_paying_element_{{ forloop.counter0 }}"]').filter(":checked").length > 1) {
-            //         // pass
-            //       }
-            //       // si no hay dos juanes ENTODA LA TRANSACCION EN TOTAL...
-            //       else {
-            //         $("#elements-alerts").prepend(
-            //           '<div class="alert alert-danger">' +
-            //             '<span style="color: red;">' +
-            //               '<ul class="errorlist">' +
-            //                 '<li>' +
-            //                   'No puedes tener un único usuario en la transaccion.' +
-            //                 '</li>' +
-            //               '</ul>' +
-            //             '</span>' +
-            //           '</div>'
-            //         );
-            //         e.preventDefault();
-            //       }
-            //     }
-            //   }
-            // });
           });
         </script>
       </ul>
@@ -142,7 +111,93 @@
     {{ field.help_text|safe }}<br /><br />
   {% endif %}
   {% endif %}
-  {% endfor %}<br />
+  {% endfor %}
+  <ul id="ulVue" style="list-style: none;" v-for="(e, index) in elements">
+    <li>
+      <input type="checkbox" v-bind:id="'vue_'+index">[[e]]
+      <ul>
+        <label for="checkall_id_elements_{{ forloop.counter0 }}">
+          <input type="checkbox" id="checkall_id_elements_{{ forloop.counter0 }}">
+          All
+        </label>
+        {% for people in lista_peoples %} <!-- bucle for de cada uno de los checkboxes detras de All -->
+        <label for="{{ people.1 }}">
+          <input type="checkbox" name="people_paying_element_{{ forloop.parentloop.counter0 }}" value="{{ people.0 }}"
+            id="{{ people.1 }}" />
+          {{ people.2 }}
+        </label>
+        {% endfor %}
+        <script type="text/javascript">
+          $(document).ready(function () {
+            // codigo para habilitar/deshabilitar checkboxes con cada elemento.checkbox
+            $("#vue_0").click(function () {
+              // si esta el bisho checkeado, me habilitas todas las weas de debajo (All, pepe, juan...)
+              if ($('#vue_0').is(":checked")) {
+                // habilitamos el All
+                $('input[id="checkall_id_elements_{{ forloop.counter0 }}"]').each(function () {
+                  $(this).prop("disabled", false);
+                });
+                // habilitamos a pepe, juan...
+                $('input[name="people_paying_element_{{ forloop.counter0 }}"]').each(function () {
+                  $(this).prop("disabled", false);
+                });
+              // si no esta el bisho checkeado, me deshabilitas todas las weas de debajo (All, pepe, juan...)
+              } else {
+                // deshabilitamos el All
+                $('input[id="checkall_id_elements_{{ forloop.counter0 }}"]').each(function () {
+                  $(this).prop("disabled", true);
+                });
+                // deshabilitamos a pepe, juan...
+                $('input[name="people_paying_element_{{ forloop.counter0 }}"]').each(function () {
+                  $(this).prop("disabled", true);
+                });
+              }
+            });
+            // codigo de checkbox All
+            $('#checkall_id_elements_{{ forloop.counter0 }}').click(function () {
+              // si el All esta checkiado, me checkeas a pepe, juan...
+              if ($('#checkall_id_elements_{{ forloop.counter0 }}').is(":checked")) {
+                $('input[name="people_paying_element_{{ forloop.counter0 }}"]').each(function () {
+                  $(this).prop("checked", true);
+                });
+              // si el All no esta checkiado, me descheckeas a pepe, juan...
+              } else {
+                $('input[name="people_paying_element_{{ forloop.counter0 }}"]').each(function () {
+                  $(this).prop("checked", false);
+                });
+              }
+            });
+            // codigo de cada checkbox independiente cuando le das a All
+            $('input[name="people_paying_element_{{ forloop.counter0 }}"]').bind('change', function () {
+              if ($('input[name="people_paying_element_{{ forloop.counter0 }}"]').filter(':not(:checked)').length == 0) {
+                $('#checkall_id_elements_{{ forloop.counter0 }}').prop("checked", true);
+              } else {
+                $('#checkall_id_elements_{{ forloop.counter0 }}').prop("checked", false);
+              }
+            });
+            // cuando volvemos de una form no valida... (un poco ñapa)
+            // si esta el bisho checkeado, me habilitas todas las weas de debajo (All, pepe, juan...)
+            if ($('#id_elements_{{ forloop.counter0 }}').is(":checked")) {
+              $('#checkall_id_elements_{{ forloop.counter0 }}').click()
+            } else {
+              // comenzamos con checkboxes deshabilitados
+              $('input[id="checkall_id_elements_{{ forloop.counter0 }}"]').each(function () {
+                $(this).prop("disabled", true);
+              });
+              $('input[name="people_paying_element_{{ forloop.counter0 }}"]').each(function () {
+                $(this).prop("disabled", true);
+              });
+            }
+          });
+        </script>
+      </ul>
+    </li>
+  </ul>
+</br>
+  <input v-model="newElement" type="text" placeholder="Add product">
+  <input v-model="newPrice" type="text" placeholder="Add price" @keyup.enter="saveElement">
+  <button @click="saveElement">Add</button></br>
+</br>
   <input type="button" value="Cancel" onclick="history.back()" class="btn btn-secondary" />
   <input type="submit" value="Submit" id="btnSend" class="btn btn-success"/><br /><br />
   <script type="text/javascript">
@@ -156,9 +211,7 @@
             array_users_implicados.push($(this).val())
           }
         });
-        console.log(array_users_implicados);
         var user_pagador = $('select[id="id_payer"]').val();
-        console.log(user_pagador);
         var primer_if_trig = 0;
         if (array_users_implicados.length == 1) {
           $("#elements-alerts").empty();
@@ -204,6 +257,44 @@
           }
         }
       });
+    });
+  </script>
+  <script type="text/javascript">
+    new Vue({      
+        delimiters : ['[[',']]'],
+        el:"#app",
+        data:{
+            contador:0,
+            newElement:'',
+            newPrice:'',
+            elements:[
+            ]
+        },
+        methods:{
+            saveElement: function(){
+              if(this.newElement == ""){
+
+              }
+              else{
+                if(this.newPrice == ""){
+
+                }
+                else{
+                  this.newPrice = parseFloat(this.newPrice);
+                  if(isNaN(this.newPrice)||this.newPrice<=0.009){
+
+                  }
+                  else{
+                    this.newElement=' '+this.newElement+' - '+this.newPrice+' €';
+                    this.elements.push(this.newElement);
+                    this.newElement="";
+                    this.contador = this.contador+1;
+                  }
+                  
+                }
+              }             
+            }
+        }
     });
   </script>
 </form>
