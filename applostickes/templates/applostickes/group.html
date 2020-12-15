@@ -16,11 +16,11 @@
       <div class="row">
         <div class="col-md">
           {% if group.2 > 0 %}
-          <p style="justify-content: center;">Balance (debes): {{ group.2 }} €</p>
+          <p  style="justify-content: center; color: red;">Balance (debes): {{ group.2 }} €</p>
           {% elif group.2 == 0 %}
           <p style="justify-content: center;">Balance: 0.0 €</p><!-- por eso de que python no pilla decimales de 0 -->
           {% else %}
-          <p style="justify-content: center;">Balance (te deben): {{ group.2 }} €</p>
+          <p style="justify-content: center; color: forestgreen;">Balance (te deben): {{ group.2 }} €</p>
           {% endif %}
         </div>
       </div>

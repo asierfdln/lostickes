@@ -196,7 +196,7 @@
 </br>
   <input v-model="newElement" type="text" placeholder="Add product">
   <input v-model="newPrice" type="text" placeholder="Add price" @keyup.enter="saveElement">
-  <button @click="saveElement">Add</button></br>
+  <button type="button" @click="saveElement">Add</button></br>
 </br>
   <input type="button" value="Cancel" onclick="history.back()" class="btn btn-secondary" />
   <input type="submit" value="Submit" id="btnSend" class="btn btn-success"/><br /><br />
