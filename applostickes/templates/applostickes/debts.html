@@ -1,8 +1,9 @@
 {% extends "applostickes/base.html" %}
 {% block content %}
 {% for trans_name, trans_list in debts.items %}
-<a class="article-title" role="button" href="{% url 'debt' debtName=trans_name transaction_identifier=trans_list.5 %}">
-  <div style="justify-content: center;" class="row">
+<div class="col-md-12">
+  <a class="article-title" role="button" href="{% url 'debt' debtName=trans_name transaction_identifier=trans_list.5 %}">
+  
     {% if trans_list.3 > 0 %}
       <article style="background-color: rgb(253, 193, 182);" class="media content-section col-md-12">
     {% elif trans_list.3 == 0 %}
@@ -78,8 +79,8 @@
         <!-- </a> -->
       </div>
     </article>
-  </div>
-</a>
+  </a>
+</div>
 {% endfor %}
 {% endblock content %}
 {%block side %}

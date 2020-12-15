@@ -27,8 +27,8 @@
     </div>
   </article>
 </div>
-<a class="article-title" href="{% url 'createDebt' %}">
-  <div class="row">
+<div class="col-md-12">
+  <a class="article-title" href="{% url 'createDebt' %}">
     <article class="media content-section col-md-12">
       <div class="media-body">
         <div class="col center-block text-center">
@@ -43,14 +43,15 @@
         </div>
       </div>
     </article>
-  </div>
-</a>
-{% for transaction in group.3 %}
+  </a>
+</div>
+  {% for transaction in group.3 %}
 <label for="check">
   <input type="checkbox" id="check">
 </label>
+<div class="col-md-12">
 <a class="article-title" role="button" href="{% url 'debt' debtName=transaction.0 transaction_identifier=transaction.5 %}">
-  <div style="justify-content: center;" class="row">
+  
     {% if transaction.3 > 0 %}
       <article style="background-color: rgb(253, 193, 182);" class="media content-section col-md-12">
     {% elif transaction.3 == 0 %}
@@ -110,8 +111,9 @@
         </div>
       </div>
     </article>
-  </div>
+
 </a>
+</div>
 <!-- <script>
   function functionShow() {
     var x = document.getElementById("check");

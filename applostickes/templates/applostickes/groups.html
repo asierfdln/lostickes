@@ -1,8 +1,9 @@
 {% extends "applostickes/base.html" %}
 {% block content %}
+
 {% for group_name, group_list in groups.items %}
-<a class="article-title" href="{% url 'group' groupName=group_name group_identifier=group_list.3 %}">
-  <div class="row">
+<div class="col-md-12">
+  <a class="article-title" href="{% url 'group' groupName=group_name group_identifier=group_list.3 %}"> 
     <article class="media content-section col-md-12">
       <div class="media-body">
         <div class="article-metadata">
@@ -29,7 +30,7 @@
           </div>
         </div>
         {% for transaction in group_list.2 %}
-        <div class="row">
+       
           <div class="col col-md-auto">
             <p class="text-muted">{{ transaction.0 }}</p>
           </div>
@@ -42,13 +43,14 @@
             <small style="float: right; color: forestgreen;">Balance de deuda (te deben): {{ transaction.1 }} €</small>
             {% endif %}
           </div>
-        </div>
+        
         {% endfor %}
       </div>
-    </article>
-  </div>
-</a>
+    </article> 
+  </a>
+</div>
 {% endfor %}
+
 {% endblock content %}
 {%block side %}
 <div id="sidebar" class="col-md-4">
