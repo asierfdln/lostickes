@@ -1,20 +1,20 @@
 {% extends "applostickes/base.html" %}
 {% block content %}
-<div class="row">
-  <article class="media content-section col-md-12">
+<div class="col">
+  <article class="media content-section col">
     <div class="media-body">
       <div class="article-metadata">
         <div class="row">
-          <div class="col-md border-right">
+          <div class="col border-right">
             <h4>{{ group.0 }}</h4>
           </div>
-          <div class="col-md">
+          <div class="col">
             <small class="text-muted">{{ group.1 }}</small>
           </div>
         </div>
       </div>
       <div class="row">
-        <div class="col-md">
+        <div class="col">
           {% if group.2 > 0 %}
           <p  style="justify-content: center; color: red;">Balance (debes): {{ group.2 }} €</p>
           {% elif group.2 == 0 %}
@@ -27,9 +27,9 @@
     </div>
   </article>
 </div>
-<div class="col-md-12">
+<div class="col">
   <a class="article-title" href="{% url 'createDebt' %}">
-    <article class="media content-section col-md-12">
+    <article class="media content-section col">
       <div class="media-body">
         <div class="col center-block text-center">
           <p class="text-muted">Create new debt</p>
