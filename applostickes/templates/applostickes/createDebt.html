@@ -22,7 +22,7 @@
       {{ li }} <!-- la lichi... cuyo id sigue el formato de id_elements_{{ forloop.counter0 }} -->
       <ul>
         <label for="checkall_id_elements_{{ forloop.counter0 }}">
-          <input type="checkbox" id="checkall_id_elements_{{ forloop.counter0 }}">
+          <input type="checkbox" id="checkall_id_elements_{{ forloop.counter0 }}" />
           All
         </label>
         {% for people in lista_peoples %} <!-- bucle for de cada uno de los checkboxes detras de All -->
@@ -114,90 +114,107 @@
   {% endfor %}
   <ul id="ulVue" style="list-style: none;" v-for="(e, index) in elements">
     <li>
-      <input type="checkbox" v-bind:id="'vue_'+index">[[e]]
+      <label v-bind:for="'vue_' + index">
+        <input type="checkbox" v-bind:id="'vue_' + index" @click="disable_enable(index)" />
+          [[ e ]]
+      </label>
       <ul>
-        <label for="checkall_id_elements_{{ forloop.counter0 }}">
-          <input type="checkbox" id="checkall_id_elements_{{ forloop.counter0 }}">
+        <label v-bind:for="'checkall_id_elements_vue_' + index">
+          <input type="checkbox" disabled v-bind:id="'checkall_id_elements_vue_' + index" />
           All
         </label>
         {% for people in lista_peoples %} <!-- bucle for de cada uno de los checkboxes detras de All -->
         <label for="{{ people.1 }}">
-          <input type="checkbox" name="people_paying_element_{{ forloop.parentloop.counter0 }}" value="{{ people.0 }}"
+          <input type="checkbox" disabled v-bind:name="'people_paying_element_vue_' + index" value="{{ people.0 }}"
             id="{{ people.1 }}" />
           {{ people.2 }}
         </label>
         {% endfor %}
         <script type="text/javascript">
-          $(document).ready(function () {
-            // codigo para habilitar/deshabilitar checkboxes con cada elemento.checkbox
-            $("#vue_0").click(function () {
-              // si esta el bisho checkeado, me habilitas todas las weas de debajo (All, pepe, juan...)
-              if ($('#vue_0').is(":checked")) {
-                // habilitamos el All
-                $('input[id="checkall_id_elements_{{ forloop.counter0 }}"]').each(function () {
-                  $(this).prop("disabled", false);
-                });
-                // habilitamos a pepe, juan...
-                $('input[name="people_paying_element_{{ forloop.counter0 }}"]').each(function () {
-                  $(this).prop("disabled", false);
-                });
-              // si no esta el bisho checkeado, me deshabilitas todas las weas de debajo (All, pepe, juan...)
-              } else {
-                // deshabilitamos el All
-                $('input[id="checkall_id_elements_{{ forloop.counter0 }}"]').each(function () {
-                  $(this).prop("disabled", true);
-                });
-                // deshabilitamos a pepe, juan...
-                $('input[name="people_paying_element_{{ forloop.counter0 }}"]').each(function () {
-                  $(this).prop("disabled", true);
-                });
-              }
-            });
-            // codigo de checkbox All
-            $('#checkall_id_elements_{{ forloop.counter0 }}').click(function () {
-              // si el All esta checkiado, me checkeas a pepe, juan...
-              if ($('#checkall_id_elements_{{ forloop.counter0 }}').is(":checked")) {
-                $('input[name="people_paying_element_{{ forloop.counter0 }}"]').each(function () {
-                  $(this).prop("checked", true);
-                });
-              // si el All no esta checkiado, me descheckeas a pepe, juan...
-              } else {
-                $('input[name="people_paying_element_{{ forloop.counter0 }}"]').each(function () {
-                  $(this).prop("checked", false);
-                });
-              }
-            });
-            // codigo de cada checkbox independiente cuando le das a All
-            $('input[name="people_paying_element_{{ forloop.counter0 }}"]').bind('change', function () {
-              if ($('input[name="people_paying_element_{{ forloop.counter0 }}"]').filter(':not(:checked)').length == 0) {
-                $('#checkall_id_elements_{{ forloop.counter0 }}').prop("checked", true);
-              } else {
-                $('#checkall_id_elements_{{ forloop.counter0 }}').prop("checked", false);
-              }
-            });
-            // cuando volvemos de una form no valida... (un poco ñapa)
-            // si esta el bisho checkeado, me habilitas todas las weas de debajo (All, pepe, juan...)
-            if ($('#id_elements_{{ forloop.counter0 }}').is(":checked")) {
-              $('#checkall_id_elements_{{ forloop.counter0 }}').click()
-            } else {
-              // comenzamos con checkboxes deshabilitados
-              $('input[id="checkall_id_elements_{{ forloop.counter0 }}"]').each(function () {
-                $(this).prop("disabled", true);
-              });
-              $('input[name="people_paying_element_{{ forloop.counter0 }}"]').each(function () {
-                $(this).prop("disabled", true);
-              });
-            }
-          });
+        // ##############################################################################################
+        // ##############################################################################################
+        // ##############################################################################################
+        // ##############################################################################################
+        // ##############################################################################################
+        // ##############################################################################################
+        // ##############################################################################################
+          // $(document).ready(function () {
+          //   // codigo para habilitar/deshabilitar checkboxes con cada elemento.checkbox
+          //   $("#vue_" + index_to_work_with).click(function () {
+          //     // si esta el bisho checkeado, me habilitas todas las weas de debajo (All, pepe, juan...)
+          //     if ($('#vue_' + index_to_work_with).is(":checked")) {
+          //       // habilitamos el All
+          //       $('input[id="checkall_id_elements_vue_' + index_to_work_with + '"]').each(function () {
+          //         $(this).prop("disabled", false);
+          //       });
+          //       // habilitamos a pepe, juan...
+          //       $('input[name="people_paying_element_vue_' + index_to_work_with + '"]').each(function () {
+          //         $(this).prop("disabled", false);
+          //       });
+          //     // si no esta el bisho checkeado, me deshabilitas todas las weas de debajo (All, pepe, juan...)
+          //     } else {
+          //       // deshabilitamos el All
+          //       $('input[id="checkall_id_elements_vue_"]').each(function () {
+          //         $(this).prop("disabled", true);
+          //       });
+          //       // deshabilitamos a pepe, juan...
+          //       $('input[name="people_paying_element_vue_{{ forloop.counter0 }}"]').each(function () {
+          //         $(this).prop("disabled", true);
+          //       });
+          //     }
+          //   });
+          //   // codigo de checkbox All
+          //   $('#checkall_id_elements_vue_').click(function () {
+          //     // si el All esta checkiado, me checkeas a pepe, juan...
+          //     if ($('#checkall_id_elements_vue_').is(":checked")) {
+          //       $('input[name="people_paying_element_vue_{{ forloop.counter0 }}"]').each(function () {
+          //         $(this).prop("checked", true);
+          //       });
+          //     // si el All no esta checkiado, me descheckeas a pepe, juan...
+          //     } else {
+          //       $('input[name="people_paying_element_vue_{{ forloop.counter0 }}"]').each(function () {
+          //         $(this).prop("checked", false);
+          //       });
+          //     }
+          //   });
+          //   // codigo de cada checkbox independiente cuando le das a All
+          //   $('input[name="people_paying_element_vue_{{ forloop.counter0 }}"]').bind('change', function () {
+          //     if ($('input[name="people_paying_element_vue_{{ forloop.counter0 }}"]').filter(':not(:checked)').length == 0) {
+          //       $('#checkall_id_elements_vue_').prop("checked", true);
+          //     } else {
+          //       $('#checkall_id_elements_vue_').prop("checked", false);
+          //     }
+          //   });
+          //   // cuando volvemos de una form no valida... (un poco ñapa)
+          //   // si esta el bisho checkeado, me habilitas todas las weas de debajo (All, pepe, juan...)
+          //   if ($('#id_elements_{{ forloop.counter0 }}').is(":checked")) {
+          //     $('#checkall_id_elements_vue_').click()
+          //   } else {
+          //     // comenzamos con checkboxes deshabilitados
+          //     $('input[id="checkall_id_elements_vue_"]').each(function () {
+          //       $(this).prop("disabled", true);
+          //     });
+          //     $('input[name="people_paying_element_vue_{{ forloop.counter0 }}"]').each(function () {
+          //       $(this).prop("disabled", true);
+          //     });
+          //   }
+          // });
+        // ##############################################################################################
+        // ##############################################################################################
+        // ##############################################################################################
+        // ##############################################################################################
+        // ##############################################################################################
+        // ##############################################################################################
+        // ##############################################################################################
         </script>
       </ul>
     </li>
   </ul>
-</br>
+  </br>
   <input v-model="newElement" type="text" placeholder="Add product">
   <input v-model="newPrice" type="text" placeholder="Add price" @keyup.enter="saveElement">
-  <button type="button" @click="saveElement">Add</button></br>
-</br>
+  <button type="button" id="botonDeAdd" @click="saveElement">Add</button></br>
+  </br>
   <input type="button" value="Cancel" onclick="history.back()" class="btn btn-secondary" />
   <input type="submit" value="Submit" id="btnSend" class="btn btn-success"/><br /><br />
   <script type="text/javascript">
@@ -260,41 +277,79 @@
     });
   </script>
   <script type="text/javascript">
-    new Vue({      
-        delimiters : ['[[',']]'],
-        el:"#app",
-        data:{
-            contador:0,
-            newElement:'',
-            newPrice:'',
-            elements:[
-            ]
-        },
-        methods:{
-            saveElement: function(){
-              if(this.newElement == ""){
-
-              }
-              else{
-                if(this.newPrice == ""){
-
-                }
-                else{
-                  this.newPrice = parseFloat(this.newPrice);
-                  if(isNaN(this.newPrice)||this.newPrice<=0.009){
-
-                  }
-                  else{
-                    this.newElement=' '+this.newElement+' - '+this.newPrice+' €';
-                    this.elements.push(this.newElement);
-                    this.newElement="";
-                    this.contador = this.contador+1;
-                  }
-                  
-                }
-              }             
+    new Vue({
+      delimiters: ['[[', ']]'],
+      el: "#app",
+      data: {
+        newElement: '',
+        newPrice: '',
+        elements: []
+      },
+      methods: {
+        saveElement: function () {
+          if (this.newElement == "") {
+            // mensaje de error tipo alerta
+          }
+          else {
+            if (this.newPrice == "") {
+            // mensaje de error tipo alerta
             }
+            else {
+              this.newPrice = parseFloat(this.newPrice);
+              if (isNaN(this.newPrice) || this.newPrice <= 0.009) {
+                // mensaje de error tipo alerta
+              }
+              else {
+                this.newElement = ' ' + this.newElement + ' - ' + this.newPrice + ' €';
+                this.elements.push(this.newElement);
+                this.newElement = "";
+              }
+            }
+          }
+        },
+
+        // codigo para habilitar/deshabilitar checkboxes con cada elemento.checkbox
+        disable_enable: function (index) {
+          // console.log('jeje mira este index wn --> ' + index);
+          var checkbox_vue = document.getElementById("vue_" + index);
+          // console.log(checkbox_vue);
+          // console.log(checkbox_vue.checked);
+
+          // si esta el bisho checkeado, me habilitas todas las weas de debajo (All, pepe, juan...)
+          if (checkbox_vue.checked) {
+            // habilitamos el All
+            document.getElementsByName('checkall_id_elements_vue_' + index).disabled = false;
+            // habilitamos a pepe, juan...
+
+          } else {
+            // deshabilitamos el All
+            document.getElementsByName('checkall_id_elements_vue_' + index).disabled = true;
+            // deshabilitamos a pepe, juan...
+
+          }
+
+          // if ($('#vue_' + index).is(":checked")) {
+          //   // habilitamos el All
+          //   $('input[id="checkall_id_elements_vue_' + index + '"]').each(function () {
+          //     $(this).prop("disabled", false);
+          //   });
+          //   // habilitamos a pepe, juan...
+          //   $('input[name="people_paying_element_vue_' + index + '"]').each(function () {
+          //     $(this).prop("disabled", false);
+          //   });
+          // // si no esta el bisho checkeado, me deshabilitas todas las weas de debajo (All, pepe, juan...)
+          // } else {
+          //   // deshabilitamos el All
+          //   $('input[id="checkall_id_elements_vue_"]').each(function () {
+          //     $(this).prop("disabled", true);
+          //   });
+          //   // deshabilitamos a pepe, juan...
+          //   $('input[name="people_paying_element_vue_{{ forloop.counter0 }}"]').each(function () {
+          //     $(this).prop("disabled", true);
+          //   });
+          // }
         }
+      }
     });
   </script>
 </form>

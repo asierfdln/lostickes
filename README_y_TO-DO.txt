@@ -45,12 +45,7 @@ COSAS PENDIENTES PARA LA SIGUIENTE ENTREGA
     (7*) idealmente, que solo el owner de las transacciones pueda borrar las transacciones...
 
 
--> mover todo esto al boton de submit como tal
-    $('#btnSend').click(function (e) {...
-
-   (aka) el pagador no tiene nada en la transaccion EN CLIENTE
-   (aka) solo un unico usuario involucrado en la transaccion
-
+-> mover js's a static...
 -> PAGAR
 --> boton que tenga codigo dentro y te redireccione a la pag web en la que estabas
 --> que aparezca el boton si eres deudor, no pagador
@@ -60,8 +55,7 @@ COSAS PENDIENTES PARA LA SIGUIENTE ENTREGA
     renderizas la cuenta o no
 -> logins y usuarios (mirar video de logins de coreyschafer)
 -> message forms (mirar video de logins de coreyschafer)
---> piechart con info de balances justo debajo del cosobox este que flota de 
-    irache
+-> piechart con info de balances justo debajo del cosobox este que flota de irache (d3.js????????)
 -> i18n
 -> modify debt, de clickar en una propia transaccion desde la vista de deuda y que te lleve a 
    una vista de eliminacion de campos
