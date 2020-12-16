@@ -126,7 +126,7 @@
         {% for people in lista_peoples %} <!-- bucle for de cada uno de los checkboxes detras de All -->
         <label for="{{ people.1 }}">
           <input type="checkbox" disabled v-bind:name="'people_paying_element_vue_' + index" value="{{ people.0 }}"
-            id="{{ people.1 }}" />
+            id="{{ people.1 }}" @click="activate_all(index)" />
           {{ people.2 }}
         </label>
         {% endfor %}
@@ -349,6 +349,28 @@
             for(var e = 0; e < people_paying_checkbox.length; e++){
               people_paying_checkbox[e].checked = false;
             }
+          }
+        },
+        activate_all: function(index){
+          f =[];
+          var a = 0;
+          var people_paying_checkbox = Array.prototype.slice.call(document.getElementsByName("people_paying_element_vue_" + index));
+          for(var e = 0; e < people_paying_checkbox.length; e++){
+              f[e] = people_paying_checkbox[e].checked;
+          }
+          for(var i = 0; i < f.length; i++){
+              if(f[i] == true){
+                a++;
+              }
+              else{
+
+              }
+          }
+          if(a==f.length){
+            document.getElementById("checkall_id_elements_vue_" + index).checked = true;
+          }
+          else{
+            document.getElementById("checkall_id_elements_vue_" + index).checked = false;
           }
         }
       }
