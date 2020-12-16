@@ -15,13 +15,8 @@ class User(models.Model):
     name = models.CharField(max_length=55, blank=False)
     email = models.EmailField(max_length=105, unique=True, blank=False)
 
-
-    # TODO @asier probar esto de __init__ con:
-        # def __init__(self, *args, **kwargs):
-        #     super().__init__(*args, **kwargs)
-
     # _random_noise = ''.join((random.choice(string.ascii_letters + string.digits) for i in range(10)))
-    # _string_key = f'{_random_noise}' # TODO @asier añadir name y email
+    # _string_key = f'{_random_noise}' # añadir name y email
     # _key = hashlib.sha256(bytes(_string_key, 'utf-8')).hexdigest()
     # primkey = models.UUIDField(primary_key=True, editable=False, default=_key[:16])
     primkey = models.UUIDField(primary_key=True, editable=False, default=uuid.uuid4)

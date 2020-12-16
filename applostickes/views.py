@@ -29,7 +29,7 @@ def user(request):
 
     global user_to_work_with
 
-    user_to_work_with = User.objects.get(primkey=userpks['user2']) # TODO esto con la pagina de login
+    user_to_work_with = User.objects.get(primkey=userpks['user2'])
 
     context = {}
 
@@ -155,8 +155,6 @@ def createGroup(request):
 
     global user_to_work_with
 
-    # TODO @asier html <select> para usuarios...
-
     context = {}
 
     form = UserGroupForm(request.POST or None)
@@ -176,9 +174,6 @@ def createGroup(request):
 def group(request, groupName, group_identifier):
 
     global user_to_work_with
-
-    # TODO @asier checkear que no te han jodido con mangling de datos...
-    # UTILIZAR TEMA DE get_object_or_404()
 
     applostickes.from_group_view_url_string = f'{groupName}-{group_identifier}'
 
@@ -242,9 +237,6 @@ def createDebt(request):
 
     global user_to_work_with
 
-    # TODO @asier checkear que no te han jodido con mangling de datos (cuando llega la form...)...
-    # UTILIZAR TEMA DE get_object_or_404()
-
     context = {}
 
     lista_peoples = []
@@ -267,7 +259,7 @@ def createDebt(request):
 
     contador = 1
     for people in peoples_paying:
-        lista_peoples.append([people.primkey, f'persona_{contador}', people.name]) # TODO @asier WTF primkey FORMS?!?!?!?!?!
+        lista_peoples.append([people.primkey, f'persona_{contador}', people.name])
         contador = contador + 1
 
     context['lista_peoples'] = lista_peoples
