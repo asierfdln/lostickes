@@ -282,38 +282,41 @@ def createDebt(request):
         # hay que andarse con cuidado porque cada key tiene una LISTA de valores, aunque haya una sola cosa...
         request_as_dict = dict(request.POST)
 
-        # OBJETIVO -> generar un string tal que 1-1,2,3;2,3... a partir del request_as_dict
-        #
-        # si tenemos algo tal que
-        #    payer = (numero)
-        #    payer_element_distribution = (numeros y comas y puntosycomas)
-        #
-        # el mapping final tendra la pinta de mapping = f'{payer}-{payer_element_distribution}'
+        """
+            OBJETIVO -> generar un string tal que 1-1,2,3;2,3... a partir del request_as_dict
 
-        # La cuestion es que la numeracion del string de mapping sigue la logica de "de todos los
-        # usuarios que pagan, el que paga es el ((n)-), numerando todos los usuarios que pagan de
-        # 1 a m (1..m). Cada ";" significa uno de los elementos, y los numeros entre comas dicen
-        # los usuarios que han pagado ese elemento. De esta manera, "1-1,2;3,4" significa que los
-        # usuarios 1 y 2 comparten el elemento 1 de la compra, los usuarios 3 y 4 comparten el 
-        # elemento 2 de la compra y TODA la compra la paga el usuario 1 (no soportamos casos en 
-        # los que se comparten pagos a medias de la cuenta total, solo un alguien con los dineros 
-        # para pagar la cosa).
-        #
-        # La numeracion 1..m es de todos los usuarios involucrados en la compra, no necesariamente 
-        # todos los posibles usuarios que podrian haberse visto involucrados en la compra. Es decir,
-        # puede haber m usuarios en la transaccion de k usuarios totales registrados en el grupo 
-        # (such that m <= k) y estos pueden ser el primero del set total de usuarios del grupo, el 
-        # tercero, el decimoquinto y el trigesimocuarto usuarios del grupo (para un grupo con k > 
-        # 34 usuarios, claro...). En cualquier caso, el primero, tercero, decimoquinto y 
-        # trigesimocuarto usuarios del grupo seran, respectivamente, el 1,2,3 y 4 de nuestro string 
-        # de mapping. El orden de estos usuarios viene definido por Django (forma bonita de decir 
-        # que no sabemos que criterio utiliza, asi que nos abstraemos de la fiesta esta) y es 
-        # constante en la definicion de objetos con esos valores (como las listas del diccionario 
-        # de request.POST, ejem ejem...), por lo que necesitamos extraer todos los usuarios 
-        # involucrados en la compra ORDENADOS tal y como vienen ordenados en el set total de 
-        # usuarios del grupo al cual pertenece la transaccion para poder hacer una correlacion 
-        # correcta de 1 -> primer_usuario, 2 -> tercer_usuario, 3 -> decimoquinto_usuario y 
-        # 4 -> trigesimocuarto_usuario. Para ello, hacemos lo siguiente:
+            si tenemos algo tal que
+                payer = (numero)-
+                payer_element_distribution = (numeros y comas y puntosycomas)
+
+            el mapping final tendra la pinta de mapping = f'{payer}-{payer_element_distribution}'
+
+            La cuestion es que la numeracion del string de mapping sigue la logica de "de todos los
+            usuarios que pagan, el que paga es el ((n)-), numerando todos los usuarios que pagan de
+            1 a m (1..m). Cada ";" significa uno de los elementos, y los numeros entre comas dicen
+            los usuarios que han pagado ese elemento. De esta manera, "1-1,2;3,4" significa que los
+            usuarios 1 y 2 comparten el elemento 1 de la compra, los usuarios 3 y 4 comparten el 
+            elemento 2 de la compra y TODA la compra la paga el usuario 1 (no soportamos casos en 
+            los que se comparten pagos a medias de la cuenta total, solo un alguien con los dineros 
+            para pagar la cosa).
+
+            La numeracion 1..m es de todos los usuarios involucrados en la compra, no necesariamente 
+            todos los posibles usuarios que podrian haberse visto involucrados en la compra. Es decir,
+            puede haber m usuarios en la transaccion de k usuarios totales registrados en el grupo 
+            (such that m <= k) y estos pueden ser el primero del set total de usuarios del grupo, el 
+            tercero, el decimoquinto y el trigesimocuarto usuarios del grupo (para un grupo con k > 
+            34 usuarios, claro...). En cualquier caso, el primero, tercero, decimoquinto y 
+            trigesimocuarto usuarios del grupo seran, respectivamente, el 1,2,3 y 4 de nuestro string 
+            de mapping. El orden de estos usuarios viene definido por Django (forma bonita de decir 
+            que no sabemos que criterio utiliza, asi que nos abstraemos de la fiesta esta) y es 
+            constante en la definicion de objetos con esos valores (como las listas del diccionario 
+            de request.POST, ejem ejem...), por lo que necesitamos extraer todos los usuarios 
+            involucrados en la compra ORDENADOS tal y como vienen ordenados en el set total de 
+            usuarios del grupo al cual pertenece la transaccion para poder hacer una correlacion 
+            correcta de 1 -> primer_usuario, 2 -> tercer_usuario, 3 -> decimoquinto_usuario y 
+            4 -> trigesimocuarto_usuario. Para ello, hacemos lo siguiente:
+
+        """
 
         # extraemos las listas de usuarios involucrados en la compra
         dict_de_elementos = {}
@@ -367,19 +370,22 @@ def createDebt(request):
         # quitamos el ultimo ';'
         payer_element_distribution = payer_element_distribution[0:(len(payer_element_distribution)-1)]
 
-        # ahora, para el encargado de pagar la cuenta, tenemos dos casos:
-        #   (1) el que paga tiene cosas suyas en la cuenta
-        #   (2) el que paga no tiene cosas suyas en la cuenta
-        # 
-        # para el caso (1) solo con un .index() suficiente, en el caso (2) ponemos la
-        # primkey (sin '-', puestas como '#'...) como parte de 'payer' del 'mapping' y
-        # hacemos la gestion de eso ya bien en la funcion de accounts() de Transaction...
+        """
+            Ahora, para el encargado de pagar la cuenta, tenemos dos casos:
+              (1) el que paga tiene cosas suyas en la cuenta
+              (2) el que paga no tiene cosas suyas en la cuenta
 
-        # DISCLAIMER:
-        #
-        # no consideramos el caso en el que un usuario que paga la transaccion no tiene 
-        # elementos suyos en la transaccion (se puede arreglar añadiendo un elemento de 
-        # 0.01 € con vue supongo...)
+            para el caso (1) solo con un .index() suficiente, en el caso (2) ponemos la
+            primkey (sin '-', puestas como '#'...) como parte de 'payer' del 'mapping' y
+            hacemos la gestion de eso ya bien en la funcion de accounts() de Transaction...
+
+            DISCLAIMER:
+
+            no consideramos el caso en el que un usuario que paga la transaccion no tiene 
+            elementos suyos en la transaccion (se puede arreglar añadiendo un elemento de 
+            0.01 € con vue supongo...)
+
+        """
 
         payer = ''
         # ojo al tema de las listas, [0]...
