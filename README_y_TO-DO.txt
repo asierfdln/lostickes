@@ -25,12 +25,9 @@ COSAS PENDIENTES PARA LA SIGUIENTE ENTREGA
 
 -- TODO --
 
-@iraxe cuando entras en http://localhost:8000/group/group1-56f3cf4b el "Balance" tb en colores
-@iraxe mirar video de clase de web de hoy y meter con vue la verga esta de elementos nuevos...
+@iraxe mensajitos en inputs de createDebt
 
-    meter elementos nuevos para la transaccion con dos inputs:
-     - uno para el nombre del elemento (que no esté vasío cuando le des a click al boton de "añadir guayabas")
-     - otro para el precio (que el valor sea mayor de 0.009)
+@iraxe comentar un poco el codigo de vue para la posteridad porsiaca
 
 @iraxe checkboxes de delete transactions: (TODO @asier pensar db si peta o no...)
 
@@ -46,17 +43,18 @@ COSAS PENDIENTES PARA LA SIGUIENTE ENTREGA
 
 
 -> mover js's a static...
+-> desc en elements sobra
+-> orderby name elements
 -> PAGAR
---> boton que tenga codigo dentro y te redireccione a la pag web en la que estabas
---> que aparezca el boton si eres deudor, no pagador
----> que aparezca un boton de borrar deuda si eres pagador
 --> necesario un diccionario de score-settling en el que lleves cuenta de
-    {'primkey': [role, pagado/no]}, y en funcion del estado de ese dicc pues 
+    {'primkey_user': [role, pagado/no]}, y en funcion del estado de ese dicc pues 
     renderizas la cuenta o no
+--> boton de "Debt settled" con correspondiente funcionalidad de borrar
 -> logins y usuarios (mirar video de logins de coreyschafer)
 -> message forms (mirar video de logins de coreyschafer)
 -> piechart con info de balances justo debajo del cosobox este que flota de irache (d3.js????????)
 -> i18n
+--> help texts fuera...
 -> modify debt, de clickar en una propia transaccion desde la vista de deuda y que te lleve a 
    una vista de eliminacion de campos
 -> try-except en form.isvalid() para salir en cuanto "todo_bien = False"
