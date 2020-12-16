@@ -29,21 +29,27 @@ def user(request):
 
     global user_to_work_with
 
-    user_to_work_with = User.objects.get(primkey=userpks['user3']) # TODO esto con la pagina de login
+    user_to_work_with = User.objects.get(primkey=userpks['user2']) # TODO esto con la pagina de login
 
     context = {}
 
+    # los grupos que vemos en l apagina son todos en los que el usuario esta metido
     groups_to_display = user_to_work_with.usergroup_set.all()
     context['groups'] = {}
 
+    # metemos el balance de grupo del usuario para que se vea
     for group in groups_to_display:
         context['groups'][group.name] = group.user_balance(user_pk=user_to_work_with.primkey)
 
+    # cogemos todas las transacciones en las que esta involucrado el usuario
     transactions_to_display = user_to_work_with.transaction_set.all()
     context['transactions'] = {}
 
+    # solo vemos las que debe/le deben pasta
     for transaction in transactions_to_display:
-        context['transactions'][transaction.name] = transaction.user_account(user_pk=user_to_work_with.primkey)
+        balance_user_transaction = transaction.user_account(user_pk=user_to_work_with.primkey)
+        if balance_user_transaction != 0:
+            context['transactions'][transaction.name] = balance_user_transaction
 
     context['title'] = 'User'
     context['nameClass'] = 'User'
@@ -56,15 +62,18 @@ def groups(request):
 
     global user_to_work_with
 
+    # marcamos que hemos entrado en la vista de groups para luego utilizar esto en la vista de debt...
     applostickes.debts_or_group_enter_point_to_debt_0_or_1 = 1
 
     context = {}
 
+    # cogemos todos los grupos en los que esta metido el usuario
     groups_to_display = user_to_work_with.usergroup_set.all()
     context['groups'] = {}
 
     for group in groups_to_display:
 
+        # metemos infor del grupo
         context['groups'][group.name] = [
             group.desc,
             group.user_balance(user_pk=user_to_work_with.primkey),
@@ -72,14 +81,17 @@ def groups(request):
             group.get_ugidentifier(),
         ]
 
-        transactions_of_group = group.transaction_set.all()
+        # sacamos todas las transacciones del grupo en las que esta metido el user
+        transactions_of_group_with_user = group.transaction_set.filter(payers__primkey=user_to_work_with.primkey)
 
-        for tr in transactions_of_group:
-            if tr.payers.filter(primkey=user_to_work_with.primkey):
+        # metemos la info de cada transaccion
+        for transaction in transactions_of_group_with_user:
+            balance_user_transaction = transaction.user_account(user_pk=user_to_work_with.primkey)
+            if balance_user_transaction != 0:
                 context['groups'][group.name][2].append(
                     [
-                        tr.name,
-                        tr.user_account(user_pk=user_to_work_with.primkey)
+                        transaction.name,
+                        transaction.user_account(user_pk=user_to_work_with.primkey)
                     ]
                 )
 
@@ -94,16 +106,19 @@ def debts(request):
 
     global user_to_work_with
 
+    # marcamos que hemos entrado en la vista de debts para luego utilizar esto en la vista de debt...
     applostickes.debts_or_group_enter_point_to_debt_0_or_1 = 0
 
     context = {}
 
     context['debts'] = {}
 
+    # cogemos todas las transacciones en las que esta metido el usuario
     transactions_of_user = Transaction.objects.filter(payers__primkey__contains=user_to_work_with.get_uidentifier())
 
     for transaction in transactions_of_user:
 
+        # metemos informacion
         context['debts'][transaction.name] = [
             transaction.desc,
             transaction.user_group.name,
@@ -114,12 +129,17 @@ def debts(request):
             transaction.user_group.get_ugidentifier(),
         ]
 
-        transaction_accounts = transaction.accounts()
-
+        # cogemos a cada usuario y su rol en la transaccion (estado si es que ha pagado...)
         for payer in transaction.payers.all():
             payer_name = payer.name
-            if transaction_accounts[payer.primkey] < 0:
+            if transaction.get_score_role(payer.primkey) == 'OWNER':
                 payer_name = payer_name + ' (OWNER)'
+            elif transaction.get_score_role(payer.primkey) == 'DEBTER':
+                if transaction.get_score_state(payer.primkey) == 'PAYED':
+                    payer_name = payer_name + ' (PAYED)'
+                elif transaction.get_score_state(payer.primkey) == 'NOTPAYED':
+                    payer_name = payer_name + ' (OWS)'
+
             context['debts'][transaction.name][4].append(payer_name)
 
     context['title'] = 'Debts'
@@ -162,44 +182,52 @@ def group(request, groupName, group_identifier):
 
     context = {}
 
-    groups_of_user = user_to_work_with.usergroup_set.all()
-    group_to_display = None
+    # cogemos el grupo de usuarios de identificador "group_identifier"
+    group_to_display = UserGroup.objects.get(primkey__contains=group_identifier)
 
-    for group in groups_of_user:
-        if group_identifier in str(group.primkey):
-            group_to_display = group
-            break
-
+    # definimos el formato de informacion a pasar
     context['group'] = [
         group_to_display.name,
         group_to_display.desc,
         group_to_display.user_balance(user_pk=user_to_work_with.primkey),
+        # lista de las transacciones con info
         [],
     ]
 
-    for transaction in group_to_display.transaction_set.all():
+    # cogemos todas las transacciones del grupo en las que esta metido el usuario
+    transactions_of_user_in_group = group_to_display.transaction_set.filter(
+        payers__primkey__contains=user_to_work_with.get_uidentifier()
+    )
 
+    for transaction in transactions_of_user_in_group:
+
+        # lista de los nombres de los usuarios involucrados en la transaccion
         lista_nombres = []
-        transaction_accounts = transaction.accounts()
 
+        # cogemos a cada usuario y su rol en la transaccion (estado si es que ha pagado...)
         for payer in transaction.payers.all():
             payer_name = payer.name
-            if transaction_accounts[payer.primkey] < 0:
+            if transaction.get_score_role(payer.primkey) == 'OWNER':
                 payer_name = payer_name + ' (OWNER)'
+            elif transaction.get_score_role(payer.primkey) == 'DEBTER':
+                if transaction.get_score_state(payer.primkey) == 'PAYED':
+                    payer_name = payer_name + ' (PAYED)'
+                elif transaction.get_score_state(payer.primkey) == 'NOTPAYED':
+                    payer_name = payer_name + ' (OWS)'
+            # añadimos ese nombre modificado en la lista de nombres para la transaccion
             lista_nombres.append(payer_name)
 
-        if user_to_work_with.name in lista_nombres or (user_to_work_with.name + ' (OWNER)') in lista_nombres:
-
-            context['group'][3].append(
-                [
-                    transaction.name,
-                    transaction.desc,
-                    transaction.total_price(),
-                    transaction.user_account(user_pk=user_to_work_with.primkey),
-                    lista_nombres,
-                    transaction.get_tridentifier(),
-                ]
-            )
+        # añadimos la info de cada transaccion a mostrar
+        context['group'][3].append(
+            [
+                transaction.name,
+                transaction.desc,
+                transaction.total_price(),
+                transaction.user_account(user_pk=user_to_work_with.primkey),
+                lista_nombres,
+                transaction.get_tridentifier(),
+            ]
+        )
 
     context['title'] = 'Group'
     context['nameClass'] = 'Group'
@@ -400,20 +428,12 @@ def debt(request, debtName, transaction_identifier):
 
     global user_to_work_with
 
-    # TODO @asier checkear que no te han jodido con mangling de datos...
-    # UTILIZAR TEMA DE get_object_or_404()
-
     context = {}
 
-    groups_of_user = user_to_work_with.usergroup_set.all()
-    transaction_to_display = None
+    # cogemos la transaccion de identificador "transaction_identifier"
+    transaction_to_display = Transaction.objects.get(primkey__contains=transaction_identifier)
 
-    for group in groups_of_user:
-        for transaction in group.transaction_set.all():
-            if transaction_identifier in str(transaction.primkey):
-                transaction_to_display = transaction
-                break
-
+    # definimos el formato de info a pasar
     context['debt'] = [
         transaction_to_display.user_group.name,
         transaction_to_display.user_group.get_ugidentifier(),
@@ -427,28 +447,41 @@ def debt(request, debtName, transaction_identifier):
         transaction_to_display.get_tridentifier()
     ]
 
-    transaction_accounts = transaction_to_display.accounts()
-
+    # cogemos a cada usuario y su rol en la transaccion (estado si es que ha pagado...)
     for payer in transaction_to_display.payers.all():
         payer_name = payer.name
-        # TODO @asier hacer esto con score_setlling...
-        if transaction_accounts[payer.primkey] < 0:
+        if transaction_to_display.get_score_role(payer.primkey) == 'OWNER':
             if payer_name == user_to_work_with.name:
-                context['debt'][8] = 1 # el usuario es el que ha pagado la deuda, no necesita el boton de pagar
+                context['debt'][8] = 1 # el usuario es el OWNER de la deuda
             payer_name = payer_name + ' (OWNER)'
+        elif transaction_to_display.get_score_role(payer.primkey) == 'DEBTER':
+            if transaction_to_display.get_score_state(payer.primkey) == 'PAYED':
+                payer_name = payer_name + ' (PAYED)'
+            elif transaction_to_display.get_score_state(payer.primkey) == 'NOTPAYED':
+                payer_name = payer_name + ' (OWS)'
         context['debt'][6].append(payer_name)
 
+    # cogemos cada uno de los usuarios responsables de cada elemento y hacemos una
+    # lista con sus nombres para displayearlos en el medio de la transaccion
     contador_mapping = 0
-
     for element in transaction_to_display.elements.all():
 
+        # cogemos todos los numeros de pagadores (a la derecha del "-") del elemento
+        # de la lista de indice [contador_mapping]
         nums_responsables = transaction_to_display.mapping.split("-")[1].split(";")[contador_mapping].split(",")
-        lista_responsables = []
 
+        # la lista de los nombres de los responsables para el elemento "element"
+        # se llena con todos aquellos nombres de la lista de todos los usuarios
+        # involucrados en la transaccion
+        lista_responsables = []
         for num in nums_responsables:
             lista_responsables.append(context['debt'][6][int(num)-1])
 
+        # metemos en una lista (1) el nombre del elemento sin el precio, (2) la lista de
+        # responsables para ese elemento y (3) el precio de ese elemento
         context['debt'][7].append([element.name.split(" - ")[0], lista_responsables, element.price])
+
+        # actualizamos el contador de elementos de la transaccion
         contador_mapping = contador_mapping + 1
 
     context['title'] = 'Debt'

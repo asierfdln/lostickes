@@ -41,19 +41,18 @@ COSAS PENDIENTES PARA LA SIGUIENTE ENTREGA
 
     (7*) idealmente, que solo el owner de las transacciones pueda borrar las transacciones...
 
+@iraxe colores en funcion de PAYED - OWNER - OWS...
 
-deberiamos tanto quitar las transacciones cuyo estado este a pagado (owner o payer)
-  QUE SE OCULTEN CON VUEeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
-y tb deberiamos hacer que todos los metodos de balance dependieran desi has pagado o no...
+@iraxe deberiamos poder ver / no ver las transacciones pagadas
+    QUE SE OCULTEN CON VUEeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
+    habria que implementarlo en "debts" y en "group"
+
+@iraxe boton de colores o no colores para css de cosas de pagar /no pagar...?????
+
+@iraxe que la columna del medio se ajuste al texto (se ve mal lo de PAYED, OWS, OWNER)...
 
 -> mover js's a static...
--> desc en elements sobra
--> quitar lo de OWNER en views...
--> PAGAR
---> necesario un diccionario de score-settling en el que lleves cuenta de
-    {'primkey_user': [role, pagado/no]}, y en funcion del estado de ese dicc pues 
-    renderizas la cuenta o no
---> boton de "Debt settled" con correspondiente funcionalidad de borrar
+-> descripcion en elements sobra
 -> logins y usuarios (mirar video de logins de coreyschafer)
 -> message forms (mirar video de logins de coreyschafer)
 -> piechart con info de balances justo debajo del cosobox este que flota de irache (d3.js????????)
