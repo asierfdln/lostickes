@@ -167,8 +167,6 @@ class Transaction(models.Model):
     payers_elements_mapping = None
     tridentifier = None
 
-    # esto tb va a tener que ir despues de pagar y tal...
-    # o por lo menos que cunaod hagas pagar() pues haya un save()
     def generate_score_settling_mapping(self):
 
         if self.payers_elements_mapping == None:
@@ -193,14 +191,28 @@ class Transaction(models.Model):
         return self.score_settling_mapping[user_primkey]['transaction_state']
 
     def pay_transaction(self, user_primkey):
+
+        # "pagamos"
         self.score_settling_mapping[user_primkey]['transaction_state'] = 'PAYED'
-        self.save()
-        # aqui deberiamos mirar si todos los statuses estan puestos a payed...
-        # pass
+
+        # miramos a ver si hemos pagado todos los DEBTERS
+        emospagadotos = True
+        for key in self.score_settling_mapping.keys():
+            if self.get_score_state(key) == 'NOTPAYED' and self.get_score_role(key) == 'DEBTER':
+                emospagadotos = False
+
+        if emospagadotos:
+            self.mark_as_payed()
+        else:
+            self.save()
 
     def mark_as_payed(self):
-        # eliminamos sinmas??...
-        pass
+
+        # ponemos que todo el mundo ha "pagado" y que al OWNER le han "pagado"
+        for key in self.score_settling_mapping.keys():
+            self.score_settling_mapping[key]['transaction_state'] = 'PAYED'
+
+        self.save()
 
     def total_price(self):
         if self.preciototal == None:
@@ -242,7 +254,12 @@ class Transaction(models.Model):
         if self.payers_elements_mapping == None:
             self.accounts()
 
-        return self.payers_elements_mapping[user_pk]
+        if self.get_score_state(user_pk) == 'PAYED':
+            return 0
+        elif self.get_score_state(user_pk) == 'NOTPAYED':
+            return self.payers_elements_mapping[user_pk]
+        else:
+            return self.payers_elements_mapping[user_pk]
 
     def get_tridentifier(self):
         if self.tridentifier == None:

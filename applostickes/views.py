@@ -29,7 +29,7 @@ def user(request):
 
     global user_to_work_with
 
-    user_to_work_with = User.objects.get(primkey=userpks['user2']) # TODO esto con la pagina de login
+    user_to_work_with = User.objects.get(primkey=userpks['user3']) # TODO esto con la pagina de login
 
     context = {}
 
@@ -473,8 +473,7 @@ def pay_debt(request, debt_identifier):
     # si el usuario loggeado es el dueño de la transaccion (le deben pasta)
     elif transaction_to_work_with.get_score_role(user_to_work_with.primkey) == 'OWNER':
         # que nos han pagado ya todos
-        # transaction_to_work_with.mark_as_payed()
-        pass
+        transaction_to_work_with.mark_as_payed()
 
     # si hemos venido desde debts
     if applostickes.debts_or_group_enter_point_to_debt_0_or_1 == 0:
