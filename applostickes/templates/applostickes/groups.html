@@ -31,16 +31,16 @@
         </div>
         {% for transaction in group_list.2 %}
        
-          <div class="col">
-            <p style="display: inline;" class="text-muted">{{ transaction.0 }}</p>
-          
-            {% if transaction.1 > 0 %}
-            <small style="float: right; color: red;">Balance de deuda (debes): {{ transaction.1 }} €</small>
-            {% elif transaction.1 == 0 %}
-            <small style="float: right;" class="text-muted">Balance de deuda: {{ transaction.1 }} €</small>
-            {% else %}
-            <small style="float: right; color: forestgreen;">Balance de deuda (te deben): {{ transaction.1 }} €</small>
-            {% endif %}
+          <div class="row">
+            <div class="col"><p style="display: inline;" class="text-muted">{{ transaction.0 }}</p>
+              {% if transaction.1 > 0 %}
+              <small style="float: right; color: red;">Balance de deuda (debes): {{ transaction.1 }} €</small>
+              {% elif transaction.1 == 0 %}
+              <small style="float: right;" class="text-muted">Balance de deuda: {{ transaction.1 }} €</small>
+              {% else %}
+              <small style="float: right; color: forestgreen;">Balance de deuda (te deben): {{ transaction.1 }} €</small>
+              {% endif %}
+            </div>           
           </div>
         {% endfor %}
       </div>
