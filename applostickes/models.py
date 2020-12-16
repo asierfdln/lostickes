@@ -3,6 +3,8 @@ import uuid
 from django.db import models
 from django import forms
 from django.core import validators as vals
+from picklefield.fields import PickledObjectField
+
 import applostickes
 
 # Create your models here.
@@ -159,10 +161,46 @@ class Transaction(models.Model):
     # 1,2;3,4 --> el producto1 es compartido por los payers 1 y 2, el producto2 es compartido por los payers 3 y 4...
     mapping = models.CharField(max_length=280, blank=False, help_text="Para definir que paga cada usuario seguir el siguiente formato: 1,2;2,3,4. ; por cada producto. , por cada usuario responsable.")
 
+    score_settling_mapping = PickledObjectField(default=dict)
+
     preciototal = None
     payers_elements_mapping = None
     tridentifier = None
-    # score_settling_mapping = None # esto pero con PickledObjectField()...
+
+    # esto tb va a tener que ir despues de pagar y tal...
+    # o por lo menos que cunaod hagas pagar() pues haya un save()
+    def generate_score_settling_mapping(self):
+
+        if self.payers_elements_mapping == None:
+            self.accounts()
+
+        for payer in self.payers.all():
+            self.score_settling_mapping[payer.primkey] = {
+                'transaction_role': 'Rol del payer, en la transaccion: OWNER - DEBTER',
+                'transaction_state': 'Estado de la deuda: PAYED - NOTPAYED',
+            }
+            if self.payers_elements_mapping[payer.primkey] < 0:
+                self.score_settling_mapping[payer.primkey]['transaction_role'] = 'OWNER'
+                self.score_settling_mapping[payer.primkey]['transaction_state'] = 'NOTPAYED'
+            else:
+                self.score_settling_mapping[payer.primkey]['transaction_role'] = 'DEBTER'
+                self.score_settling_mapping[payer.primkey]['transaction_state'] = 'NOTPAYED'
+
+    def get_score_role(self, user_primkey):
+        return self.score_settling_mapping[user_primkey]['transaction_role']
+
+    def get_score_state(self, user_primkey):
+        return self.score_settling_mapping[user_primkey]['transaction_state']
+
+    def pay_transaction(self, user_primkey):
+        self.score_settling_mapping[user_primkey]['transaction_state'] = 'PAYED'
+        self.save()
+        # aqui deberiamos mirar si todos los statuses estan puestos a payed...
+        # pass
+
+    def mark_as_payed(self):
+        # eliminamos sinmas??...
+        pass
 
     def total_price(self):
         if self.preciototal == None:
@@ -171,10 +209,6 @@ class Transaction(models.Model):
                 self.preciototal = round(self.preciototal, 2) + round(element.price, 2)
 
         return self.preciototal
-
-    # def generate_score_settling_mapping(self):
-    #     if self.score_settling_mapping == None:
-    #         score_settling_mapping= {}
 
     def accounts(self):
         if self.payers_elements_mapping == None:

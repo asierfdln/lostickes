@@ -4,6 +4,7 @@ from django import forms
 from .models import UserGroupForm, TransactionForm
 from .models import User, UserGroup, Transaction, Element
 import applostickes
+from pprint import pprint
 
 
 userpks = {
@@ -97,34 +98,29 @@ def debts(request):
 
     context = {}
 
-    groups_of_user = user_to_work_with.usergroup_set.all()
     context['debts'] = {}
 
-    for group in groups_of_user:
+    transactions_of_user = Transaction.objects.filter(payers__primkey__contains=user_to_work_with.get_uidentifier())
 
-        transactions_of_group = group.transaction_set.all()
+    for transaction in transactions_of_user:
 
-        for transaction in transactions_of_group:
+        context['debts'][transaction.name] = [
+            transaction.desc,
+            transaction.user_group.name,
+            transaction.total_price(),
+            transaction.user_account(user_pk=user_to_work_with.primkey),
+            [],
+            transaction.get_tridentifier(),
+            transaction.user_group.get_ugidentifier(),
+        ]
 
-            if transaction.payers.filter(primkey=user_to_work_with.primkey):
+        transaction_accounts = transaction.accounts()
 
-                context['debts'][transaction.name] = [
-                    transaction.desc,
-                    group.name,
-                    transaction.total_price(),
-                    transaction.user_account(user_pk=user_to_work_with.primkey),
-                    [],
-                    transaction.get_tridentifier(),
-                    group.get_ugidentifier(),
-                ]
-
-                transaction_accounts = transaction.accounts()
-
-                for payer in transaction.payers.all():
-                    payer_name = payer.name
-                    if transaction_accounts[payer.primkey] < 0:
-                        payer_name = payer_name + ' (OWNER)'
-                    context['debts'][transaction.name][4].append(payer_name)
+        for payer in transaction.payers.all():
+            payer_name = payer.name
+            if transaction_accounts[payer.primkey] < 0:
+                payer_name = payer_name + ' (OWNER)'
+            context['debts'][transaction.name][4].append(payer_name)
 
     context['title'] = 'Debts'
     context['nameClass'] = 'Debts'
@@ -235,6 +231,9 @@ def createDebt(request):
     peoples_paying = User.objects.filter(
         usergroup__in=usergroup_tofilterwith
     )
+
+    # estas dos queries anteriores deberian ir (1) con un get para el usergroup
+    # y (2) con un usergroup=usergroup_tofilterwith... pero bueno, ya si eso otro dia
 
     contador = 1
     for people in peoples_paying:
@@ -370,12 +369,22 @@ def createDebt(request):
 
             # empezamos a crear la transaccion porque todo ha ido super guay
             transaction_to_modify = form.save(commit=False)
-            transaction_to_modify.mapping = mapping
 
+            # save() necesario porque si no no puedes poner los atributos con FOREIGNKEYS y demasKEYS
             transaction_to_modify.save()
 
+            # guardamos las referencias a los payers y elements necesarios
             transaction_to_modify.payers.set(User.objects.filter(primkey__in=peoples_paying_really)) # set() porque lo dice Django
             transaction_to_modify.elements.set(Element.objects.filter(primkey__in=request_as_dict['elements'])) # set() porque lo dice Django
+
+            # definimos el mapping con lo generado anteriormente
+            transaction_to_modify.mapping = mapping
+
+            # ahora que tenemos los payers puestos, generamos el mapping de score_settling...
+            transaction_to_modify.generate_score_settling_mapping()
+
+            # save() para guardar los atributos de mapping y score_settling en tabla de DB
+            transaction_to_modify.save()
 
             return HttpResponseRedirect(f'/group/{applostickes.from_group_view_url_string}')
 
@@ -414,13 +423,15 @@ def debt(request, debtName, transaction_identifier):
         transaction_to_display.user_account(user_pk=user_to_work_with.primkey),
         [],
         [],
-        0
+        0,
+        transaction_to_display.get_tridentifier()
     ]
 
     transaction_accounts = transaction_to_display.accounts()
 
     for payer in transaction_to_display.payers.all():
         payer_name = payer.name
+        # TODO @asier hacer esto con score_setlling...
         if transaction_accounts[payer.primkey] < 0:
             if payer_name == user_to_work_with.name:
                 context['debt'][8] = 1 # el usuario es el que ha pagado la deuda, no necesita el boton de pagar
@@ -447,7 +458,23 @@ def debt(request, debtName, transaction_identifier):
     return render(request, 'applostickes/debt.html', context)
 
 
-def pay_debt(request, debt_identifier, debt_payer_or_debter_flag):
+def pay_debt(request, debt_identifier):
+
+    global user_to_work_with
+
+    # cogemos la transaccion que queremos pagar/marcar como pagada...
+    transaction_to_work_with = Transaction.objects.get(primkey__contains=debt_identifier)
+
+    # si el usuario loggeado es un pagador (debe pasta a alguien)
+    if transaction_to_work_with.get_score_role(user_to_work_with.primkey) == 'DEBTER':
+        # pues pagamos
+        transaction_to_work_with.pay_transaction(user_to_work_with.primkey)
+
+    # si el usuario loggeado es el dueño de la transaccion (le deben pasta)
+    elif transaction_to_work_with.get_score_role(user_to_work_with.primkey) == 'OWNER':
+        # que nos han pagado ya todos
+        # transaction_to_work_with.mark_as_payed()
+        pass
 
     # si hemos venido desde debts
     if applostickes.debts_or_group_enter_point_to_debt_0_or_1 == 0:
