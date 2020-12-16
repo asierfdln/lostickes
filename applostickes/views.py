@@ -39,7 +39,9 @@ def user(request):
 
     # metemos el balance de grupo del usuario para que se vea
     for group in groups_to_display:
-        context['groups'][group.name] = group.user_balance(user_pk=user_to_work_with.primkey)
+        group_balance = group.user_balance(user_pk=user_to_work_with.primkey)
+        if group_balance != 0:
+            context['groups'][group.name] = group_balance
 
     # cogemos todas las transacciones en las que esta involucrado el usuario
     transactions_to_display = user_to_work_with.transaction_set.all()
