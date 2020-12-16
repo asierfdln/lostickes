@@ -9,11 +9,11 @@
 </nav>
 <div class="col">
   {% if debt.5 > 0 %}
-    <article class="media content-section col-md-12" style="background-color:  rgb(253, 193, 182);">
+  <article class="media content-section col-md-12" style="background-color: rgb(253, 193, 182);">
   {% elif debt.5 == 0 %}
-    <article class="media content-section col-md-12" >
+  <article class="media content-section col-md-12">
   {% else %}
-    <article class="media content-section col-md-12" style="background-color: rgb(217, 248, 170);">
+  <article class="media content-section col-md-12" style="background-color: rgb(217, 248, 170);">
   {% endif %}
     <div class="media-body">
       <div class="article-metadata border-bottom border-dark">
@@ -105,6 +105,12 @@
     </ul>
     </p>
   </div>
-  <a role="button" class="btn btn-outline-secondary btn-block" href="#">Pay debt</a>
+  <a role="button" class="btn btn-outline-secondary btn-block" href="{% url 'pay_debt' debt_identifier=debt.1 debt_payer_or_debter_flag=debt.8%}">
+    {% if debt.8 == 0 %}
+    Pay debt
+    {% else %}
+    Debt settled (TODO @asier, lo mismo que borrar...)
+    {% endif %}
+  </a>
 </div>
 {% endblock side %}

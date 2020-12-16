@@ -55,6 +55,8 @@ def groups(request):
 
     global user_to_work_with
 
+    applostickes.debts_or_group_enter_point_to_debt_0_or_1 = 1
+
     context = {}
 
     groups_to_display = user_to_work_with.usergroup_set.all()
@@ -90,6 +92,8 @@ def groups(request):
 def debts(request):
 
     global user_to_work_with
+
+    applostickes.debts_or_group_enter_point_to_debt_0_or_1 = 0
 
     context = {}
 
@@ -158,7 +162,7 @@ def group(request, groupName, group_identifier):
     # TODO @asier checkear que no te han jodido con mangling de datos...
     # UTILIZAR TEMA DE get_object_or_404()
 
-    applostickes.from_group_to_createDebt_string = f'{groupName}-{group_identifier}'
+    applostickes.from_group_view_url_string = f'{groupName}-{group_identifier}'
 
     context = {}
 
@@ -225,7 +229,7 @@ def createDebt(request):
                                    # esa a mano...
 
     usergroup_tofilterwith = UserGroup.objects.filter(
-        primkey__contains=applostickes.from_group_to_createDebt_string.split('-')[1]
+        primkey__contains=applostickes.from_group_view_url_string.split('-')[1]
     )
 
     peoples_paying = User.objects.filter(
@@ -373,7 +377,7 @@ def createDebt(request):
             transaction_to_modify.payers.set(User.objects.filter(primkey__in=peoples_paying_really)) # set() porque lo dice Django
             transaction_to_modify.elements.set(Element.objects.filter(primkey__in=request_as_dict['elements'])) # set() porque lo dice Django
 
-            return HttpResponseRedirect(f'/group/{applostickes.from_group_to_createDebt_string}')
+            return HttpResponseRedirect(f'/group/{applostickes.from_group_view_url_string}')
 
     context['form'] = form
     context['title'] = 'Create group'
@@ -410,6 +414,7 @@ def debt(request, debtName, transaction_identifier):
         transaction_to_display.user_account(user_pk=user_to_work_with.primkey),
         [],
         [],
+        0
     ]
 
     transaction_accounts = transaction_to_display.accounts()
@@ -417,6 +422,8 @@ def debt(request, debtName, transaction_identifier):
     for payer in transaction_to_display.payers.all():
         payer_name = payer.name
         if transaction_accounts[payer.primkey] < 0:
+            if payer_name == user_to_work_with.name:
+                context['debt'][8] = 1 # el usuario es el que ha pagado la deuda, no necesita el boton de pagar
             payer_name = payer_name + ' (OWNER)'
         context['debt'][6].append(payer_name)
 
@@ -438,3 +445,14 @@ def debt(request, debtName, transaction_identifier):
     context['username'] = user_to_work_with.name
 
     return render(request, 'applostickes/debt.html', context)
+
+
+def pay_debt(request, debt_identifier, debt_payer_or_debter_flag):
+
+    # si hemos venido desde debts
+    if applostickes.debts_or_group_enter_point_to_debt_0_or_1 == 0:
+        return HttpResponseRedirect('/debts/')
+
+    # si hemos venido desde group
+    elif applostickes.debts_or_group_enter_point_to_debt_0_or_1 == 1:
+        return HttpResponseRedirect(f'/group/{applostickes.from_group_view_url_string}')

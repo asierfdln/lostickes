@@ -53,6 +53,7 @@ class User(models.Model):
 
 
 class UserForm(forms.ModelForm):
+
     class Meta:
         model = User
         fields = '__all__'
@@ -112,6 +113,7 @@ class UserGroup(models.Model):
 
 
 class UserGroupForm(forms.ModelForm):
+
     class Meta:
         model = UserGroup
         fields = '__all__'
@@ -125,6 +127,9 @@ class Element(models.Model):
 
     primkey = models.UUIDField(primary_key=True, editable=False, default=uuid.uuid4)
 
+    class Meta:
+        ordering = ['name', 'price']
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.name = self.name + ' - ' + str(self.price) + ' €'
@@ -134,6 +139,7 @@ class Element(models.Model):
 
 
 class ElementForm(forms.ModelForm):
+
     class Meta:
         model = Element
         fields = '__all__'
@@ -156,6 +162,7 @@ class Transaction(models.Model):
     preciototal = None
     payers_elements_mapping = None
     tridentifier = None
+    # score_settling_mapping = None # esto pero con PickledObjectField()...
 
     def total_price(self):
         if self.preciototal == None:
@@ -164,6 +171,10 @@ class Transaction(models.Model):
                 self.preciototal = round(self.preciototal, 2) + round(element.price, 2)
 
         return self.preciototal
+
+    # def generate_score_settling_mapping(self):
+    #     if self.score_settling_mapping == None:
+    #         score_settling_mapping= {}
 
     def accounts(self):
         if self.payers_elements_mapping == None:
@@ -210,6 +221,7 @@ class Transaction(models.Model):
 
 
 class TransactionForm(forms.ModelForm):
+
     class Meta:
         model = Transaction
         fields = [
@@ -243,7 +255,7 @@ class TransactionForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
 
         usergroup_tofilterwith = UserGroup.objects.filter(
-            primkey__contains=applostickes.from_group_to_createDebt_string.split('-')[1]
+            primkey__contains=applostickes.from_group_view_url_string.split('-')[1]
         )
 
         peoples_paying = User.objects.filter(
