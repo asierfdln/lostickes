@@ -1,5 +1,6 @@
 {% extends "applostickes/base.html" %}
 {% block content %}
+<div id="app-2">
 <div class="col">
   <article class="media content-section col">
     <div class="media-body">
@@ -45,12 +46,16 @@
     </article>
   </a>
 </div>
-  {% for transaction in group.3 %}
+<div class="col">
+  <button id="btnShHd" role="button" class="btn btn-outline-secondary btn-block" @click="hideshow">Hide Paid Transactions</button>
+</div>
+</br>
+{% for transaction in group.3 %}
   
 <!-- <label for="check">
   <input type="checkbox" id="check">
 </label> -->
-<div v-if="!isHidden" id="transaccsion" name="transaccsion" class="col-md-12">
+<div id="transaccion" name="transaccsion" class="col-md-12">
 <a class="article-title" role="button" href="{% url 'debt' debtName=transaction.0 transaction_identifier=transaction.5 %}">
   
     {% if transaction.3 > 0 %}
@@ -115,37 +120,39 @@
 
 </a>
 </div>
-<!-- <script>
-  function functionShow() {
-    var x = document.getElementById("check");
-    if (x.style.display === "none") {
-      x.style.display = "block";
-    } else {
-      x.style.display = "none";
+{% endfor %}
+
+<script>
+var app2 = new Vue({
+  el: '#app-2',
+  data: {
+    isNinja: true
+  },
+  methods: {
+    hideshow: function(){
+      var x = document.getElementsByName("transaccsion");
+      var valor = document.getElementsByName("bal");
+      var btn = document.getElementById("btnShHd");
+      for(var i = 0; i < valor.length; i++){
+        var auth = valor[i].innerText;
+        if(x[i].style.display === "none") {
+          if(auth == "Balance: 0.0 €"){
+            x[i].style.display = "block";
+            btn.innerHTML= "Hide Paid Transactions";
+          }
+        }
+        else{
+          if(auth == "Balance: 0.0 €"){  
+            x[i].style.display = "none";
+            btn.innerHTML= "Show All Transactions";
+          }
+        }
+      }
     }
   }
-  function functionShow() {
-    var x = document.getElementsByName("transaccsion");
-    var valor = document.getElementsByName("bal");
-    var btn = document.getElementById("btnShHd");
-    for(var i = 0; i < valor.length; i++){
-      var auth = valor[i].innerText;
-      if(x[i].style.display === "none") {
-        if(auth == "Balance: 0.0 €"){
-          x[i].style.display = "block";
-          btn.innerHTML= "Hide Paid Transactions";
-        }
-      }
-      else{
-        if(auth == "Balance: 0.0 €"){  
-          x[i].style.display = "none";
-          btn.innerHTML= "Show All Transactions";
-        }
-      }
-    }
-</script> -->
-
-{% endfor %}
+});
+</script>
+</div>
 
 {% endblock %}
 {% block side %}
@@ -165,6 +172,6 @@
   </div>
   <!-- <button role="button" class="btn btn-outline-secondary" onclick="functionShow()">Select transaction</button>
   <button role="button" class="btn btn-outline-secondary btn-block" onclick="myFunction()">Delete transaction</button> -->
-  <button id="btnShHd" role="button" class="btn btn-outline-secondary btn-block" v-on:click="isHidden = !isHidden">Hide Paid Transactions</button>
+  
 </div>
 {% endblock side %}
