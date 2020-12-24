@@ -130,90 +130,21 @@
           {{ people.2 }}
         </label>
         {% endfor %}
-        <script type="text/javascript">
-        // ##############################################################################################
-        // ##############################################################################################
-        // ##############################################################################################
-        // ##############################################################################################
-        // ##############################################################################################
-        // ##############################################################################################
-        // ##############################################################################################
-          // $(document).ready(function () {
-          //   // codigo para habilitar/deshabilitar checkboxes con cada elemento.checkbox
-          //   $("#vue_" + index_to_work_with).click(function () {
-          //     // si esta el bisho checkeado, me habilitas todas las weas de debajo (All, pepe, juan...)
-          //     if ($('#vue_' + index_to_work_with).is(":checked")) {
-          //       // habilitamos el All
-          //       $('input[id="checkall_id_elements_vue_' + index_to_work_with + '"]').each(function () {
-          //         $(this).prop("disabled", false);
-          //       });
-          //       // habilitamos a pepe, juan...
-          //       $('input[name="people_paying_element_vue_' + index_to_work_with + '"]').each(function () {
-          //         $(this).prop("disabled", false);
-          //       });
-          //     // si no esta el bisho checkeado, me deshabilitas todas las weas de debajo (All, pepe, juan...)
-          //     } else {
-          //       // deshabilitamos el All
-          //       $('input[id="checkall_id_elements_vue_"]').each(function () {
-          //         $(this).prop("disabled", true);
-          //       });
-          //       // deshabilitamos a pepe, juan...
-          //       $('input[name="people_paying_element_vue_{{ forloop.counter0 }}"]').each(function () {
-          //         $(this).prop("disabled", true);
-          //       });
-          //     }
-          //   });
-          //   // codigo de checkbox All
-          //   $('#checkall_id_elements_vue_').click(function () {
-          //     // si el All esta checkiado, me checkeas a pepe, juan...
-          //     if ($('#checkall_id_elements_vue_').is(":checked")) {
-          //       $('input[name="people_paying_element_vue_{{ forloop.counter0 }}"]').each(function () {
-          //         $(this).prop("checked", true);
-          //       });
-          //     // si el All no esta checkiado, me descheckeas a pepe, juan...
-          //     } else {
-          //       $('input[name="people_paying_element_vue_{{ forloop.counter0 }}"]').each(function () {
-          //         $(this).prop("checked", false);
-          //       });
-          //     }
-          //   });
-          //   // codigo de cada checkbox independiente cuando le das a All
-          //   $('input[name="people_paying_element_vue_{{ forloop.counter0 }}"]').bind('change', function () {
-          //     if ($('input[name="people_paying_element_vue_{{ forloop.counter0 }}"]').filter(':not(:checked)').length == 0) {
-          //       $('#checkall_id_elements_vue_').prop("checked", true);
-          //     } else {
-          //       $('#checkall_id_elements_vue_').prop("checked", false);
-          //     }
-          //   });
-          //   // cuando volvemos de una form no valida... (un poco ñapa)
-          //   // si esta el bisho checkeado, me habilitas todas las weas de debajo (All, pepe, juan...)
-          //   if ($('#id_elements_{{ forloop.counter0 }}').is(":checked")) {
-          //     $('#checkall_id_elements_vue_').click()
-          //   } else {
-          //     // comenzamos con checkboxes deshabilitados
-          //     $('input[id="checkall_id_elements_vue_"]').each(function () {
-          //       $(this).prop("disabled", true);
-          //     });
-          //     $('input[name="people_paying_element_vue_{{ forloop.counter0 }}"]').each(function () {
-          //       $(this).prop("disabled", true);
-          //     });
-          //   }
-          // });
-        // ##############################################################################################
-        // ##############################################################################################
-        // ##############################################################################################
-        // ##############################################################################################
-        // ##############################################################################################
-        // ##############################################################################################
-        // ##############################################################################################
-        </script>
       </ul>
     </li>
   </ul>
   </br>
-  <input v-model="newElement" type="text" placeholder="Add product">
-  <input v-model="newPrice" type="text" placeholder="Add price" @keyup.enter="saveElement">
-  <button type="button" id="botonDeAdd" @click="saveElement">Add</button></br>
+  <ul style="list-style: none; justify-content: left;">
+    <label for="el">New Element: 
+      <input v-model="newElement" id="el" type="text" placeholder="Add product">
+    </label>
+    <label for="pr">Price: 
+      <input v-model="newPrice" id="pr" type="text" placeholder="Add price" @keyup.enter="saveElement">
+    </label>
+    <button type="button" id="botonDeAdd" @click="saveElement">Add</button>
+  </ul>
+  
+  
   </br>
   <input type="button" value="Cancel" onclick="history.back()" class="btn btn-secondary" />
   <input type="submit" value="Submit" id="btnSend" class="btn btn-success"/><br /><br />
@@ -221,7 +152,6 @@
     $(document).ready(function () {
       $('#btnSend').click(function (e) {
         var num_de_users_por_elemento = $("[id^=persona_]").length / $("[id^=id_elements_]").length;
-        console.log(num_de_users_por_elemento);
         var array_users_implicados = [];
         $('input[id^=persona_]').each(function() {
           if (!array_users_implicados.includes($(this).val()) && $(this).prop('checked') && !$(this).prop('disabled')) {
@@ -264,7 +194,7 @@
                 '<span style="color: red;">' +
                   '<ul class="errorlist">' +
                     '<li>' +
-                      'El pagador no tiene nada en la transaccion..' +
+                      'El pagador no tiene nada en la transaccion.' +
                     '</li>' +
                   '</ul>' +
                 '</span>' +
@@ -287,11 +217,11 @@
       },
       methods: {
         saveElement: function () {
-          if (this.newElement == "") {
-            // mensaje de error tipo alerta
+          if (this.newElement == (this.newElement.length == 0)) {
+            
           }
           else {
-            if (this.newPrice == "") {
+            if (this.newPrice == (this.newPrice.length == 0)) {
             // mensaje de error tipo alerta
             }
             else {

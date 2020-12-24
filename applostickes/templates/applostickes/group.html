@@ -46,10 +46,11 @@
   </a>
 </div>
   {% for transaction in group.3 %}
-<label for="check">
+  
+<!-- <label for="check">
   <input type="checkbox" id="check">
-</label>
-<div class="col-md-12">
+</label> -->
+<div v-if="!isHidden" id="transaccsion" name="transaccsion" class="col-md-12">
 <a class="article-title" role="button" href="{% url 'debt' debtName=transaction.0 transaction_identifier=transaction.5 %}">
   
     {% if transaction.3 > 0 %}
@@ -87,11 +88,11 @@
           <div class="row">
             <div class="col">
               {% if transaction.3 > 0 %}
-              <p class="text-muted">Balance (debes): {{ transaction.3 }} €</p>
+              <p name="bal" class="text-muted">Balance (debes): {{ transaction.3 }} €</p>
               {% elif transaction.3 == 0 %}
-              <p class="text-muted">Balance: 0.0 €</p><!-- por eso de que python no pilla decimales de 0 -->
+              <p name="bal" class="text-muted">Balance: 0.0 €</p><!-- por eso de que python no pilla decimales de 0 -->
               {% else %}
-              <p class="text-muted">Balance (te deben): {{ transaction.3 }} €</p>
+              <p name="bal" class="text-muted">Balance (te deben): {{ transaction.3 }} €</p>
               {% endif %}
             </div>
           </div>
@@ -123,8 +124,29 @@
       x.style.display = "none";
     }
   }
+  function functionShow() {
+    var x = document.getElementsByName("transaccsion");
+    var valor = document.getElementsByName("bal");
+    var btn = document.getElementById("btnShHd");
+    for(var i = 0; i < valor.length; i++){
+      var auth = valor[i].innerText;
+      if(x[i].style.display === "none") {
+        if(auth == "Balance: 0.0 €"){
+          x[i].style.display = "block";
+          btn.innerHTML= "Hide Paid Transactions";
+        }
+      }
+      else{
+        if(auth == "Balance: 0.0 €"){  
+          x[i].style.display = "none";
+          btn.innerHTML= "Show All Transactions";
+        }
+      }
+    }
 </script> -->
+
 {% endfor %}
+
 {% endblock %}
 {% block side %}
 <div id="sidebar" class="col-md-4">
@@ -141,7 +163,8 @@
     </ul>
     </p>
   </div>
-  <!-- <button role="button" class="btn btn-outline-secondary" onclick="functionShow()">Select transaction</button> -->
-  <button role="button" class="btn btn-outline-secondary btn-block" onclick="myFunction()">Delete transaction</button>
+  <!-- <button role="button" class="btn btn-outline-secondary" onclick="functionShow()">Select transaction</button>
+  <button role="button" class="btn btn-outline-secondary btn-block" onclick="myFunction()">Delete transaction</button> -->
+  <button id="btnShHd" role="button" class="btn btn-outline-secondary btn-block" v-on:click="isHidden = !isHidden">Hide Paid Transactions</button>
 </div>
 {% endblock side %}
