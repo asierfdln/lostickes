@@ -1,7 +1,12 @@
 {% extends "applostickes/base.html" %}
 {% block content %}
+<div id="app">
+  <div class="col">
+    <button id="btnShHd" role="button" class="btn btn-outline-secondary btn-block" @click="hideshow">Hide Paid Transactions</button>
+  </div>
+</br>
 {% for trans_name, trans_list in debts.items %}
-<div class="col-md-12">
+<div name="transaccsion" class="col-md-12">
   <a class="article-title" role="button" href="{% url 'debt' debtName=trans_name transaction_identifier=trans_list.5 %}">
   
     {% if trans_list.3 > 0 %}
@@ -51,11 +56,11 @@
             <div class="row">
               <div class="col">
                 {% if trans_list.3 > 0 %}
-                <p class="text-muted">Balance (debes): {{ trans_list.3 }} €</p>
+                <p name="bal" class="text-muted">Balance (debes): {{ trans_list.3 }} €</p>
                 {% elif trans_list.3 == 0 %}
-                <p class="text-muted">Balance: 0.0 €</p><!-- por eso de que python no pilla decimales de 0 -->
+                <p name="bal" class="text-muted">Balance: 0.0 €</p><!-- por eso de que python no pilla decimales de 0 -->
                 {% else %}
-                <p class="text-muted">Balance (te deben): {{ trans_list.3 }} €</p>
+                <p name="bal" class="text-muted">Balance (te deben): {{ trans_list.3 }} €</p>
                 {% endif %}
               </div>
               <!-- <div class="col">
@@ -80,8 +85,41 @@
       </div>
     </article>
   </a>
+ 
 </div>
 {% endfor %}
+
+<script>
+  var app = new Vue({
+    el: '#app',
+    data: {
+      
+    },
+    methods: {
+      hideshow: function(){
+        var x = document.getElementsByName("transaccsion");
+        var valor = document.getElementsByName("bal");
+        var btn = document.getElementById("btnShHd");
+        for(var i = 0; i < valor.length; i++){
+          var auth = valor[i].innerText;
+          if(x[i].style.display === "none") {
+            if(auth == "Balance: 0.0 €"){
+              x[i].style.display = "block";
+              btn.innerHTML= "Hide Paid Transactions";
+            }
+          }
+          else{
+            if(auth == "Balance: 0.0 €"){  
+              x[i].style.display = "none";
+              btn.innerHTML= "Show All Transactions";
+            }
+          }
+        }
+      }
+    }
+  });
+  </script>
+</div>
 {% endblock content %}
 {%block side %}
 <div id="sidebar" class="col-md-4">
