@@ -1,12 +1,15 @@
 {% extends "applostickes/base.html" %}
 {% block content %}
-<nav aria-label="breadcrumb">
-  <ol class="breadcrumb">
-    <li class="breadcrumb-item"><a href="{% url 'group' groupName=debt.0 group_identifier=debt.1 %}">{{ debt.0 }}</a>
-    </li>
-    <li class="breadcrumb-item active" aria-current="page">{{ debt.2 }}</li>
-  </ol>
-</nav>
+<div class="col">
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="{% url 'group' groupName=debt.0 group_identifier=debt.1 %}">{{ debt.0 }}</a>
+      </li>
+      <li class="breadcrumb-item active" aria-current="page">{{ debt.2 }}</li>
+    </ol>
+  </nav>
+</div>
+
 <div class="col">
   {% if debt.5 > 0 %}
   <article class="media content-section col-md-12" style="background-color: rgb(253, 193, 182);">
@@ -75,9 +78,9 @@
         <div class="col col-md-9 text-center">
           {% for responsible in element.1 %}
           {% if forloop.last %}
-          <span class="text-muted">{{ responsible }}</span>
+          <span name="val">{{ responsible }}</span>
           {% else %}
-          <span class="text-muted">{{ responsible }}, </span>
+          <span name="val">{{ responsible }}, </span>
           {% endif %}
           {% endfor %}
         </div>
@@ -89,6 +92,22 @@
     </div>
   </article>
 </div>
+<script>
+  var s = document.getElementsByName("val");
+  for(var i = 0; i < s.length; i++){
+    var f = s[i].innerText;
+    if(f.includes("OWNER")){
+      s[i].style.color = "#7D7D7D";
+    }
+    else if(f.includes("OWS")){
+      s[i].style.color = "red";
+    }
+    else
+      s[i].style.color = "green";
+    console.log(f);
+  }
+  
+</script>
 {% endblock %}
 {% block side %}
 <div id="sidebar" class="col-md-4">

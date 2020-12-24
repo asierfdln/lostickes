@@ -136,14 +136,14 @@
   </br>
   <ul style="list-style: none; justify-content: left;">
     <label for="el">New Element: 
-      <input v-model="newElement" id="el" type="text" placeholder="Add product">
+      <input v-model="newElement" id="el" type="text" placeholder="Add product">  <!-- elemento de la data de Vue -->
     </label>
     <label for="pr">Price: 
-      <input v-model="newPrice" id="pr" type="text" placeholder="Add price" @keyup.enter="saveElement">
+      <input v-model="newPrice" id="pr" type="text" placeholder="Add price"> <!-- elemento de la data de Vue -->
     </label>
-    <button type="button" id="botonDeAdd" @click="saveElement">Add</button>
+    <button type="button" id="botonDeAdd" @click="saveElement">Add</button> <!-- al hacer click en botón se envia el nuevo elemento a la lista -->
   </ul>
-  
+  <div id="elements-alerts2"></div>
   
   </br>
   <input type="button" value="Cancel" onclick="history.back()" class="btn btn-secondary" />
@@ -217,22 +217,56 @@
       },
       methods: {
         saveElement: function () {
-          if (this.newElement == (this.newElement.length == 0)) {
-            
+          if (this.newElement.trim() == "") {
+            $("#elements-alerts2").empty();
+            $("#elements-alerts2").prepend(
+              '<div id="div-alert" class="alert alert-danger">' +
+                '<span style="color: red;">' +
+                  '<ul class="errorlist">' +
+                    '<li>' +
+                      'You must input an item name.' +
+                    '</li>' +
+                  '</ul>' +
+                '</span>' +
+              '</div>'
+            );
           }
           else {
             if (this.newPrice == (this.newPrice.length == 0)) {
-            // mensaje de error tipo alerta
+              $("#elements-alerts2").empty();
+                $("#elements-alerts2").prepend(
+                  '<div id="div-alert" class="alert alert-danger">' +
+                    '<span style="color: red;">' +
+                      '<ul class="errorlist">' +
+                        '<li>' +
+                          'You must input a number in the price.' +
+                        '</li>' +
+                      '</ul>' +
+                    '</span>' +
+                  '</div>'
+                );
             }
             else {
               this.newPrice = parseFloat(this.newPrice);
               if (isNaN(this.newPrice) || this.newPrice <= 0.009) {
-                // mensaje de error tipo alerta
+                $("#elements-alerts2").empty();
+                $("#elements-alerts2").prepend(
+                  '<div id="div-alert" class="alert alert-danger">' +
+                    '<span style="color: red;">' +
+                      '<ul class="errorlist">' +
+                        '<li>' +
+                          'You must input a valid number in the price.' +
+                        '</li>' +
+                      '</ul>' +
+                    '</span>' +
+                  '</div>'
+                );
               }
               else {
                 this.newElement = ' ' + this.newElement + ' - ' + this.newPrice + ' €';
                 this.elements.push(this.newElement);
                 this.newElement = "";
+                $("#elements-alerts2").empty();
               }
             }
           }
