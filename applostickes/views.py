@@ -201,6 +201,8 @@ def createGroup(request):
     if user_to_work_with is None:
         user_to_work_with = User.objects.get(django_user__username=request.user.username)
 
+    applostickes.user_primkey_exclude = user_to_work_with.primkey
+
     context = {}
 
     form = UserGroupForm(request.POST or None)

@@ -100,6 +100,10 @@ class UserGroupForm(forms.ModelForm):
         model = UserGroup
         fields = '__all__'
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['users'].queryset = User.objects.exclude(primkey=applostickes.user_primkey_exclude)
+
 
 class Element(models.Model):
 

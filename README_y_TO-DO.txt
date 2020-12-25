@@ -36,9 +36,6 @@ html <select> para usuarios del usergroup
 
 mirar shit de que no puedes en jquery dejar alimentos clickados y sin usuarios
 
-cambiar usergroupform para que siempre lleve el user loggeado... (quitar del queryset de usuarios 
-el usuario loggeado de ahora...)
-
 -> mover js's a static...
 -> piechart con info de balances justo debajo del cosobox este que flota de irache (d3.js????????)
 
