@@ -243,17 +243,17 @@ class Transaction(models.Model):
                 # en los que esta involucrado para ver cuanto debe...
                 self.payers_elements_mapping[payer.primkey] = 0
 
+                # si todavia nohemos encontrado al que paga...
+                if self.payer_responsible_primkey is None:
+
+                    # ...y resulta que su numero es el del usuario pagador al principio de mapping...
+                    if str(payer_counter) == self.mapping.split("-")[0]:
+
+                        # hemos encontrado nuestro pagador
+                        self.payer_responsible_primkey = payer.primkey
+
                 # en todos los productos de la transaccion...
                 for product in self.elements.all():
-
-                    # si todavia nohemos encontrado al wn que paga...
-                    if self.payer_responsible_primkey is None:
-
-                        # ...y resulta que su numero es el del usuario pagador al principio de mapping...
-                        if str(payer_counter) == self.mapping.split("-")[0]:
-
-                            # hemos encontrado nuestro pagador
-                            self.payer_responsible_primkey = payer.primkey
 
                     # si el usuario en el que estamos esta registrado en el elemento del bucle for...
                     if str(payer_counter) in self.mapping.split("-")[1].split(";")[element_counter]:
