@@ -43,6 +43,9 @@ necesidad de logearse...
 --------------------------------------------- asier ----------------------------------------------
 --------------------------------------------------------------------------------------------------
 
+mirar esto de fieldset para las forms a ver si ambia algo... (mirar register.html)
+lo mismo con lo del outline de los botones
+
 -> comentar los formatos de contexts...
 -> mover js's a static...
 -> logins y usuarios (mirar video de logins de coreyschafer)

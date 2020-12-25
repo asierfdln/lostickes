@@ -1,0 +1,24 @@
+{% extends "applostickes/base.html" %}
+{% block content %}
+<div class="col">
+  <form method="POST">
+    {% csrf_token %}
+    <fieldset class="form-group">
+      <legend class="">Join Today!</legend>
+      {{ form.as_p }}
+    </fieldset>
+    <div class="form group">
+      <button class="btn btn-outline-info" type="submit">Sign Up</button>
+    </div>
+  </form>
+  <br />
+  <div class="border-top pt3">
+    <small class="text-muted">
+      Already have and account?
+      <a href="#">
+        Log In
+      </a>
+    </small>
+  </div>
+</div>
+{% endblock content %}

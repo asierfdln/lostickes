@@ -1,0 +1,31 @@
+{% extends "applostickes/base.html" %}
+{% block content %}
+<div class="col">
+  <form method="POST">
+    {% csrf_token %}
+    <fieldset class="form-group">
+      <legend class="">Hey there!</legend>
+      {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}">
+          {{ message }}
+        </div>
+        {% endfor %}
+      {% endif %}
+      {{ form.as_p }}
+    </fieldset>
+    <div class="form group">
+      <button class="btn btn-outline-info" type="submit">Log In</button>
+    </div>
+  </form>
+  <br />
+  <div class="border-top pt3">
+    <small class="text-muted">
+      Don't have an account?
+      <a href="#">
+        Sign Up
+      </a>
+    </small>
+  </div>
+</div>
+{% endblock content %}

@@ -1,10 +1,10 @@
-from django.shortcuts import render
-from django.http import HttpResponseRedirect
 from django import forms
-from .models import UserGroupForm, TransactionForm
+from django.contrib import messages
+from django.http import HttpResponseRedirect
+from django.shortcuts import render, redirect
+from .models import UserForm, UserGroupForm, TransactionForm
 from .models import User, UserGroup, Transaction, Element
 import applostickes
-from pprint import pprint
 
 
 userpks = {
@@ -19,6 +19,29 @@ user_to_work_with = None
 
 def about(request):
     return render(request, 'applostickes/about.html', {'title': 'About'})
+
+
+def register(request):
+
+    context = {}
+
+    form = UserForm(request.POST or None)
+
+    if form.is_valid():
+        form.save()
+        messages.success(request, 'Mumien chico')
+        return HttpResponseRedirect('/login/')
+
+    context['form'] = form
+
+    return render(request, 'applostickes/register.html', context)
+
+
+def login(request):
+
+    context = {}
+
+    return render(request, 'applostickes/login.html', context)
 
 
 def main(request):
