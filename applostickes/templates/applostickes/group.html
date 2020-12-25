@@ -73,11 +73,11 @@
 {% endif %}
 <a class="article-title" role="button" href="{% url 'debt' debtName=transaction.0 transaction_identifier=transaction.5 %}">
     {% if transaction.3 > 0 %}
-      <article style="background-color: rgb(253, 193, 182);" class="media content-section col-md-12">
+      <article style="background-color: #f8d7da;" class="media content-section col-md-12">
     {% elif transaction.3 == 0 %}
       <article class="media content-section col-md-12">
     {% else %}
-     <article style="background-color: rgb(217, 248, 170);" class="media content-section col-md-12">
+     <article style="background-color: #d4edda;" class="media content-section col-md-12">
     {% endif %}
       <div class="media-body">
         <div class="article-metadata border-bottom border-dark">
