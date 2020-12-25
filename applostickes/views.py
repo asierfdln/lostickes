@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib import messages
-# from django.contrib.auth.views import 
+from django.contrib.auth import logout
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from .models import UserForm, UserGroupForm, TransactionForm
@@ -8,12 +9,12 @@ from .models import User, UserGroup, Transaction, Element
 import applostickes
 
 
-userpks = {
-    'user1': '7a8ae656-8b99-469d-a2b7-86774262b155',
-    'user2': 'a80b2c81-0453-4acd-b5b5-26ae5b3ab16a',
-    'user3': '85dbf8ed-98c7-477f-a396-9ff9d6b6a030',
-    'user4': 'f7225a3d-7b47-4b43-b177-59cbb499958d',
-}
+usernames = [
+    'user0', # jeje1234
+    'user1', # jejejojo1234
+    'user2', # jeje1234
+    'user3', # jeje1234
+]
 
 user_to_work_with = None
 
@@ -42,7 +43,7 @@ def register(request):
         # lo guardamos en base de datos
         user_modelonuestro.save()
         # cargamos un mensajito para la siguiente pagina
-        messages.success(request, 'Mumien chico')
+        messages.success(request, "User signed up, let's try it out...")
         # nos vamos a login
         return redirect('login')
 
@@ -50,31 +51,33 @@ def register(request):
 
     return render(request, 'applostickes/register.html', context)
 
+def logout_view(request):
 
-def login(request):
+    # cerramos sesion del usuario
+    logout(request)
+    #cargamos un mensaje para la siguiente view
+    messages.success(request, 'You have been logged out, see ya soon!')
+    # redirigimos a main
+    return redirect('main')
 
-    context = {}
 
-    return render(request, 'applostickes/login.html', context)
-
-
+@login_required
 def user(request):
 
     global user_to_work_with
 
-    user_to_work_with = User.objects.get(primkey=userpks['user2'])
+    user_to_work_with = User.objects.get(django_user__username=usernames[1])
 
     context = {}
 
-    # los grupos que vemos en l apagina son todos en los que el usuario esta metido
+    # los grupos que vemos en la apagina son todos en los que el usuario esta metido
     groups_to_display = user_to_work_with.usergroup_set.all()
     context['groups'] = {}
 
     # metemos el balance de grupo del usuario para que se vea
     for group in groups_to_display:
         group_balance = group.user_balance(user_pk=user_to_work_with.primkey)
-        if group_balance != 0:
-            context['groups'][group.name] = group_balance
+        context['groups'][group.name] = group_balance
 
     # cogemos todas las transacciones en las que esta involucrado el usuario
     transactions_to_display = user_to_work_with.transaction_set.all()
@@ -88,11 +91,12 @@ def user(request):
 
     context['title'] = 'User'
     context['nameClass'] = 'User'
-    context['username'] = user_to_work_with.name
+    context['username'] = user_to_work_with.django_user.username
 
     return render(request, 'applostickes/user.html', context)
 
 
+@login_required
 def groups(request):
 
     global user_to_work_with
@@ -132,11 +136,12 @@ def groups(request):
 
     context['title'] = 'Groups'
     context['nameClass'] = 'Groups'
-    context['username'] = user_to_work_with.name
+    context['username'] = user_to_work_with.django_user.username
 
     return render(request, 'applostickes/groups.html', context)
 
 
+@login_required
 def debts(request):
 
     global user_to_work_with
@@ -166,7 +171,7 @@ def debts(request):
 
         # cogemos a cada usuario y su rol en la transaccion (estado si es que ha pagado...)
         for payer in transaction.payers.all():
-            payer_name = payer.name
+            payer_name = payer.django_user.username
             if transaction.get_score_role(payer.primkey) == 'OWNER':
                 payer_name = payer_name + ' (OWNER)'
             elif transaction.get_score_role(payer.primkey) == 'DEBTER':
@@ -179,11 +184,12 @@ def debts(request):
 
     context['title'] = 'Debts'
     context['nameClass'] = 'Debts'
-    context['username'] = user_to_work_with.name
+    context['username'] = user_to_work_with.django_user.username
 
     return render(request, 'applostickes/debts.html', context)
 
 
+@login_required
 def createGroup(request):
 
     global user_to_work_with
@@ -199,11 +205,12 @@ def createGroup(request):
     context['form'] = form
     context['title'] = 'Create group'
     context['nameClass'] = 'Create group'
-    context['username'] = user_to_work_with.name
+    context['username'] = user_to_work_with.django_user.username
 
     return render(request, 'applostickes/createGroup.html', context)
 
 
+@login_required
 def group(request, groupName, group_identifier):
 
     global user_to_work_with
@@ -236,7 +243,7 @@ def group(request, groupName, group_identifier):
 
         # cogemos a cada usuario y su rol en la transaccion (estado si es que ha pagado...)
         for payer in transaction.payers.all():
-            payer_name = payer.name
+            payer_name = payer.django_user.username
             if transaction.get_score_role(payer.primkey) == 'OWNER':
                 payer_name = payer_name + ' (OWNER)'
             elif transaction.get_score_role(payer.primkey) == 'DEBTER':
@@ -261,11 +268,12 @@ def group(request, groupName, group_identifier):
 
     context['title'] = 'Group'
     context['nameClass'] = 'Group'
-    context['username'] = user_to_work_with.name
+    context['username'] = user_to_work_with.django_user.username
 
     return render(request, 'applostickes/group.html', context)
 
 
+@login_required
 def createDebt(request):
 
     global user_to_work_with
@@ -292,7 +300,7 @@ def createDebt(request):
 
     contador = 1
     for people in peoples_paying:
-        lista_peoples.append([people.primkey, f'persona_{contador}', people.name])
+        lista_peoples.append([people.primkey, f'persona_{contador}', people.django_user.username])
         contador = contador + 1
 
     context['lista_peoples'] = lista_peoples
@@ -452,11 +460,12 @@ def createDebt(request):
     context['form'] = form
     context['title'] = 'Create group'
     context['nameClass'] = 'Create group'
-    context['username'] = user_to_work_with.name
+    context['username'] = user_to_work_with.django_user.username
 
     return render(request, 'applostickes/createDebt.html', context)
 
 
+@login_required
 def debt(request, debtName, transaction_identifier):
 
     global user_to_work_with
@@ -482,9 +491,9 @@ def debt(request, debtName, transaction_identifier):
 
     # cogemos a cada usuario y su rol en la transaccion (estado si es que ha pagado...)
     for payer in transaction_to_display.payers.all():
-        payer_name = payer.name
+        payer_name = payer.django_user.username
         if transaction_to_display.get_score_role(payer.primkey) == 'OWNER':
-            if payer_name == user_to_work_with.name:
+            if payer_name == user_to_work_with.django_user.username:
                 context['debt'][8] = 1 # el usuario es el OWNER de la deuda
             payer_name = payer_name + ' (OWNER)'
         elif transaction_to_display.get_score_role(payer.primkey) == 'DEBTER':
@@ -519,11 +528,12 @@ def debt(request, debtName, transaction_identifier):
 
     context['title'] = 'Debt'
     context['nameClass'] = 'Debt'
-    context['username'] = user_to_work_with.name
+    context['username'] = user_to_work_with.django_user.username
 
     return render(request, 'applostickes/debt.html', context)
 
 
+@login_required
 def pay_debt(request, debt_identifier):
 
     global user_to_work_with

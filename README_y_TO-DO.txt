@@ -1,6 +1,13 @@
 Widget rápido de prueba en la página principal para hacer cuentas rápidas sin
 necesidad de logearse...
 
+usernames = [
+    'user0', # jeje1234
+    'user1', # jejejojo1234
+    'user2', # jeje1234
+    'user3', # jeje1234
+]
+
 --------------------------------------------------------------------------------------------------
 --------------------------------------------------------------------------------------------------
 --------------------------------------------------------------------------------------------------
@@ -22,6 +29,7 @@ colorcico de la navbar el mismo que el del boton de signup
 --------------------------------------------------------------------------------------------------
 
 redirect('login', argumentos...)
+cambiar usergroupform para que siempre lleve el user loggeado... (quitar del queryset de usuarios al de ahora...)
 mirar esto de fieldset para las forms a ver si ambia algo... (mirar register.html)
 lo mismo con lo del outline de los botones
 

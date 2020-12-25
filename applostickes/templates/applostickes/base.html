@@ -31,7 +31,7 @@
     <header class="site-header">
       <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
         <div class="container">
-          {% if nameClass %}
+          {% if user.is_authenticated %}
           <img src="{% static 'applostickes/dollar-rotation-icon.ico' %}" width="50" height="50"
             class="d-inline-block align-top mr-4" alt="">
           <a class="navbar-brand mr-4" href="{% url 'user' %}">Tickount</a>
@@ -60,8 +60,7 @@
                   {{ username }}
                 </button>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                  <a class="dropdown-item" href="#">Profile</a>
-                  <a class="dropdown-item" href="{% url 'main' %}">Log out</a>
+                  <a class="dropdown-item" href="{% url 'logout' %}">Log out</a>
                 </div>
               </div>
             </div>
@@ -80,8 +79,8 @@
             </div>
             <!-- Navbar Right Side -->
             <div class="navbar-nav">
-              <a class="nav-item nav-link" href="{% url 'user' %}">Login</a>
-              <a class="nav-item nav-link" href="{% url 'user' %}">Register</a>
+              <a class="nav-item nav-link" href="{% url 'login' %}">Log In</a>
+              <a class="nav-item nav-link" href="{% url 'register' %}">Register</a>
             </div>
           </div>
           {% endif %}
