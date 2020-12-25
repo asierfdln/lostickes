@@ -1,5 +1,6 @@
 from django import forms
 from django.contrib import messages
+# from django.contrib.auth.views import 
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from .models import UserForm, UserGroupForm, TransactionForm
@@ -19,6 +20,10 @@ user_to_work_with = None
 
 def about(request):
     return render(request, 'applostickes/about.html', {'title': 'About'})
+
+
+def main(request):
+    return render(request, 'applostickes/main.html', {'title': 'Main'})
 
 
 def register(request):
@@ -51,10 +56,6 @@ def login(request):
     context = {}
 
     return render(request, 'applostickes/login.html', context)
-
-
-def main(request):
-    return render(request, 'applostickes/main.html', {'title': 'Main'})
 
 
 def user(request):

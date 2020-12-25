@@ -42,9 +42,6 @@ class UserForm(UserCreationForm):
         ]
 
 
-
-
-
 class UserGroup(models.Model):
 
     name = models.CharField(max_length=55, blank=False)

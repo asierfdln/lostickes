@@ -14,30 +14,8 @@ necesidad de logearse...
 --------------------------------------------- iraxe ----------------------------------------------
 --------------------------------------------------------------------------------------------------
 
-@iraxe mensajitos en inputs de createDebt
-
-@iraxe deberiamos poder ver / no ver las transacciones pagadas
-    QUE SE OCULTEN CON VUEeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
-    habria que implementarlo en "debts" y en "group"
-
-@iraxe comentar un poco el codigo de vue para la posteridad porsiaca
-
-@iraxe checkboxes de delete transactions (que sea tipo mark_aspayed() y que desaparezcan?)
-
-    (1) que el boton primero tenga el texto de "seleccionar transactions"
-    (2) click
-    (3) cambiar el texto del boton a delete transactions
-    (4) que salgan los checkboxes
-    (5) (seleccionas por lo menos uno para poder hacer lo de eliminar)
-    (6) que el boton tenga una view.func con solo codigo de eliminar de
-        base de datos las transacciones y te redirija a group/
-
-    (7*) idealmente, que solo el owner de las transacciones pueda borrar las transacciones...
-
-@iraxe colores en funcion de PAYED - OWNER - OWS...
-
-@iraxe que la columna del medio en las vistas de "debt" se ajuste al texto (se ve mal lo de PAYED, OWS, OWNER)...
-
+i18n
+colorcico de la navbar el mismo que el del boton de signup
 
 --------------------------------------------------------------------------------------------------
 --------------------------------------------- asier ----------------------------------------------
