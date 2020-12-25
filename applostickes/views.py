@@ -2,19 +2,12 @@ from django import forms
 from django.contrib import messages
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from .models import UserForm, UserGroupForm, TransactionForm
 from .models import User, UserGroup, Transaction, Element
 import applostickes
+from pprint import pprint
 
-
-usernames = [
-    'user0', # jeje1234
-    'user1', # jejejojo1234
-    'user2', # jeje1234
-    'user3', # jeje1234
-]
 
 user_to_work_with = None
 
@@ -53,6 +46,10 @@ def register(request):
 
 def logout_view(request):
 
+    global user_to_work_with
+
+    user_to_work_with = None
+
     # cerramos sesion del usuario
     logout(request)
     #cargamos un mensaje para la siguiente view
@@ -66,7 +63,8 @@ def user(request):
 
     global user_to_work_with
 
-    user_to_work_with = User.objects.get(django_user__username=usernames[1])
+    if user_to_work_with is None:
+        user_to_work_with = User.objects.get(django_user__username=request.user.username)
 
     context = {}
 
@@ -100,6 +98,9 @@ def user(request):
 def groups(request):
 
     global user_to_work_with
+
+    if user_to_work_with is None:
+        user_to_work_with = User.objects.get(django_user__username=request.user.username)
 
     # marcamos que hemos entrado en la vista de groups para luego utilizar esto en la vista de debt...
     applostickes.debts_or_group_enter_point_to_debt_0_or_1 = 1
@@ -145,6 +146,9 @@ def groups(request):
 def debts(request):
 
     global user_to_work_with
+
+    if user_to_work_with is None:
+        user_to_work_with = User.objects.get(django_user__username=request.user.username)
 
     # marcamos que hemos entrado en la vista de debts para luego utilizar esto en la vista de debt...
     applostickes.debts_or_group_enter_point_to_debt_0_or_1 = 0
@@ -194,13 +198,16 @@ def createGroup(request):
 
     global user_to_work_with
 
+    if user_to_work_with is None:
+        user_to_work_with = User.objects.get(django_user__username=request.user.username)
+
     context = {}
 
     form = UserGroupForm(request.POST or None)
 
     if form.is_valid():
         form.save()
-        return HttpResponseRedirect('/groups/')
+        return redirect('groups')
 
     context['form'] = form
     context['title'] = 'Create group'
@@ -215,6 +222,10 @@ def group(request, groupName, group_identifier):
 
     global user_to_work_with
 
+    if user_to_work_with is None:
+        user_to_work_with = User.objects.get(django_user__username=request.user.username)
+
+    # indicamos que venimos desde la vista de group para cuando le demos a pagar deuda...
     applostickes.from_group_view_url_string = f'{groupName}-{group_identifier}'
 
     context = {}
@@ -278,14 +289,12 @@ def createDebt(request):
 
     global user_to_work_with
 
+    if user_to_work_with is None:
+        user_to_work_with = User.objects.get(django_user__username=request.user.username)
+
     context = {}
 
     lista_peoples = []
-
-    # if request.method != 'POST': # ESTE IF LLEGARIA HASTA LA LINEA DE 'context['lista_peoples'] = lista_peoples'
-                                   # La razon por la que siempre cargamos la lista esta de peoples es que, si cometemos
-                                   # algun fallo en el formulario y salta un ValidationError, tenemos que tener la lista
-                                   # esa a mano...
 
     usergroup_tofilterwith = UserGroup.objects.filter(
         primkey__contains=applostickes.from_group_view_url_string.split('-')[1]
@@ -455,12 +464,14 @@ def createDebt(request):
             # save() para guardar los atributos de mapping y score_settling en tabla de DB
             transaction_to_modify.save()
 
-            return HttpResponseRedirect(f'/group/{applostickes.from_group_view_url_string}')
+            return redirect('debt', transaction_to_modify.name, transaction_to_modify.get_tridentifier())
 
     context['form'] = form
-    context['title'] = 'Create group'
-    context['nameClass'] = 'Create group'
+    context['title'] = 'Create debt'
+    context['nameClass'] = 'Create debt'
     context['username'] = user_to_work_with.django_user.username
+    context['group_name'] = applostickes.from_group_view_url_string.split('-')[0]
+    context['groupIdentifier'] = applostickes.from_group_view_url_string.split('-')[1]
 
     return render(request, 'applostickes/createDebt.html', context)
 
@@ -469,6 +480,9 @@ def createDebt(request):
 def debt(request, debtName, transaction_identifier):
 
     global user_to_work_with
+
+    if user_to_work_with is None:
+        user_to_work_with = User.objects.get(django_user__username=request.user.username)
 
     context = {}
 
@@ -538,6 +552,9 @@ def pay_debt(request, debt_identifier):
 
     global user_to_work_with
 
+    if user_to_work_with is None:
+        user_to_work_with = User.objects.get(django_user__username=request.user.username)
+
     # cogemos la transaccion que queremos pagar/marcar como pagada...
     transaction_to_work_with = Transaction.objects.get(primkey__contains=debt_identifier)
 
@@ -553,8 +570,10 @@ def pay_debt(request, debt_identifier):
 
     # si hemos venido desde debts
     if applostickes.debts_or_group_enter_point_to_debt_0_or_1 == 0:
-        return HttpResponseRedirect('/debts/')
+        return redirect('debts')
 
     # si hemos venido desde group
     elif applostickes.debts_or_group_enter_point_to_debt_0_or_1 == 1:
-        return HttpResponseRedirect(f'/group/{applostickes.from_group_view_url_string}')
+        group_name = applostickes.from_group_view_url_string.split('-')[0]
+        group_identifier = applostickes.from_group_view_url_string.split('-')[1]
+        return redirect('group', group_name, group_identifier)

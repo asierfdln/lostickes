@@ -1,14 +1,9 @@
 {% extends "applostickes/base.html" %}
+{% load crispy_forms_tags %}
 {% block content %}
 <form method="POST">
   {% csrf_token %}
-  {% for field in form %}
-  {{ field.label_tag }}<br />
-  {{ field }}<br />
-  {% if field.help_text %}
-  {{ field.help_text|safe }}<br /><br />
-  {% endif %}
-  {% endfor %}
+  {{ form | crispy }}
   <input type="submit" value="Cancel" onclick="history.back()" />
   <input type="submit" value="Submit" />
 </form>

@@ -21,36 +21,33 @@ usernames = [
 --------------------------------------------- iraxe ----------------------------------------------
 --------------------------------------------------------------------------------------------------
 
-i18n
+que se vea primero las deudas en las que debes/tedeben pasta y tengas que clickar en el boton para
+que se vean
+
+el verde de las deudas que sea el verde de los alert de bootstrap
+
+el rojo de las deudas que sea el rojo de los alert de bootstrap
+
 colorcico de la navbar el mismo que el del boton de signup
+
+i18n
+--> help texts fuera...
+
+html <select> para usuarios del usergroup
 
 --------------------------------------------------------------------------------------------------
 --------------------------------------------- asier ----------------------------------------------
 --------------------------------------------------------------------------------------------------
 
-redirect('login', argumentos...)
-cambiar usergroupform para que siempre lleve el user loggeado... (quitar del queryset de usuarios al de ahora...)
-mirar esto de fieldset para las forms a ver si ambia algo... (mirar register.html)
-lo mismo con lo del outline de los botones
+mirar lo de que se actualice lo que te deben a medida qe van pagando las peoples...
 
--> comentar los formatos de contexts...
+mirar shit de que no puedes en jquery dejar alimentos clickados y sin usuarios
+
+cambiar usergroupform para que siempre lleve el user loggeado... (quitar del queryset de usuarios 
+el usuario loggeado de ahora...)
+
 -> mover js's a static...
--> logins y usuarios (mirar video de logins de coreyschafer)
--> message forms (mirar video de logins de coreyschafer)
 -> piechart con info de balances justo debajo del cosobox este que flota de irache (d3.js????????)
-
--> i18n
---> help texts fuera...
-
--> html <select> para usuarios...
 
 -> modify debt, de clickar en una propia transaccion desde la vista de deuda y que te lleve a 
    una vista de eliminacion de campos
-
--> checkear que no te han jodido con mangling de datos con get_object_or_404()
-
--> try-except en form.isvalid() para salir en cuanto "todo_bien = False"
-
-    con clases de Exception tipo
-    class ExceptionPayerNoEnTransaccion(Exception):
-        pass
