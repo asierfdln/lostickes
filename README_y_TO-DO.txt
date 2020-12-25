@@ -39,7 +39,11 @@ html <select> para usuarios del usergroup
 --------------------------------------------- asier ----------------------------------------------
 --------------------------------------------------------------------------------------------------
 
-mirar lo de que se actualice lo que te deben a medida qe van pagando las peoples...
+mirar lo de self.payer_responsible_primkey...
+
+mensaje de pagar encima del boton de crear deuda
+
+cambiar boton de crear deuda??
 
 mirar shit de que no puedes en jquery dejar alimentos clickados y sin usuarios
 

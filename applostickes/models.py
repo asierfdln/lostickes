@@ -6,7 +6,6 @@ from django.contrib.auth.models import User as DjangoUser
 from django.core import validators as vals
 from django.db import models
 from picklefield.fields import PickledObjectField
-
 import applostickes
 
 # Create your models here.
@@ -135,18 +134,35 @@ class Transaction(models.Model):
 
     primkey = models.UUIDField(primary_key=True, editable=False, default=uuid.uuid4)
 
-    user_group = models.ForeignKey(UserGroup, blank=False, on_delete=models.CASCADE, help_text="Grupo al cual pertenence la transaccion.")
-    payers = models.ManyToManyField(User, blank=False, help_text="Usuarios entre los que pagar la transaccion.")
-    elements = models.ManyToManyField(Element, blank=False, help_text="Introduce elementos de la transaccion.")
+    user_group = models.ForeignKey(
+        UserGroup,
+        blank=False,
+        on_delete=models.CASCADE,
+        help_text="Grupo al cual pertenence la transaccion."
+    )
+    payers = models.ManyToManyField(
+        User,
+        blank=False,
+        help_text="Usuarios entre los que pagar la transaccion."
+    )
+    elements = models.ManyToManyField(
+        Element,
+        blank=False,
+        help_text="Introduce elementos de la transaccion."
+    )
 
-    # 1,2;3,4 --> el producto1 es compartido por los payers 1 y 2, el producto2 es compartido por los payers 3 y 4...
-    mapping = models.CharField(max_length=280, blank=False, help_text="Para definir que paga cada usuario seguir el siguiente formato: 1,2;2,3,4. ; por cada producto. , por cada usuario responsable.")
+    mapping = models.CharField(
+        max_length=280,
+        blank=False,
+        help_text="Para definir que paga cada usuario seguir el siguiente formato: 1,2;2,3,4. ; por cada producto. , por cada usuario responsable."
+    )
 
     score_settling_mapping = PickledObjectField(default=dict)
 
     preciototal = None
-    payers_elements_mapping = None
     tridentifier = None
+    payers_elements_mapping = None
+    payer_responsible_primkey = None
 
     def generate_score_settling_mapping(self):
 
@@ -203,31 +219,63 @@ class Transaction(models.Model):
 
         return self.preciototal
 
-    def accounts(self):
+    def accounts(self, i_have_payed_and_here_is_my_primkey=None):
+
         if self.payers_elements_mapping == None:
 
-            # calculamos lo que tiene que pagar cada payer (el que paga tb)
+            #################################################################
+            # calculamos lo que tiene que pagar cada payer (el que paga tb) #
+            #################################################################
+
+            # contador de usuarios en el string de mapping (arrays empiezan en 1)
             payer_counter = 1
-            payer_responsible_primkey = None
+
+            # iniciamos el diccionario de mappin vacio
             self.payers_elements_mapping = {}
+
+            # en todos los payers de la transaccion...
             for payer in self.payers.all():
+
+                # empezamos el contador de elementos (arrays empiezan en cero)
                 element_counter = 0
+
+                # precio que tiene que pagar el usuario de momento cero, ahora recorremos los elementos 
+                # en los que esta involucrado para ver cuanto debe...
                 self.payers_elements_mapping[payer.primkey] = 0
+
+                # en todos los productos de la transaccion...
                 for product in self.elements.all():
-                    if payer_responsible_primkey is None:
+
+                    # si todavia nohemos encontrado al wn que paga...
+                    if self.payer_responsible_primkey is None:
+
+                        # ...y resulta que su numero es el del usuario pagador al principio de mapping...
                         if str(payer_counter) == self.mapping.split("-")[0]:
-                            payer_responsible_primkey = payer.primkey
+
+                            # hemos encontrado nuestro pagador
+                            self.payer_responsible_primkey = payer.primkey
+
+                    # si el usuario en el que estamos esta registrado en el elemento del bucle for...
                     if str(payer_counter) in self.mapping.split("-")[1].split(";")[element_counter]:
+
+                        # actualizamos su deuda total con el que ha pagado
                         self.payers_elements_mapping[payer.primkey] = round(self.payers_elements_mapping[payer.primkey], 2) + round(product.price/len(self.mapping.split(";")[element_counter].split(",")), 2)
+                    
+                    # atualizamos el contador de elementos
                     element_counter = element_counter + 1
+
+                # actualizamos el contador de pagadores
                 payer_counter = payer_counter + 1
 
-            # calculamos lo que se le debe al que paga la cuenta
+            ######################################################
+            # calculamos lo que se le debe al que paga la cuenta #
+            ######################################################
+
             lista_payers_quedeben_primkeys = list(self.payers_elements_mapping.keys())
-            lista_payers_quedeben_primkeys.remove(payer_responsible_primkey)
-            self.payers_elements_mapping[payer_responsible_primkey] = 0
+            lista_payers_quedeben_primkeys.remove(self.payer_responsible_primkey)
+            self.payers_elements_mapping[self.payer_responsible_primkey] = 0
             for payer_quedebe_primkey in lista_payers_quedeben_primkeys:
-                self.payers_elements_mapping[payer_responsible_primkey] = round(self.payers_elements_mapping[payer_responsible_primkey], 2) - round(self.payers_elements_mapping[payer_quedebe_primkey], 2)
+                self.payers_elements_mapping[self.payer_responsible_primkey] = round(self.payers_elements_mapping[self.payer_responsible_primkey], 2) - round(self.payers_elements_mapping[payer_quedebe_primkey], 2)
 
         return self.payers_elements_mapping
 
@@ -238,7 +286,14 @@ class Transaction(models.Model):
         if self.get_score_state(user_pk) == 'PAYED':
             return 0
         elif self.get_score_state(user_pk) == 'NOTPAYED':
-            return self.payers_elements_mapping[user_pk]
+            if self.get_score_role(user_pk) == 'DEBTER':
+                return self.payers_elements_mapping[user_pk]
+            elif self.get_score_role(user_pk) == 'OWNER':
+                owner_balance = self.payers_elements_mapping[user_pk]
+                for key in self.score_settling_mapping.keys():
+                    if self.get_score_state(key) == 'PAYED' and self.get_score_role(key) == 'DEBTER':
+                        owner_balance = owner_balance + self.payers_elements_mapping[key]
+                return owner_balance
         else:
             return self.payers_elements_mapping[user_pk]
 
