@@ -25,12 +25,21 @@ def register(request):
 
     context = {}
 
+    # creamos el formulario
     form = UserForm(request.POST or None)
 
+    # si el formulario lleva una request de tipo POST y la info es valida
     if form.is_valid():
-        form.save()
+        # creamos el objeto de DjangoUser
+        django_user_creadoahora = form.save()
+        # creamos un usuario de nuestro modelo de datos
+        user_modelonuestro = User(django_user=django_user_creadoahora)
+        # lo guardamos en base de datos
+        user_modelonuestro.save()
+        # cargamos un mensajito para la siguiente pagina
         messages.success(request, 'Mumien chico')
-        return HttpResponseRedirect('/login/')
+        # nos vamos a login
+        return redirect('login')
 
     context['form'] = form
 

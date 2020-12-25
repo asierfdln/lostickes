@@ -1,8 +1,10 @@
 # import string, random, hashlib
 import uuid
-from django.db import models
 from django import forms
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User as DjangoUser
 from django.core import validators as vals
+from django.db import models
 from picklefield.fields import PickledObjectField
 
 import applostickes
@@ -12,30 +14,9 @@ import applostickes
 
 class User(models.Model):
 
-    name = models.CharField(max_length=55, blank=False)
-    email = models.EmailField(max_length=105, unique=True, blank=False)
-
-    # _random_noise = ''.join((random.choice(string.ascii_letters + string.digits) for i in range(10)))
-    # _string_key = f'{_random_noise}' # añadir name y email
-    # _key = hashlib.sha256(bytes(_string_key, 'utf-8')).hexdigest()
-    # primkey = models.UUIDField(primary_key=True, editable=False, default=_key[:16])
+    # ver https://docs.djangoproject.com/en/3.1/topics/auth/customizing/#extending-the-existing-user-model
+    django_user = models.OneToOneField(DjangoUser, on_delete=models.CASCADE, null=True) # null=True == ñapa...
     primkey = models.UUIDField(primary_key=True, editable=False, default=uuid.uuid4)
-
-    """
-        -------------------------------------------------------
-        SOBRE MI CABEZONERIA Y LAS PRIMARY KEYS UNICAS A MANIJA
-        -------------------------------------------------------
-
-        Intentar definir una primkey que dependa de name + email + _random_noise tiene dos problemas:
-            - (1) no puedes acceder al texto de name/email tal y como esta definido ahora mismo porque son 
-                fields que son creados en si al mismo tiempo que el propio valor de primkey...
-            - (2) necesitas que la utilizacion de todas las funciones del modulo de random sean utilizadas
-                dentro del metodo __init__ de la clase, ya que si no todos los objetos de la clase User
-                tendran el mismo _random_noise, cosa que no nos interesa a la hora de generar primkeys unicas.
-                Y, aunque puedas tener _random_noise disponible, tampoco puedes definir un 
-                UUIDField dentro del constructor __init__ porque Django se rompe...
-
-    """
 
     uidentifier = None
 
@@ -46,14 +27,22 @@ class User(models.Model):
         return self.uidentifier
 
     def __str__(self):
-        return self.name
+        return self.django_user.username
 
 
-class UserForm(forms.ModelForm):
+class UserForm(UserCreationForm):
 
     class Meta:
-        model = User
-        fields = '__all__'
+        model = DjangoUser
+        fields = [
+            'username',
+            'email',
+            'password1',
+            'password2',
+        ]
+
+
+
 
 
 class UserGroup(models.Model):

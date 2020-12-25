@@ -43,6 +43,7 @@ necesidad de logearse...
 --------------------------------------------- asier ----------------------------------------------
 --------------------------------------------------------------------------------------------------
 
+redirect('login', argumentos...)
 mirar esto de fieldset para las forms a ver si ambia algo... (mirar register.html)
 lo mismo con lo del outline de los botones
 
