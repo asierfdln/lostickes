@@ -2,11 +2,15 @@
 {% block content %}
 <div id="app">
   <div class="col">
-    <button id="btnShHd" role="button" class="btn btn-outline-info btn-block" @click="hideshow">Hide Paid Transactions</button>
+    <button id="btnShHd" role="button" class="btn btn-outline-info btn-block" @click="hideshow">Show All Transactions</button>
   </div>
 </br>
 {% for trans_name, trans_list in debts.items %}
-<div name="transaccsion" class="col-md-12">
+{% if trans_list.3 == 0 %}
+<div name="transaccsion" style="display: none;" class="col-md-12">
+{% else %}
+<div name="transaccsion" style="display: block;" class="col-md-12">
+{% endif %}
   <a class="article-title" role="button" href="{% url 'debt' debtName=trans_name transaction_identifier=trans_list.5 %}">
   
     {% if trans_list.3 > 0 %}

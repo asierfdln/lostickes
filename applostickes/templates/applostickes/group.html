@@ -47,7 +47,7 @@
   </a>
 </div>
 <div class="col">
-  <button id="btnShHd" role="button" class="btn btn-outline-info btn-block" @click="hideshow">Hide Paid Transactions</button>
+  <button id="btnShHd" role="button" class="btn btn-outline-info btn-block" @click="hideshow">Show All Transactions</button>
 </div>
 </br>
 {% for transaction in group.3 %}
@@ -55,7 +55,11 @@
 <!-- <label for="check">
   <input type="checkbox" id="check">
 </label> -->
-<div id="transaccion" name="transaccsion" class="col-md-12">
+{% if transaction.3 == 0 %}
+<div id="transaccion" style="display: none;" name="transaccsion" class="col-md-12">
+{% else %}
+<div id="transaccion" style="display: block;" name="transaccsion" class="col-md-12">
+{% endif %}
 <a class="article-title" role="button" href="{% url 'debt' debtName=transaction.0 transaction_identifier=transaction.5 %}">
   
     {% if transaction.3 > 0 %}
