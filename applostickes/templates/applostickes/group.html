@@ -28,6 +28,21 @@
     </div>
   </article>
 </div>
+{% if messages %}
+{% for message in messages %}
+<div class="col">
+  <div class="alert alert-{{ message.tags }}">
+    <span style="color: green;">
+      <ul class="errorlist">
+        <li>
+          {{ message }}
+        </li>
+      </ul>
+    </span>
+  </div>
+</div>
+{% endfor %}
+{% endif %}
 <div class="col">
   <a class="article-title" href="{% url 'createDebt' %}">
     <article class="media content-section col">
@@ -49,19 +64,14 @@
 <div class="col">
   <button id="btnShHd" role="button" class="btn btn-outline-info btn-block" @click="hideshow">Show All Transactions</button>
 </div>
-</br>
+<br />
 {% for transaction in group.3 %}
-  
-<!-- <label for="check">
-  <input type="checkbox" id="check">
-</label> -->
 {% if transaction.3 == 0 %}
 <div id="transaccion" style="display: none;" name="transaccsion" class="col-md-12">
 {% else %}
 <div id="transaccion" style="display: block;" name="transaccsion" class="col-md-12">
 {% endif %}
 <a class="article-title" role="button" href="{% url 'debt' debtName=transaction.0 transaction_identifier=transaction.5 %}">
-  
     {% if transaction.3 > 0 %}
       <article style="background-color: rgb(253, 193, 182);" class="media content-section col-md-12">
     {% elif transaction.3 == 0 %}
