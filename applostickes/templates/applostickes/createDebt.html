@@ -1,4 +1,5 @@
 {% extends "applostickes/base.html" %}
+{% load static %}
 {% block content %}
 <form id="app" method="POST">
   {% csrf_token %}
@@ -133,132 +134,24 @@
       </ul>
     </li>
   </ul>
-  </br>
+  <br />
   <ul style="list-style: none; justify-content: left;">
-    <label for="el">New Element: 
-      <input v-model="newElement" id="el" type="text" placeholder="Add product">  <!-- elemento de la data de Vue -->
+    <label for="el">New Element:
+      <input v-model="newElement" id="el" type="text" placeholder="Add product"> <!-- elemento de la data de Vue -->
     </label>
-    <label for="pr">Price: 
+    <label for="pr">Price:
       <input v-model="newPrice" id="pr" type="text" placeholder="Add price"> <!-- elemento de la data de Vue -->
     </label>
-    <button type="button" id="botonDeAdd" @click="saveElement">Add</button> <!-- al hacer click en botón se envia el nuevo elemento a la lista -->
+    <button type="button" id="botonDeAdd" @click="saveElement">Add</button>
+    <!-- al hacer click en botón se envia el nuevo elemento a la lista -->
   </ul>
   <div id="elements-alerts2"></div><br />
-  <a role="button" class="btn btn-outline-secondary mr-2" href="{% url 'group' groupName=group_name group_identifier=groupIdentifier %}">
+  <a role="button" class="btn btn-outline-secondary mr-2"
+    href="{% url 'group' groupName=group_name group_identifier=groupIdentifier %}">
     Cancel
   </a>
-  <input type="submit" value="Submit" id="btnSend" class="btn btn-outline-info"/><br /><br />
-  <script type="text/javascript">
-    $(document).ready(function () {
-      $('#btnSend').click(function (e) {
-
-        var primer_if_trig = 0;
-
-        // miramos que no se nos ha pasado ningun elemento de comida vacio
-
-        // cogemos todos los elementos de comida e iteramos sobre ellos
-        $('input[id^=id_elements_').each(function () {
-          var flag_alguno_checkeado = 0;
-          var numero_de_comida = $(this).prop('id').slice(-1);
-          // si el elemento comida esta checkeado...
-          if ($(this).is(":checked")) {
-            // iteramos por cada una de las personas del elemento comida...
-            $('input[name^=people_paying_element_' + numero_de_comida + ']').each(function () {
-              // si hay alguna persona checkeada, pues lo marcamos...
-              if ($(this).is(":checked")) {
-                flag_alguno_checkeado = 1;
-              }
-            });
-            // si no hay ninguna checkeada...
-            if (flag_alguno_checkeado == 0) {
-              // problemas
-              $("#elements-alerts").empty();
-              $("#elements-alerts").prepend(
-                '<div id="div-alert" class="alert alert-danger">' +
-                  '<span style="color: red;">' +
-                    '<ul class="errorlist">' +
-                      '<li>' +
-                        'Hay elementos sin usuarios checkeados.' +
-                      '</li>' +
-                    '</ul>' +
-                  '</span>' +
-                '</div>'
-              );
-              primer_if_trig = 1;
-              e.preventDefault();
-            }
-          }
-        });
-
-        // miramos que el tema de las personas este bien planteado
-
-        var num_de_users_por_elemento = $("[id^=persona_]").length / $("[id^=id_elements_]").length;
-        var array_users_implicados = [];
-        $('input[id^=persona_]').each(function() {
-          if (!array_users_implicados.includes($(this).val()) && $(this).prop('checked') && !$(this).prop('disabled')) {
-            array_users_implicados.push($(this).val())
-          }
-        });
-        var user_pagador = $('select[id="id_payer"]').val();
-        if (array_users_implicados.length == 1) {
-          if (primer_if_trig > 0) {
-            $("#div-alert").prepend(
-              '<span style="color: red;">' +
-                '<ul class="errorlist">' +
-                  '<li>' +
-                    'No puedes tener un único usuario en la transaccion.' +
-                  '</li>' +
-                '</ul>' +
-              '</span>'
-            );
-          } else {
-            $("#elements-alerts").empty();
-            $("#elements-alerts").prepend(
-              '<div id="div-alert" class="alert alert-danger">' +
-                '<span style="color: red;">' +
-                  '<ul class="errorlist">' +
-                    '<li>' +
-                      'No puedes tener un único usuario en la transaccion.' +
-                    '</li>' +
-                  '</ul>' +
-                '</span>' +
-              '</div>'
-            );
-            primer_if_trig = 1
-            e.preventDefault();
-          }
-        }
-
-        if (!array_users_implicados.includes(user_pagador)) {
-          if (primer_if_trig > 0) {
-            $("#div-alert").prepend(
-              '<span style="color: red;">' +
-                '<ul class="errorlist">' +
-                  '<li>' +
-                    'El pagador no tiene nada en la transaccion.' +
-                  '</li>' +
-                '</ul>' +
-              '</span>'
-            );
-          } else {
-            $("#elements-alerts").empty();
-            $("#elements-alerts").prepend(
-              '<div class="alert alert-danger">' +
-                '<span style="color: red;">' +
-                  '<ul class="errorlist">' +
-                    '<li>' +
-                      'El pagador no tiene nada en la transaccion.' +
-                    '</li>' +
-                  '</ul>' +
-                '</span>' +
-              '</div>'
-            );
-            e.preventDefault();
-          }
-        }
-      });
-    });
-  </script>
+  <input type="submit" value="Submit" id="btnSend" class="btn btn-outline-info" /><br /><br />
+  <script type="text/javascript" src="{% static 'applostickes/btnSendChecks.js' %}"></script>
   <script type="text/javascript">
     new Vue({
       delimiters: ['[[', ']]'],

@@ -19,112 +19,108 @@
   <div class="col">
     <button id="btnShHd" role="button" class="btn btn-outline-info btn-block" @click="hideshow">Show All Transactions</button>
   </div>
-</br>
-{% for trans_name, trans_list in debts.items %}
-{% if trans_list.3 == 0 %}
-<div name="transaccsion" style="display: none;" class="col-md-12">
-{% else %}
-<div name="transaccsion" style="display: block;" class="col-md-12">
-{% endif %}
-  <a class="article-title" role="button" href="{% url 'debt' debtName=trans_name transaction_identifier=trans_list.5 %}">
-    {% if trans_list.3 > 0 %}
-    <article style="background-color: #f8d7da;" class="media content-section col-md-12">
-    {% elif trans_list.3 == 0 %}
-    <article class="media content-section col-md-12">
-    {% else %}
-    <article style="background-color: #d4edda;" class="media content-section col-md-12">
-    {% endif %}
-      <div class="media-body">
-        <div class="article-metadata border-bottom border-dark">
-          <div class="row">
-            <div class="col border-right border-dark">
-              <h4>{{ trans_name }}</h4>
-            </div>
-            <div class="col border-right border-dark">
-              <small class="text-muted">{{ trans_list.0 }}</small>
-            </div>
-            <div class="col">
-              <small class="text-muted">
-                {{ trans_list.1 }}
-              </small>
+  </br>
+  {% for trans_name, trans_list in debts.items %}
+  {% if trans_list.3 == 0 %}
+  <div name="transaccsion" style="display: none;" class="col-md-12">
+  {% else %}
+  <div name="transaccsion" style="display: block;" class="col-md-12">
+  {% endif %}
+    <a class="article-title" role="button" href="{% url 'debt' debtName=trans_name transaction_identifier=trans_list.5 %}">
+      {% if trans_list.3 > 0 %}
+      <article style="background-color: #f8d7da;" class="media content-section col-md-12">
+      {% elif trans_list.3 == 0 %}
+      <article class="media content-section col-md-12">
+      {% else %}
+      <article style="background-color: #d4edda;" class="media content-section col-md-12">
+      {% endif %}
+        <div class="media-body">
+          <div class="article-metadata border-bottom border-dark">
+            <div class="row">
+              <div class="col border-right border-dark">
+                <h4>{{ trans_name }}</h4>
+              </div>
+              <div class="col border-right border-dark">
+                <small class="text-muted">{{ trans_list.0 }}</small>
+              </div>
+              <div class="col">
+                <small class="text-muted">
+                  {{ trans_list.1 }}
+                </small>
+              </div>
             </div>
           </div>
+            <div class="article-metadata border-bottom border-dark">
+              <div class="row">
+                <div class="col">
+                  {% if trans_list.2 > 0 %}
+                  <p class="text-muted">Coste: {{ trans_list.2 }} €</p>
+                  {% elif trans_list.2 == 0 %}
+                  <p class="text-muted">Coste: 0.0 €</p><!-- por eso de que python no pilla decimales de 0 -->
+                  {% else %}
+                  <p class="text-muted">Coste: {{ trans_list.2 }} €</p>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+            <div class="article-metadata border-bottom border-dark">
+              <div class="row">
+                <div class="col">
+                  {% if trans_list.3 > 0 %}
+                  <p name="bal" class="text-muted">Balance (debes): {{ trans_list.3 }} €</p>
+                  {% elif trans_list.3 == 0 %}
+                  <p name="bal" class="text-muted">Balance: 0.0 €</p><!-- por eso de que python no pilla decimales de 0 -->
+                  {% else %}
+                  <p name="bal" class="text-muted">Balance (te deben): {{ trans_list.3 }} €</p>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              {% for user_name in trans_list.4 %}
+              {% if forloop.last %}
+              <div class="col">
+                <p class="text-muted">{{ user_name }}</p>
+              </div>
+              {% else %}
+              <div class="col border-right border-dark">
+                <p class="text-muted">{{ user_name }}</p>
+              </div>
+              {% endif %}
+              {% endfor %}
+            </div>
         </div>
-          <div class="article-metadata border-bottom border-dark">
-            <div class="row">
-              <div class="col">
-                {% if trans_list.2 > 0 %}
-                <p class="text-muted">Coste: {{ trans_list.2 }} €</p>
-                {% elif trans_list.2 == 0 %}
-                <p class="text-muted">Coste: 0.0 €</p><!-- por eso de que python no pilla decimales de 0 -->
-                {% else %}
-                <p class="text-muted">Coste: {{ trans_list.2 }} €</p>
-                {% endif %}
-              </div>
-            </div>
-          </div>
-          <div class="article-metadata border-bottom border-dark">
-            <div class="row">
-              <div class="col">
-                {% if trans_list.3 > 0 %}
-                <p name="bal" class="text-muted">Balance (debes): {{ trans_list.3 }} €</p>
-                {% elif trans_list.3 == 0 %}
-                <p name="bal" class="text-muted">Balance: 0.0 €</p><!-- por eso de que python no pilla decimales de 0 -->
-                {% else %}
-                <p name="bal" class="text-muted">Balance (te deben): {{ trans_list.3 }} €</p>
-                {% endif %}
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            {% for user_name in trans_list.4 %}
-            {% if forloop.last %}
-            <div class="col">
-              <p class="text-muted">{{ user_name }}</p>
-            </div>
-            {% else %}
-            <div class="col border-right border-dark">
-              <p class="text-muted">{{ user_name }}</p>
-            </div>
-            {% endif %}
-            {% endfor %}
-          </div>
-      </div>
-    </article>
-  </a>
- 
-</div>
-{% endfor %}
-
-<script>
-  var app = new Vue({
-    el: '#app',
-    data: {
-      
-    },
-    methods: {
-      hideshow: function(){
-        var x = document.getElementsByName("transaccsion");
-        var valor = document.getElementsByName("bal");
-        var btn = document.getElementById("btnShHd");
-        for(var i = 0; i < valor.length; i++){
-          var auth = valor[i].innerText;
-          if(x[i].style.display === "none") {
-            if(auth == "Balance: 0.0 €"){
-              x[i].style.display = "block";
-              btn.innerHTML= "Hide Paid Transactions";
+      </article>
+    </a>
+  </div>
+  {% endfor %}
+  <script type="text/javascript">
+    var app = new Vue({
+      el: '#app',
+      data: {},
+      methods: {
+        hideshow: function () {
+          var x = document.getElementsByName("transaccsion");
+          var valor = document.getElementsByName("bal");
+          var btn = document.getElementById("btnShHd");
+          for (var i = 0; i < valor.length; i++) {
+            var auth = valor[i].innerText;
+            if (x[i].style.display === "none") {
+              if (auth == "Balance: 0.0 €") {
+                x[i].style.display = "block";
+                btn.innerHTML = "Hide Paid Transactions";
+              }
             }
-          }
-          else{
-            if(auth == "Balance: 0.0 €"){  
-              x[i].style.display = "none";
-              btn.innerHTML= "Show All Transactions";
+            else {
+              if (auth == "Balance: 0.0 €") {
+                x[i].style.display = "none";
+                btn.innerHTML = "Show All Transactions";
+              }
             }
           }
         }
       }
-    }
-  });
+    });
   </script>
 </div>
 {% endblock content %}

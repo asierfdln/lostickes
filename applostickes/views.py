@@ -326,6 +326,8 @@ def createDebt(request):
         # hay que andarse con cuidado porque cada key tiene una LISTA de valores, aunque haya una sola cosa...
         request_as_dict = dict(request.POST)
 
+        pprint(request_as_dict)
+
         """
             OBJETIVO -> generar un string tal que 1-1,2,3;2,3... a partir del request_as_dict
 
@@ -362,25 +364,24 @@ def createDebt(request):
 
         """
 
-        # comprobamos que todos los elementos de la transaccion tienen pagadores involucrados
-        flag_no_hay_key = False
-        for i in range(0, len(request_as_dict['elements'])):
-            # si no hay una key que se corresponda con el formato...
-            if f'people_paying_element_{i}' not in request_as_dict:
-                flag_no_hay_key = True
-
-        if flag_no_hay_key:
-            todo_bien = False
-            form.add_error(
-                field='elements',
-                error=forms.ValidationError('Hay elementos sin usuarios checkeados.')
-            )
+        # comprobamos que todos los elementos de la transaccion tienen pagadores involucrados,
+        # es decir, que hay el mimsmo numero de elementos en la lista de elementos que keys del tipo
+        # "people_paying_element_X"...
+        contador_listas_peoples = 0
 
         # extraemos las listas de usuarios involucrados en la compra
         dict_de_elementos = {}
         for key in request_as_dict.keys():
             if 'people_paying_element_' in key:
+                contador_listas_peoples = contador_listas_peoples + 1
                 dict_de_elementos[key] = request_as_dict[key]
+
+        if len(request_as_dict['elements']) != contador_listas_peoples:
+            todo_bien = False
+            form.add_error(
+                field='elements',
+                error=forms.ValidationError('Hay elementos sin usuarios checkeados.')
+            )
 
         # obtenemos una lista de todos usuarios que pagan (repetidos)
         lista_de_todos_lospayers = []

@@ -136,38 +136,37 @@
 </div>
 {% endfor %}
 
-<script>
-var app2 = new Vue({
-  el: '#app-2',
-  data: {
-    isNinja: true
-  },
-  methods: {
-    hideshow: function(){
-      var x = document.getElementsByName("transaccsion");
-      var valor = document.getElementsByName("bal");
-      var btn = document.getElementById("btnShHd");
-      for(var i = 0; i < valor.length; i++){
-        var auth = valor[i].innerText;
-        if(x[i].style.display === "none") {
-          if(auth == "Balance: 0.0 €"){
-            x[i].style.display = "block";
-            btn.innerHTML= "Hide Paid Transactions";
+<script type="text/javascript">
+  var app2 = new Vue({
+    el: '#app-2',
+    data: {
+      isNinja: true
+    },
+    methods: {
+      hideshow: function () {
+        var x = document.getElementsByName("transaccsion");
+        var valor = document.getElementsByName("bal");
+        var btn = document.getElementById("btnShHd");
+        for (var i = 0; i < valor.length; i++) {
+          var auth = valor[i].innerText;
+          if (x[i].style.display === "none") {
+            if (auth == "Balance: 0.0 €") {
+              x[i].style.display = "block";
+              btn.innerHTML = "Hide Paid Transactions";
+            }
           }
-        }
-        else{
-          if(auth == "Balance: 0.0 €"){  
-            x[i].style.display = "none";
-            btn.innerHTML= "Show All Transactions";
+          else {
+            if (auth == "Balance: 0.0 €") {
+              x[i].style.display = "none";
+              btn.innerHTML = "Show All Transactions";
+            }
           }
         }
       }
     }
-  }
-});
+  });
 </script>
 </div>
-
 {% endblock %}
 {% block side %}
 <div id="sidebar" class="col-md-4">
