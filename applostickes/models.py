@@ -100,6 +100,13 @@ class UserGroupForm(forms.ModelForm):
         model = UserGroup
         fields = '__all__'
 
+    users = forms.ModelChoiceField(
+        empty_label=None,
+        queryset=None,
+        widget=forms.Select,
+        help_text='Usuarios que elegir'
+    )
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['users'].queryset = User.objects.exclude(primkey=applostickes.user_primkey_exclude)
