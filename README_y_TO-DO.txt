@@ -33,10 +33,8 @@ creo que en vue no esta lo de que no haya usuarios checkeados para un elemento s
 --------------------------------------------- asier ----------------------------------------------
 --------------------------------------------------------------------------------------------------
 
-los elementos nuevos de vue...
+order transactions -creation_date
 
 -> piechart con info de balances justo debajo del cosobox este que flota de irache (d3.js????????)
 
--> modify debt, de clickar en una propia transaccion desde la vista de deuda y que te lleve a 
-   una vista de eliminacion de campos
-------> mejor borrar si eres owner y ya esta pagada (o no....)
+-> debt borrar si eres owner y ya esta pagada (o no....)

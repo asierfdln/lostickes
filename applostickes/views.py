@@ -306,9 +306,6 @@ def createDebt(request):
         usergroup__in=usergroup_tofilterwith
     )
 
-    # estas dos queries anteriores deberian ir (1) con un get para el usergroup
-    # y (2) con un usergroup=usergroup_tofilterwith... pero bueno, ya si eso otro dia
-
     contador = 1
     for people in peoples_paying:
         lista_peoples.append([people.primkey, f'persona_{contador}', people.django_user.username])
@@ -325,6 +322,19 @@ def createDebt(request):
         # el request.POST es un QueryDict, asi que vamos a dejarnos de tonterias y juguemos solo con el dict(),
         # hay que andarse con cuidado porque cada key tiene una LISTA de valores, aunque haya una sola cosa...
         request_as_dict = dict(request.POST)
+
+        # creamos todos los elementos nuevos que el usuario ha querido añadir
+        elementos_de_vue = []
+        if 'elements_vue' in request_as_dict:
+            for elemento in request_as_dict['elements_vue']:
+                nombre_elemento = elemento.strip().split(' - ')[0]
+                precio_elemento = int(elemento.strip().split(' - ')[1].split(' €')[0])
+                element = Element(
+                    name=nombre_elemento,
+                    price=precio_elemento,
+                )
+                element.save()
+                elementos_de_vue.append(element.primkey)
 
         pprint(request_as_dict)
 
@@ -497,7 +507,11 @@ def createDebt(request):
 
             # guardamos las referencias a los payers y elements necesarios
             transaction_to_modify.payers.set(User.objects.filter(primkey__in=peoples_paying_really)) # set() porque lo dice Django
-            transaction_to_modify.elements.set(Element.objects.filter(primkey__in=request_as_dict['elements'])) # set() porque lo dice Django
+            transaction_to_modify.elements.set(
+                Element.objects.filter(
+                    primkey__in=request_as_dict['elements'] + elementos_de_vue
+                )
+            ) # set() porque lo dice Django
 
             # definimos el mapping con lo generado anteriormente
             transaction_to_modify.mapping = mapping

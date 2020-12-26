@@ -108,20 +108,18 @@ class UserGroupForm(forms.ModelForm):
 class Element(models.Model):
 
     name = models.CharField(max_length=55, blank=False)
-    desc = models.TextField(max_length=280, blank=False)
     price = models.FloatField(validators=[vals.MinValueValidator(limit_value=0.009, message="Only positive integers allowed")])
 
     primkey = models.UUIDField(primary_key=True, editable=False, default=uuid.uuid4)
 
-    class Meta:
-        ordering = ['name', 'price']
+    creation_date = models.DateTimeField(auto_now=True, editable=False)
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.name = self.name + ' - ' + str(self.price) + ' €'
+    class Meta:
+        get_latest_by = 'creation_date'
+        ordering = ['creation_date']
 
     def __str__(self):
-        return self.name
+        return self.name + ' - ' + str(self.price) + ' €'
 
 
 class ElementForm(forms.ModelForm):
@@ -300,6 +298,14 @@ class Transaction(models.Model):
                 return owner_balance
         else:
             return self.payers_elements_mapping[user_pk]
+
+    def is_payed(self):
+        moroso_found = False
+        for payer in self.payers.all():
+            if self.get_score_state(payer.primkey) == 'NOTPAYED':
+                moroso_found = True
+                break
+        return moroso_found
 
     def get_tridentifier(self):
         if self.tridentifier == None:
