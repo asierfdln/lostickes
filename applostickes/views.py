@@ -362,6 +362,20 @@ def createDebt(request):
 
         """
 
+        # comprobamos que todos los elementos de la transaccion tienen pagadores involucrados
+        flag_no_hay_key = False
+        for i in range(0, len(request_as_dict['elements'])):
+            # si no hay una key que se corresponda con el formato...
+            if f'people_paying_element_{i}' not in request_as_dict:
+                flag_no_hay_key = True
+
+        if flag_no_hay_key:
+            todo_bien = False
+            form.add_error(
+                field='elements',
+                error=forms.ValidationError('Hay elementos sin usuarios checkeados.')
+            )
+
         # extraemos las listas de usuarios involucrados en la compra
         dict_de_elementos = {}
         for key in request_as_dict.keys():
