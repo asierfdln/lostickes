@@ -1,4 +1,5 @@
 {% extends "applostickes/base.html" %}
+{% load static %}
 {% block content %}
 {% if messages %}
 {% for message in messages %}
@@ -19,7 +20,7 @@
   <div class="col">
     <button id="btnShHd" role="button" class="btn btn-outline-info btn-block" @click="hideshow">Show All Transactions</button>
   </div>
-  </br>
+  <br />
   {% for trans_name, trans_list in debts.items %}
   {% if trans_list.3 == 0 %}
   <div name="transaccsion" style="display: none;" class="col-md-12">
@@ -28,17 +29,17 @@
   {% endif %}
     <a class="article-title" role="button" href="{% url 'debt' debtName=trans_name transaction_identifier=trans_list.5 %}">
       {% if trans_list.3 > 0 %}
-      <article style="background-color: #f8d7da;" class="media content-section col-md-12">
+      <article style="background-color: #ffa4ac;" class="media content-section col-md-12">
       {% elif trans_list.3 == 0 %}
       <article class="media content-section col-md-12">
       {% else %}
-      <article style="background-color: #d4edda;" class="media content-section col-md-12">
+      <article style="background-color: #a4ffba;" class="media content-section col-md-12">
       {% endif %}
         <div class="media-body">
           <div class="article-metadata border-bottom border-dark">
             <div class="row">
               <div class="col border-right border-dark">
-                <h4>{{ trans_name }}</h4>
+                <h4 id="nombre_transaccion">{{ trans_name }}</h4>
               </div>
               <div class="col border-right border-dark">
                 <small class="text-muted">{{ trans_list.0 }}</small>
@@ -94,35 +95,35 @@
     </a>
   </div>
   {% endfor %}
-  <script type="text/javascript">
-    var app = new Vue({
-      el: '#app',
-      data: {},
-      methods: {
-        hideshow: function () {
-          var x = document.getElementsByName("transaccsion");
-          var valor = document.getElementsByName("bal");
-          var btn = document.getElementById("btnShHd");
-          for (var i = 0; i < valor.length; i++) {
-            var auth = valor[i].innerText;
-            if (x[i].style.display === "none") {
-              if (auth == "Balance: 0.0 €") {
-                x[i].style.display = "block";
-                btn.innerHTML = "Hide Paid Transactions";
-              }
+</div>
+<script type="text/javascript">
+  var app = new Vue({
+    el: '#app',
+    data: {},
+    methods: {
+      hideshow: function () {
+        var x = document.getElementsByName("transaccsion");
+        var valor = document.getElementsByName("bal");
+        var btn = document.getElementById("btnShHd");
+        for (var i = 0; i < valor.length; i++) {
+          var auth = valor[i].innerText;
+          if (x[i].style.display === "none") {
+            if (auth == "Balance: 0.0 €") {
+              x[i].style.display = "block";
+              btn.innerHTML = "Hide Paid Transactions";
             }
-            else {
-              if (auth == "Balance: 0.0 €") {
-                x[i].style.display = "none";
-                btn.innerHTML = "Show All Transactions";
-              }
+          }
+          else {
+            if (auth == "Balance: 0.0 €") {
+              x[i].style.display = "none";
+              btn.innerHTML = "Show All Transactions";
             }
           }
         }
       }
-    });
-  </script>
-</div>
+    }
+  });
+</script>
 {% endblock content %}
 {%block side %}
 <div id="sidebar" class="col-md-4">
@@ -139,5 +140,9 @@
     </ul>
     </p>
   </div>
+  <div>
+    <canvas id="myChart" height="250"></canvas>
+  </div>
+  <script type="text/javascript" src="{% static 'applostickes/chartoDebts.js' %}"></script>
 </div>
 {% endblock side %}

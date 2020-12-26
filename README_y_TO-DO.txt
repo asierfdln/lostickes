@@ -33,8 +33,6 @@ creo que en vue no esta lo de que no haya usuarios checkeados para un elemento s
 --------------------------------------------- asier ----------------------------------------------
 --------------------------------------------------------------------------------------------------
 
-piechart con info de balances justo debajo del cosobox este que flota de irache (d3.js????????)
-
 debt borrar si eres owner y ya esta pagada (o no....)
 
 i18n
