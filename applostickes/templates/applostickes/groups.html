@@ -1,4 +1,5 @@
 {% extends "applostickes/base.html" %}
+{% load static %}
 {% block content %}
 {% for group_name, group_list in groups.items %}
 <div class="col-md-12">
@@ -8,7 +9,7 @@
         <div class="article-metadata">
           <div class="row">
             <div class="col border-right">
-              <h4>{{ group_name }}</h4>
+              <h4 id="nombre_grupo">{{ group_name }}</h4>
             </div>
             <div class="col">
               <small class="text-muted">{{ group_list.0 }}</small>
@@ -19,11 +20,11 @@
           <div class="row">
             <div class="col-xs-12 col-sm-12">
               {% if group_list.1 > 0 %}
-              <p style="justify-content: center; color: red;">Balance de grupo (debes): {{ group_list.1 }} €</p>
+              <p id="balance_grupo" style="justify-content: center; color: red;">Balance de grupo (debes): {{ group_list.1 }} €</p>
               {% elif group_list.1 == 0 %}
-              <p style="justify-content: center;" class="text-muted">Balance de grupo: 0.0 €</p><!-- por eso de que python no pilla decimales de 0 -->
+              <p id="balance_grupo" style="justify-content: center;" class="text-muted">Balance de grupo: 0.0 €</p><!-- por eso de que python no pilla decimales de 0 -->
               {% else %}
-              <p style="justify-content: center; color: forestgreen;" >Balance de grupo (te deben): {{ group_list.1 }} €</p>
+              <p id="balance_grupo" style="justify-content: center; color: forestgreen;" >Balance de grupo (te deben): {{ group_list.1 }} €</p>
               {% endif %}
             </div>
           </div>
@@ -61,5 +62,8 @@
     </ul>
     </p>
   </div>
+  <canvas id="myChart" height="250"></canvas>
+</div>
+<script type="text/javascript" src="{% static 'applostickes/chartoGroups.js' %}"></script>
 </div>
 {% endblock side %}
