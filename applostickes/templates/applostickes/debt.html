@@ -1,4 +1,5 @@
 {% extends "applostickes/base.html" %}
+{% load static %}
 {% block content %}
 <div class="col">
   <nav aria-label="breadcrumb">
@@ -72,7 +73,7 @@
       {% for element in debt.7 %}
       <div class="row">
         <div class="col">
-          <p class="text-muted">{{ element.0 }}</p>
+          <p id="compra_elemento" class="text-muted">{{ element.0 }}</p>
         </div>
         <div class="col col-md-9 text-center">
           {% for responsible in element.1 %}
@@ -84,7 +85,7 @@
           {% endfor %}
         </div>
         <div class="col">
-          <p style="float: right;" class="text-muted">{{ element.2 }} €</p>
+          <p id="compra_precio" style="float: right;" class="text-muted">{{ element.2 }} €</p>
         </div>
       </div>
       {% endfor %}
@@ -108,7 +109,7 @@
     </p>
   </div>
   {% if debt.5 != 0 %}
-  <a role="button" class="btn btn-outline-info btn-block" href="{% url 'pay_debt' debt_identifier=debt.9 %}">
+  <a role="button" class="btn btn-outline-info btn-block mb-4" href="{% url 'pay_debt' debt_identifier=debt.9 %}">
     {% if debt.8 == 0 %}
     Pay debt
     {% else %}
@@ -116,5 +117,9 @@
     {% endif %}
   </a>
   {% endif %}
+  <div>
+    <canvas id="myChart" height="250"></canvas>
+  </div>
+  <script type="text/javascript" src="{% static 'applostickes/chartoDebtIndiv.js' %}"></script>
 </div>
 {% endblock side %}
