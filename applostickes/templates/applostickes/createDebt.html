@@ -17,7 +17,7 @@
   {{ field.label_tag }}<br />
   {% endif %}
   {% if forloop.counter == 5 %}
-  <ul style="list-style: none;">
+  <ul style="display: block; list-style: none;">
     {% for li in field %} <!-- for de cada uno de las leches/bollicaos... -->
     <li>
       {{ li }} <!-- la lichi... cuyo id sigue el formato de id_elements_{{ forloop.counter0 }} -->
