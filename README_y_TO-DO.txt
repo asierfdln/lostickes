@@ -35,6 +35,12 @@ creo que en vue no esta lo de que no haya usuarios checkeados para un elemento s
 
 order transactions -creation_date
 
--> piechart con info de balances justo debajo del cosobox este que flota de irache (d3.js????????)
+quitar boton de create debt
 
--> debt borrar si eres owner y ya esta pagada (o no....)
+piechart con info de balances justo debajo del cosobox este que flota de irache (d3.js????????)
+
+debt borrar si eres owner y ya esta pagada (o no....)
+
+crispyforms en python...
+
+borrar elementos... meh...

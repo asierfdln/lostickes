@@ -507,11 +507,18 @@ def createDebt(request):
 
             # guardamos las referencias a los payers y elements necesarios
             transaction_to_modify.payers.set(User.objects.filter(primkey__in=peoples_paying_really)) # set() porque lo dice Django
-            transaction_to_modify.elements.set(
-                Element.objects.filter(
-                    primkey__in=request_as_dict['elements'] + elementos_de_vue
-                )
-            ) # set() porque lo dice Django
+            if 'elements' in request_as_dict:
+                transaction_to_modify.elements.set(
+                    Element.objects.filter(
+                        primkey__in=request_as_dict['elements'] + elementos_de_vue
+                    )
+                ) # set() porque lo dice Django
+            else:
+                transaction_to_modify.elements.set(
+                    Element.objects.filter(
+                        primkey__in=elementos_de_vue
+                    )
+                ) # set() porque lo dice Django
 
             # definimos el mapping con lo generado anteriormente
             transaction_to_modify.mapping = mapping
@@ -637,3 +644,8 @@ def pay_debt(request, debt_identifier):
         group_name = applostickes.from_group_view_url_string.split('-')[0]
         group_identifier = applostickes.from_group_view_url_string.split('-')[1]
         return redirect('group', group_name, group_identifier)
+
+    # si ha pasado algo raro (refescos de pag o lo que sea...)
+    else:
+        messages.success(request, 'Debt payed!')
+        return redirect('user')

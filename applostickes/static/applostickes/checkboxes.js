@@ -4,7 +4,7 @@ $(document).ready(function () {
     $('input[id^=id_elements_').each(function () {
 
         // numero de elemento
-        var numero_de_check = $(this).prop('id').slice(-1);
+        var numero_de_check = $(this).prop('id').replace(/[^0-9\.]+/g, "");
 
         // cuando hacemos click en el elemento de comida
         $(this).click(function () {

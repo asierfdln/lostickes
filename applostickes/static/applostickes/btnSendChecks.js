@@ -13,7 +13,7 @@ $(document).ready(function () {
 
         // cogemos todos los elementos de comida e iteramos sobre ellos
         $('input[id^=id_elements_').each(function () {
-            var numero_de_comida = $(this).prop('id').slice(-1);
+            var numero_de_comida = $(this).prop('id').replace(/[^0-9\.]+/g, "");
             // si el elemento comida esta checkeado...
             if ($(this).is(":checked")) {
 

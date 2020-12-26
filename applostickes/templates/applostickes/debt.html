@@ -9,7 +9,6 @@
     </ol>
   </nav>
 </div>
-
 <div class="col">
   {% if debt.5 > 0 %}
   <article class="media content-section col-md-12" style="background-color: #f8d7da">
@@ -92,20 +91,6 @@
     </div>
   </article>
 </div>
-<script type="text/javascript">
-  var s = document.getElementsByName("val");
-  for (var i = 0; i < s.length; i++) {
-    var f = s[i].innerText;
-    if (f.includes("OWNER")) {
-      s[i].style.color = "#7D7D7D";
-    }
-    else if (f.includes("OWS")) {
-      s[i].style.color = "red";
-    }
-    else
-      s[i].style.color = "green";
-  }
-</script>
 {% endblock %}
 {% block side %}
 <div id="sidebar" class="col-md-4">

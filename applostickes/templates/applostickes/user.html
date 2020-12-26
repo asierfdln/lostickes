@@ -1,6 +1,19 @@
 {% extends "applostickes/base.html" %}
 {% block content %}
 <div class="col">
+  {% if messages %}
+  {% for message in messages %}
+  <div class="alert alert-{{ message.tags }}">
+    <span style="color: green;">
+      <ul class="errorlist">
+        <li>
+          {{ message }}
+        </li>
+      </ul>
+    </span>
+  </div>
+  {% endfor %}
+  {% endif %}
   <a class="article-title" href="{% url 'groups' %}">
     <article class="media content-section">
       <div class="media-body">
