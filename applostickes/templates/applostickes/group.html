@@ -44,7 +44,7 @@
 {% endfor %}
 {% endif %}
 <div class="col">
-  <a class="article-title" href="{% url 'createDebt' %}">
+  <!-- <a class="article-title" href="{% url 'createDebt' %}">
     <article class="media content-section col">
       <div class="media-body">
         <div class="col center-block text-center">
@@ -59,7 +59,7 @@
         </div>
       </div>
     </article>
-  </a>
+  </a> -->
 </div>
 <div class="col">
   <button id="btnShHd" role="button" class="btn btn-outline-info btn-block" @click="hideshow">Show All Transactions</button>
@@ -181,5 +181,8 @@
     </ul>
     </p>
   </div>
+  <a role="button" class="btn btn-outline-info btn-block" href="{% url 'createDebt' %}">
+    Create new debt
+  </a>
 </div>
 {% endblock side %}

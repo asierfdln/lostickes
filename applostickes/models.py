@@ -161,6 +161,12 @@ class Transaction(models.Model):
 
     score_settling_mapping = PickledObjectField(default=dict)
 
+    creation_date = models.DateTimeField(auto_now=True, editable=False)
+
+    class Meta:
+        get_latest_by = 'creation_date'
+        ordering = ['-creation_date']
+
     preciototal = None
     tridentifier = None
     payers_elements_mapping = None

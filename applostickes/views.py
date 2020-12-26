@@ -6,7 +6,6 @@ from django.shortcuts import render, redirect
 from .models import UserForm, UserGroupForm, TransactionForm
 from .models import User, UserGroup, Transaction, Element
 import applostickes
-from pprint import pprint
 
 
 user_to_work_with = None
@@ -335,8 +334,6 @@ def createDebt(request):
                 )
                 element.save()
                 elementos_de_vue.append(element.primkey)
-
-        pprint(request_as_dict)
 
         """
             OBJETIVO -> generar un string tal que 1-1,2,3;2,3... a partir del request_as_dict
