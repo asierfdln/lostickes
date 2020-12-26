@@ -14,85 +14,64 @@
     <input type="submit" class="btn btn-outline-secondary mr-2" value="Cancel" onclick="history.back()" />
     <input type="submit" class="btn btn-outline-info" value="Submit" />
     <br /><br />
-    
   </div>
-  
 </form>
 <script type="text/javascript">
-  new Vue({
+  
+  var elementosVue = new Vue({
     el: "#app",
     data:{
       users: []
     },
     methods:{
       add: function(){
-
-        // ################################################################################
-        // EMPEZAMOS LA EXPLICACION EN PSEUDOCODIGO...
-        // ################################################################################
-
-        // coges el elemento "users" del html (no confundir con el "users = []" de Vue)
         var f = document.getElementsByName("users");
-
-        // obtienes el elemento seleccionado de f, el "user"
-        // var user = nosecomolohasestadohaciendo...;
-
-        // miras a ver si el "user" que has obtenido (el "var user" de arriba esta en el "users" de Vue)
-
-        // ############## OJO a esto ##############
-        // >>> a = ["a","b"]
-        // Array [ "a", "b" ]
-        // >>> a.includes("a")
-        // true
-        // ############## OJO a esto ##############
-
-        // if (this.users.includes(user)) {
-        //   pues_no_lo_metas_en_users_de_vue();
-        //   pues_no_lo_metas_en_html_con_el_append();
-        // } else {
-        //   pues_me_lo_metes_atope_en_users_de_vue();
-        //   pues_me_lo_metes_atope_en_html_con_el_append();
-        // }
-
-        // ########################################
-        // NO HACE FALTA HACER NINGUN FOR PARA NADA
-        // ########################################
-
-        // ################################################################################
-        // FIN DE LA EXPLICACION EN PSEUDOCODIGO...
-        // ################################################################################
-
-        $("#added").append(
-          '<button style="display: inline;" type="button" class="btn btn-outline-danger mr-4" @click="remove">' +
-            '<span>&times;</span>' +
-          '</button>' +
-          '<p name="users_group" style="display: inline;" value="'+f[0][f[0].selectedIndex].value+'">' +
-            f[0][f[0].selectedIndex].outerText +
-          '</p>' +
-          '<br />'
-        );
-
-        for(var e = 0; e < (this.users.length); e++){
-          if(this.users[e] == f[0][f[0].selectedIndex].outerText){
-            console.log("existe");
-            this.users.pop();
-            
+        var user =  f[0][f[0].selectedIndex];
+        if(this.users.length == 0) {
+          this.users.push(f[0][f[0].selectedIndex]);
+          console.log(this.users[0].outerText);
+          $("#added").append(
+              '<div id="'+user.value+'ELDIV"><button id="'+user.value+'" style="display: inline;" type="button" class="btn btn-outline-danger mr-4" onclick="deleteF(this, event)">' +
+                '<span>&times;</span>' +
+              '</button>' +
+              '<input type="text" name="users_group" style="display: none;" value="'+user.value+'">' +
+                user.outerText +
+              '<br /></div>'
+              
+          );
+        }
+        else{
+          if(this.users.includes(user)){
+            console.log("esta");
           }
           else{
-            console.log("NOexiste");
+            this.users.push(f[0][f[0].selectedIndex]);
+            $("#added").append(
+              '<div id="'+user.value+'ELDIV"><button id="'+user.value+'" style="display: inline;" type="button" class="btn btn-outline-danger mr-4" onclick="deleteF(this, event)">' +
+                '<span>&times;</span>' +
+              '</button>' +
+              '<input type="text" name="users_group" style="display: none;" value="'+user.value+'">' +
+                user.outerText +
+              '<br /></div>'
+              
+          );
           }
-          
         }
-        this.users.push(f[0][f[0].selectedIndex].outerText);
         
-        console.log(this.users.length);
-      },
-
-      remove: function(){
-        console.log("and I say... HEEEEEEEEEEEEYEEEEEEEEEEYEEEEEEEEEEEYEYE");
       }
     }
+    
   });
+  function deleteF(ele, e){
+    var cosaPincha = document.getElementById(ele.id+"ELDIV");
+    cosaPincha.remove();
+    for(var i = 0; i < elementosVue.users.length; i++){
+      console.log(elementosVue.users[i].value);
+      if(ele.id == elementosVue.users[i].value){
+        elementosVue.users.splice(i, 1);
+      }
+    }
+  }
 </script>
 {% endblock content %}
 {%block side %}

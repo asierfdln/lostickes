@@ -207,8 +207,11 @@ def createGroup(request):
     form = UserGroupForm(request.POST or None)
 
     if form.is_valid():
-        form.save()
-        return redirect('groups')
+        from pprint import pprint
+        request_as_dict = dict(request.POST)
+        pprint(request_as_dict)
+        # form.save()
+        # return redirect('groups')
 
     context['form'] = form
     context['title'] = 'Create group'
