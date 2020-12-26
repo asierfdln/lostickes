@@ -4,11 +4,31 @@
 <form method="POST">
   {% csrf_token %}
   {{ form | crispy }}
-  <br />
-  <input type="submit" class="btn btn-outline-secondary mr-2" value="Cancel" onclick="history.back()" />
-  <input type="submit" class="btn btn-outline-info" value="Submit" />
-  <br /><br />
+  <div id="app">
+    <input type="button" style="display: inline;" class="btn btn-outline-info btn-block" value="Add User" @click="add" />
+    <br /><br />
+    <strong><p>Added users:</p></strong>
+    <div id="added"></div>
+    <br /><br />
+    <input type="submit" class="btn btn-outline-secondary mr-2" value="Cancel" onclick="history.back()" />
+    <input type="submit" class="btn btn-outline-info" value="Submit" />
+    <br /><br />
+  </div>
+  
 </form>
+<script type="text/javascript">
+  new Vue({
+    el: "#app",
+    methods:{
+      add: function(){
+        var f = document.getElementsByName("users");
+        $("#added").append(
+          '<button style="display: inline;" type="button" class="btn btn-outline-danger mr-4">X</button><p style="display: inline;" value="'+f[0][f[0].selectedIndex].value+'">'+f[0][f[0].selectedIndex].outerText+'</p><br/>'
+        );
+      }
+    }
+  });
+</script>
 {% endblock content %}
 {%block side %}
 <div id="sidebar" class="col-md-4">
