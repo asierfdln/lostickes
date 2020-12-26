@@ -1,139 +1,123 @@
 {% extends "applostickes/base.html" %}
+{% load static %}
 {% block content %}
 <div id="app-2">
-<div class="col">
-  <article class="media content-section col">
-    <div class="media-body">
-      <div class="article-metadata">
-        <div class="row">
-          <div class="col border-right">
-            <h4>{{ group.0 }}</h4>
-          </div>
-          <div class="col">
-            <small class="text-muted">{{ group.1 }}</small>
-          </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col">
-          {% if group.2 > 0 %}
-          <p style="justify-content: center; color: red;">Balance de grupo (debes): {{ group.2 }} €</p>
-          {% elif group.2 == 0 %}
-          <p class="text-muted" style="justify-content: center;">Balance de grupo: 0.0 €</p><!-- por eso de que python no pilla decimales de 0 -->
-          {% else %}
-          <p style="justify-content: center; color: forestgreen;">Balance de grupo (te deben): {{ group.2 }} €</p>
-          {% endif %}
-        </div>
-      </div>
-    </div>
-  </article>
-</div>
-{% if messages %}
-{% for message in messages %}
-<div class="col">
-  <div class="alert alert-{{ message.tags }}">
-    <span style="color: green;">
-      <ul class="errorlist">
-        <li>
-          {{ message }}
-        </li>
-      </ul>
-    </span>
-  </div>
-</div>
-{% endfor %}
-{% endif %}
-<div class="col">
-  <!-- <a class="article-title" href="{% url 'createDebt' %}">
+  <div class="col">
     <article class="media content-section col">
       <div class="media-body">
-        <div class="col center-block text-center">
-          <p class="text-muted">Create new debt</p>
-          <svg width="2em" height="1.5em" viewBox="0 0 16 16" class="bi bi-file-plus"
-            xmlns="http://www.w3.org/2000/svg">
-            <path fill-rule="evenodd"
-              d="M4 0h8a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2zm0 1a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H4z" />
-            <path fill-rule="evenodd"
-              d="M8 5.5a.5.5 0 0 1 .5.5v1.5H10a.5.5 0 0 1 0 1H8.5V10a.5.5 0 0 1-1 0V8.5H6a.5.5 0 0 1 0-1h1.5V6a.5.5 0 0 1 .5-.5z" />
-          </svg>
+        <div class="article-metadata">
+          <div class="row">
+            <div class="col border-right">
+              <h4>{{ group.0 }}</h4>
+            </div>
+            <div class="col">
+              <small class="text-muted">{{ group.1 }}</small>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            {% if group.2 > 0 %}
+            <p style="justify-content: center; color: red;">Balance de grupo (debes): {{ group.2 }} €</p>
+            {% elif group.2 == 0 %}
+            <p class="text-muted" style="justify-content: center;">Balance de grupo: 0.0 €</p><!-- por eso de que python no pilla decimales de 0 -->
+            {% else %}
+            <p style="justify-content: center; color: forestgreen;">Balance de grupo (te deben): {{ group.2 }} €</p>
+            {% endif %}
+          </div>
         </div>
       </div>
     </article>
-  </a> -->
-</div>
-<div class="col">
-  <button id="btnShHd" role="button" class="btn btn-outline-info btn-block" @click="hideshow">Show All Transactions</button>
-</div>
-<br />
-{% for transaction in group.3 %}
-{% if transaction.3 == 0 %}
-<div id="transaccion" style="display: none;" name="transaccsion" class="col-md-12">
-{% else %}
-<div id="transaccion" style="display: block;" name="transaccsion" class="col-md-12">
-{% endif %}
-<a class="article-title" role="button" href="{% url 'debt' debtName=transaction.0 transaction_identifier=transaction.5 %}">
-  {% if transaction.3 > 0 %}
-    <article style="background-color: #ffa4ac;" class="media content-section col-md-12">
-  {% elif transaction.3 == 0 %}
-    <article class="media content-section col-md-12">
-  {% else %}
-    <article style="background-color: #a4ffba;" class="media content-section col-md-12">
-  {% endif %}
-    <div class="media-body">
-      <div class="article-metadata border-bottom border-dark">
-        <div class="row">
-          <div class="col border-right border-dark">
-            <h4>{{ transaction.0 }}</h4>
-          </div>
-          <div class="col">
-            <small class="text-muted">{{ transaction.1 }}</small>
-          </div>
-        </div>
-      </div>
-      <div class="article-metadata border-bottom border-dark">
-        <div class="row">
-          <div class="col">
-            {% if transaction.2 > 0 %}
-            <p class="text-muted">Coste: {{ transaction.2 }} €</p>
-            {% elif transaction.2 == 0 %}
-            <p class="text-muted">Coste: 0.0 €</p><!-- por eso de que python no pilla decimales de 0 -->
-            {% else %}
-            <p class="text-muted">Coste: {{ transaction.2 }} €</p>
-            {% endif %}
-          </div>
-        </div>
-      </div>
-      <div class="article-metadata border-bottom border-dark">
-        <div class="row">
-          <div class="col">
-            {% if transaction.3 > 0 %}
-            <p name="bal" class="text-muted">Balance (debes): {{ transaction.3 }} €</p>
-            {% elif transaction.3 == 0 %}
-            <p name="bal" class="text-muted">Balance: 0.0 €</p><!-- por eso de que python no pilla decimales de 0 -->
-            {% else %}
-            <p name="bal" class="text-muted">Balance (te deben): {{ transaction.3 }} €</p>
-            {% endif %}
-          </div>
-        </div>
-      </div>
-      <div class="row">
-        {% for user_name in transaction.4 %}
-        {% if forloop.last %}
-        <div class="col">
-          <p class="text-muted">{{ user_name }}</p>
-        </div>
-        {% else %}
-        <div class="col border-right border-dark">
-          <p class="text-muted">{{ user_name }}</p>
-        </div>
-        {% endif %}
-        {% endfor %}
-      </div>
+  </div>
+  {% if messages %}
+  {% for message in messages %}
+  <div class="col">
+    <div class="alert alert-{{ message.tags }}">
+      <span style="color: green;">
+        <ul class="errorlist">
+          <li>
+            {{ message }}
+          </li>
+        </ul>
+      </span>
     </div>
-  </article>
-</a>
+  </div>
+  {% endfor %}
+  {% endif %}
+  <div class="col">
+    <button id="btnShHd" role="button" class="btn btn-outline-info btn-block" @click="hideshow">Show All Transactions</button>
+  </div>
+  <br />
+  {% for transaction in group.3 %}
+  {% if transaction.3 == 0 %}
+  <div id="transaccion" style="display: none;" name="transaccsion" class="col-md-12">
+  {% else %}
+  <div id="transaccion" style="display: block;" name="transaccsion" class="col-md-12">
+  {% endif %}
+    <a class="article-title" role="button" href="{% url 'debt' debtName=transaction.0 transaction_identifier=transaction.5 %}">
+      {% if transaction.3 > 0 %}
+      <article style="background-color: #ffa4ac;" class="media content-section col-md-12">
+      {% elif transaction.3 == 0 %}
+      <article class="media content-section col-md-12">
+      {% else %}
+      <article style="background-color: #a4ffba;" class="media content-section col-md-12">
+      {% endif %}
+        <div class="media-body">
+          <div class="article-metadata border-bottom border-dark">
+            <div class="row">
+              <div class="col border-right border-dark">
+                <h4 id="nombre_transaccion">{{ transaction.0 }}</h4>
+              </div>
+              <div class="col">
+                <small class="text-muted">{{ transaction.1 }}</small>
+              </div>
+            </div>
+          </div>
+          <div class="article-metadata border-bottom border-dark">
+            <div class="row">
+              <div class="col">
+                {% if transaction.2 > 0 %}
+                <p class="text-muted">Coste: {{ transaction.2 }} €</p>
+                {% elif transaction.2 == 0 %}
+                <p class="text-muted">Coste: 0.0 €</p><!-- por eso de que python no pilla decimales de 0 -->
+                {% else %}
+                <p class="text-muted">Coste: {{ transaction.2 }} €</p>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+          <div class="article-metadata border-bottom border-dark">
+            <div class="row">
+              <div class="col">
+                {% if transaction.3 > 0 %}
+                <p name="bal" class="text-muted">Balance (debes): {{ transaction.3 }} €</p>
+                {% elif transaction.3 == 0 %}
+                <p name="bal" class="text-muted">Balance: 0.0 €</p><!-- por eso de que python no pilla decimales de 0 -->
+                {% else %}
+                <p name="bal" class="text-muted">Balance (te deben): {{ transaction.3 }} €</p>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            {% for user_name in transaction.4 %}
+            {% if forloop.last %}
+            <div class="col">
+              <p class="text-muted">{{ user_name }}</p>
+            </div>
+            {% else %}
+            <div class="col border-right border-dark">
+              <p class="text-muted">{{ user_name }}</p>
+            </div>
+            {% endif %}
+            {% endfor %}
+          </div>
+        </div>
+      </article>
+    </a>
+  </div>
+  {% endfor %}
 </div>
-{% endfor %}
 <script>
   var app2 = new Vue({
     el: '#app-2',
@@ -164,7 +148,6 @@
     }
   });
 </script>
-</div>
 {% endblock %}
 {% block side %}
 <div id="sidebar" class="col-md-4">
@@ -181,8 +164,12 @@
     </ul>
     </p>
   </div>
-  <a role="button" class="btn btn-outline-info btn-block" href="{% url 'createDebt' %}">
+  <a role="button" class="btn btn-outline-info btn-block mb-4" href="{% url 'createDebt' %}">
     Create new debt
   </a>
+  <div>
+    <canvas id="myChart" height="250"></canvas>
+  </div>
+  <script type="text/javascript" src="{% static 'applostickes/chartoGroupIndiv.js' %}"></script>
 </div>
 {% endblock side %}
