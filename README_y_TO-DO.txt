@@ -21,10 +21,6 @@ usernames = [
 --------------------------------------------- iraxe ----------------------------------------------
 --------------------------------------------------------------------------------------------------
 
-el verde de las deudas que sea el verde de los alert de bootstrap
-
-el rojo de las deudas que sea el rojo de los alert de bootstrap
-
 i18n
 --> help texts fuera...
 
@@ -35,8 +31,12 @@ html <select> para usuarios del usergroup
 --------------------------------------------------------------------------------------------------
 
 mirar shit de que no puedes en jquery dejar alimentos clickados y sin usuarios
+    jquery
+    servidor...
 
 -> mover js's a static...
+--> de cara a mover lo de jquery, seguro que se puede hacer con un each(function() de todos los
+    elemetnos de id id_elements_X y pues ir programando los efectos en cada each...)
 -> piechart con info de balances justo debajo del cosobox este que flota de irache (d3.js????????)
 
 -> modify debt, de clickar en una propia transaccion desde la vista de deuda y que te lleve a 

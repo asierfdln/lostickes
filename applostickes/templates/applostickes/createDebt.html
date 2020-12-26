@@ -151,6 +151,47 @@
   <script type="text/javascript">
     $(document).ready(function () {
       $('#btnSend').click(function (e) {
+
+        var primer_if_trig = 0;
+
+        // miramos que no se nos ha pasado ningun elemento de comida vacio
+
+        // cogemos todos los elementos de comida e iteramos sobre ellos
+        $('input[id^=id_elements_').each(function () {
+          var flag_alguno_checkeado = 0;
+          var numero_de_comida = $(this).prop('id').slice(-1);
+          // si el elemento comida esta checkeado...
+          if ($(this).is(":checked")) {
+            // iteramos por cada una de las personas del elemento comida...
+            $('input[name^=people_paying_element_' + numero_de_comida + ']').each(function () {
+              // si hay alguna persona checkeada, pues lo marcamos...
+              if ($(this).is(":checked")) {
+                flag_alguno_checkeado = 1;
+              }
+            });
+            // si no hay ninguna checkeada...
+            if (flag_alguno_checkeado == 0) {
+              // problemas
+              $("#elements-alerts").empty();
+              $("#elements-alerts").prepend(
+                '<div id="div-alert" class="alert alert-danger">' +
+                  '<span style="color: red;">' +
+                    '<ul class="errorlist">' +
+                      '<li>' +
+                        'Hay elementos sin usuarios checkeados.' +
+                      '</li>' +
+                    '</ul>' +
+                  '</span>' +
+                '</div>'
+              );
+              primer_if_trig = 1;
+              e.preventDefault();
+            }
+          }
+        });
+
+        // miramos que el tema de las personas este bien planteado
+
         var num_de_users_por_elemento = $("[id^=persona_]").length / $("[id^=id_elements_]").length;
         var array_users_implicados = [];
         $('input[id^=persona_]').each(function() {
@@ -159,25 +200,37 @@
           }
         });
         var user_pagador = $('select[id="id_payer"]').val();
-        var primer_if_trig = 0;
         if (array_users_implicados.length == 1) {
-          $("#elements-alerts").empty();
-          $("#elements-alerts").prepend(
-            '<div id="div-alert" class="alert alert-danger">' +
+          if (primer_if_trig > 0) {
+            $("#div-alert").prepend(
               '<span style="color: red;">' +
                 '<ul class="errorlist">' +
                   '<li>' +
                     'No puedes tener un único usuario en la transaccion.' +
                   '</li>' +
                 '</ul>' +
-              '</span>' +
-            '</div>'
-          );
-          primer_if_trig = 1
-          e.preventDefault();
+              '</span>'
+            );
+          } else {
+            $("#elements-alerts").empty();
+            $("#elements-alerts").prepend(
+              '<div id="div-alert" class="alert alert-danger">' +
+                '<span style="color: red;">' +
+                  '<ul class="errorlist">' +
+                    '<li>' +
+                      'No puedes tener un único usuario en la transaccion.' +
+                    '</li>' +
+                  '</ul>' +
+                '</span>' +
+              '</div>'
+            );
+            primer_if_trig = 1
+            e.preventDefault();
+          }
         }
+
         if (!array_users_implicados.includes(user_pagador)) {
-          if (primer_if_trig == 1) {
+          if (primer_if_trig > 0) {
             $("#div-alert").prepend(
               '<span style="color: red;">' +
                 '<ul class="errorlist">' +
