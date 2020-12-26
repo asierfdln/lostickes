@@ -338,6 +338,7 @@ class TransactionForm(forms.ModelForm):
 
     elements = forms.ModelMultipleChoiceField(
         queryset=Element.objects.all(),
+        required=False,
         widget=forms.CheckboxSelectMultiple,
         help_text='Introduce elementos de la transaccion.'
     )

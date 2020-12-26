@@ -22,7 +22,6 @@ usernames = [
 --------------------------------------------------------------------------------------------------
 
 i18n
---> help texts fuera...
 
 html <select> para usuarios del usergroup
 --> mira la consola del buscador y descomenta el @iraxe de base.html...

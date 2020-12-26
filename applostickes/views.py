@@ -370,23 +370,49 @@ def createDebt(request):
         contador_listas_peoples = 0
 
         # extraemos las listas de usuarios involucrados en la compra
-        dict_de_elementos = {}
+        dict_de_compradores = {}
         for key in request_as_dict.keys():
             if 'people_paying_element_' in key:
                 contador_listas_peoples = contador_listas_peoples + 1
-                dict_de_elementos[key] = request_as_dict[key]
+                dict_de_compradores[key] = request_as_dict[key]
 
-        if len(request_as_dict['elements']) != contador_listas_peoples:
+        checkea_pagador_en_transaccion = True
+        if 'elements' in request_as_dict and 'elements_vue' in request_as_dict:
+            if (len(request_as_dict['elements']) + len(request_as_dict['elements_vue'])) != contador_listas_peoples:
+                todo_bien = False
+                checkea_pagador_en_transaccion = False
+                form.add_error(
+                    field='elements',
+                    error=forms.ValidationError('Hay elementos sin usuarios checkeados.')
+                )
+        elif 'elements' in request_as_dict:
+            if len(request_as_dict['elements']) != contador_listas_peoples:
+                todo_bien = False
+                checkea_pagador_en_transaccion = False
+                form.add_error(
+                    field='elements',
+                    error=forms.ValidationError('Hay elementos sin usuarios checkeados.')
+                )
+        elif 'elements_vue' in request_as_dict:
+            if len(request_as_dict['elements_vue']) != contador_listas_peoples:
+                todo_bien = False
+                checkea_pagador_en_transaccion = False
+                form.add_error(
+                    field='elements',
+                    error=forms.ValidationError('Había elementos nuevos sin usuarios checkeados.')
+                )
+        else:
             todo_bien = False
+            checkea_pagador_en_transaccion = False
             form.add_error(
                 field='elements',
-                error=forms.ValidationError('Hay elementos sin usuarios checkeados.')
+                error=forms.ValidationError('No has añadido ningún elemento a la transaccion.')
             )
 
         # obtenemos una lista de todos usuarios que pagan (repetidos)
         lista_de_todos_lospayers = []
-        for key in dict_de_elementos.keys():
-            lista_de_todos_lospayers.extend(dict_de_elementos[key])
+        for key in dict_de_compradores.keys():
+            lista_de_todos_lospayers.extend(dict_de_compradores[key])
 
         # eliminamos los duplicados (los sets en python son colecciones con esta propiedad)
         # no es necesario, pero las comprobaciones por "in" son mas rapidas con sets (me 
@@ -418,9 +444,9 @@ def createDebt(request):
 
         # y ahora jugamos un poco con los indices
         payer_element_distribution = ''
-        for key in dict_de_elementos.keys():
+        for key in dict_de_compradores.keys():
             element_distribution = ''
-            for usuario_pagador in dict_de_elementos[key]:
+            for usuario_pagador in dict_de_compradores[key]:
                 if usuario_pagador in peoples_paying_really:
                     element_distribution = element_distribution + f'{peoples_paying_really.index(usuario_pagador) + 1},'
             element_distribution = ','.join(sorted(element_distribution[0:(len(element_distribution)-1)].split(',')))
@@ -451,11 +477,12 @@ def createDebt(request):
         if request_as_dict['payer'][0] in peoples_paying_really:
             payer = str(peoples_paying_really.index(request_as_dict['payer'][0]) + 1)
         else:
-            todo_bien = False
-            form.add_error(
-                field='elements',
-                error=forms.ValidationError('El pagador no tiene nada en la transaccion.')
-            )
+            if checkea_pagador_en_transaccion:
+                todo_bien = False
+                form.add_error(
+                    field='elements',
+                    error=forms.ValidationError('El pagador no tiene nada en la transaccion.')
+                )
 
         # string final
         mapping = f'{payer}-{payer_element_distribution}'
