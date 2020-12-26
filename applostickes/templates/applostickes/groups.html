@@ -1,6 +1,5 @@
 {% extends "applostickes/base.html" %}
 {% block content %}
-
 {% for group_name, group_list in groups.items %}
 <div class="col-md-12">
   <a class="article-title" href="{% url 'group' groupName=group_name group_identifier=group_list.3 %}"> 
@@ -43,7 +42,7 @@
           </div>
         {% endfor %}
       </div>
-    </article> 
+    </article>
   </a>
 </div>
 {% endfor %}

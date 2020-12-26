@@ -33,11 +33,11 @@
         <div class="row">
           <div class="col">
             {% if debt.4 > 0 %}
-            <p>Coste: {{ debt.4 }} €</p>
+            <p class="text-muted">Coste: {{ debt.4 }} €</p>
             {% elif debt.4 == 0 %}
-            <p>Coste: 0.0 €</p><!-- por eso de que python no pilla decimales de 0 -->
+            <p class="text-muted">Coste: 0.0 €</p><!-- por eso de que python no pilla decimales de 0 -->
             {% else %}
-            <p>Coste: {{ debt.4 }} €</p>
+            <p class="text-muted">Coste: {{ debt.4 }} €</p>
             {% endif %}
           </div>
         </div>
@@ -46,11 +46,11 @@
         <div class="row">
           <div class="col">
             {% if debt.5 > 0 %}
-            <p>Balance (debes): {{ debt.5 }} €</p>
+            <p class="text-muted">Balance (debes): {{ debt.5 }} €</p>
             {% elif debt.5 == 0 %}
-            <p>Balance: 0.0 €</p><!-- por eso de que python no pilla decimales de 0 -->
+            <p class="text-muted">Balance: 0.0 €</p><!-- por eso de que python no pilla decimales de 0 -->
             {% else %}
-            <p>Balance (te deben): {{ debt.5 }} €</p>
+            <p class="text-muted">Balance (te deben): {{ debt.5 }} €</p>
             {% endif %}
           </div>
         </div>
@@ -60,11 +60,11 @@
           {% for user_name in debt.6 %}
           {% if forloop.last %}
           <div class="col">
-            <p>{{ user_name }}</p>
+            <p class="text-muted">{{ user_name }}</p>
           </div>
           {% else %}
           <div class="col border-right border-dark">
-            <p>{{ user_name }}</p>
+            <p class="text-muted">{{ user_name }}</p>
           </div>
           {% endif %}
           {% endfor %}
@@ -78,14 +78,14 @@
         <div class="col col-md-9 text-center">
           {% for responsible in element.1 %}
           {% if forloop.last %}
-          <span name="val">{{ responsible }}</span>
+          <span class="text-muted" name="val">{{ responsible }}</span>
           {% else %}
-          <span name="val">{{ responsible }}, </span>
+          <span class="text-muted" name="val">{{ responsible }}, </span>
           {% endif %}
           {% endfor %}
         </div>
         <div class="col">
-          <small style="float: right;" class="text-muted">{{ element.2 }} €</small>
+          <p style="float: right;" class="text-muted">{{ element.2 }} €</p>
         </div>
       </div>
       {% endfor %}
