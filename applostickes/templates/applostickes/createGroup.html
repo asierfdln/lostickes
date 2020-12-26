@@ -26,10 +26,52 @@
     },
     methods:{
       add: function(){
+
+        // ################################################################################
+        // EMPEZAMOS LA EXPLICACION EN PSEUDOCODIGO...
+        // ################################################################################
+
+        // coges el elemento "users" del html (no confundir con el "users = []" de Vue)
         var f = document.getElementsByName("users");
+
+        // obtienes el elemento seleccionado de f, el "user"
+        // var user = nosecomolohasestadohaciendo...;
+
+        // miras a ver si el "user" que has obtenido (el "var user" de arriba esta en el "users" de Vue)
+
+        // ############## OJO a esto ##############
+        // >>> a = ["a","b"]
+        // Array [ "a", "b" ]
+        // >>> a.includes("a")
+        // true
+        // ############## OJO a esto ##############
+
+        // if (this.users.includes(user)) {
+        //   pues_no_lo_metas_en_users_de_vue();
+        //   pues_no_lo_metas_en_html_con_el_append();
+        // } else {
+        //   pues_me_lo_metes_atope_en_users_de_vue();
+        //   pues_me_lo_metes_atope_en_html_con_el_append();
+        // }
+
+        // ########################################
+        // NO HACE FALTA HACER NINGUN FOR PARA NADA
+        // ########################################
+
+        // ################################################################################
+        // FIN DE LA EXPLICACION EN PSEUDOCODIGO...
+        // ################################################################################
+
         $("#added").append(
-              '<button style="display: inline;" type="button" class="btn btn-outline-danger mr-4" @click="remove"><span>&times;</span></button><p name="users_group" style="display: inline;" value="'+f[0][f[0].selectedIndex].value+'">'+f[0][f[0].selectedIndex].outerText+'</p><br/>'          
-            );
+          '<button style="display: inline;" type="button" class="btn btn-outline-danger mr-4" @click="remove">' +
+            '<span>&times;</span>' +
+          '</button>' +
+          '<p name="users_group" style="display: inline;" value="'+f[0][f[0].selectedIndex].value+'">' +
+            f[0][f[0].selectedIndex].outerText +
+          '</p>' +
+          '<br />'
+        );
+
         for(var e = 0; e < (this.users.length); e++){
           if(this.users[e] == f[0][f[0].selectedIndex].outerText){
             console.log("existe");
@@ -45,6 +87,7 @@
         
         console.log(this.users.length);
       },
+
       remove: function(){
         console.log("and I say... HEEEEEEEEEEEEYEEEEEEEEEEYEEEEEEEEEEEYEYE");
       }
