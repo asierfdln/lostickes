@@ -33,69 +33,7 @@
           {{ people.2 }}
         </label>
         {% endfor %}
-        <script type="text/javascript">
-          $(document).ready(function () {
-            // codigo para habilitar/deshabilitar checkboxes con cada elemento.checkbox
-            $("#id_elements_{{ forloop.counter0 }}").click(function () {
-              // si esta el bisho checkeado, me habilitas todas las weas de debajo (All, pepe, juan...)
-              if ($('#id_elements_{{ forloop.counter0 }}').is(":checked")) {
-                // habilitamos el All
-                $('input[id="checkall_id_elements_{{ forloop.counter0 }}"]').each(function () {
-                  $(this).prop("disabled", false);
-                });
-                // habilitamos a pepe, juan...
-                $('input[name="people_paying_element_{{ forloop.counter0 }}"]').each(function () {
-                  $(this).prop("disabled", false);
-                });
-              // si no esta el bisho checkeado, me deshabilitas todas las weas de debajo (All, pepe, juan...)
-              } else {
-                // deshabilitamos el All
-                $('input[id="checkall_id_elements_{{ forloop.counter0 }}"]').each(function () {
-                  $(this).prop("disabled", true);
-                });
-                // deshabilitamos a pepe, juan...
-                $('input[name="people_paying_element_{{ forloop.counter0 }}"]').each(function () {
-                  $(this).prop("disabled", true);
-                });
-              }
-            });
-            // codigo de checkbox All
-            $('#checkall_id_elements_{{ forloop.counter0 }}').click(function () {
-              // si el All esta checkiado, me checkeas a pepe, juan...
-              if ($('#checkall_id_elements_{{ forloop.counter0 }}').is(":checked")) {
-                $('input[name="people_paying_element_{{ forloop.counter0 }}"]').each(function () {
-                  $(this).prop("checked", true);
-                });
-              // si el All no esta checkiado, me descheckeas a pepe, juan...
-              } else {
-                $('input[name="people_paying_element_{{ forloop.counter0 }}"]').each(function () {
-                  $(this).prop("checked", false);
-                });
-              }
-            });
-            // codigo de cada checkbox independiente cuando le das a All
-            $('input[name="people_paying_element_{{ forloop.counter0 }}"]').bind('change', function () {
-              if ($('input[name="people_paying_element_{{ forloop.counter0 }}"]').filter(':not(:checked)').length == 0) {
-                $('#checkall_id_elements_{{ forloop.counter0 }}').prop("checked", true);
-              } else {
-                $('#checkall_id_elements_{{ forloop.counter0 }}').prop("checked", false);
-              }
-            });
-            // cuando volvemos de una form no valida... (un poco ñapa)
-            // si esta el bisho checkeado, me habilitas todas las weas de debajo (All, pepe, juan...)
-            if ($('#id_elements_{{ forloop.counter0 }}').is(":checked")) {
-              $('#checkall_id_elements_{{ forloop.counter0 }}').click()
-            } else {
-              // comenzamos con checkboxes deshabilitados
-              $('input[id="checkall_id_elements_{{ forloop.counter0 }}"]').each(function () {
-                $(this).prop("disabled", true);
-              });
-              $('input[name="people_paying_element_{{ forloop.counter0 }}"]').each(function () {
-                $(this).prop("disabled", true);
-              });
-            }
-          });
-        </script>
+        <script type="text/javascript" src="{% static 'applostickes/checkboxes.js' %}"></script>
       </ul>
     </li>
     {% endfor %}
@@ -142,7 +80,7 @@
     <label for="pr">Price:
       <input v-model="newPrice" id="pr" type="text" placeholder="Add price"> <!-- elemento de la data de Vue -->
     </label>
-    <button type="button" id="botonDeAdd" @click="saveElement">Add</button>
+    <button type="button" id="botonDeAdd" class="btn btn-primary ml-2" @click="saveElement">Add</button>
     <!-- al hacer click en botón se envia el nuevo elemento a la lista -->
   </ul>
   <div id="elements-alerts2"></div><br />

@@ -33,11 +33,10 @@ creo que en vue no esta lo de que no haya usuarios checkeados para un elemento s
 --------------------------------------------- asier ----------------------------------------------
 --------------------------------------------------------------------------------------------------
 
-debts pero tb con las que eres dueño hombre
+que en debt no aparezca con colores los nombres de cada uno en colores... porque no se ve...
 
-mover jss
---> de cara a mover lo de jquery, seguro que se puede hacer con un each(function() de todos los
-    elemetnos de id id_elements_X y pues ir programando los efectos en cada each...)
+los elementos nuevos de vue...
+
 -> piechart con info de balances justo debajo del cosobox este que flota de irache (d3.js????????)
 
 -> modify debt, de clickar en una propia transaccion desde la vista de deuda y que te lleve a 
