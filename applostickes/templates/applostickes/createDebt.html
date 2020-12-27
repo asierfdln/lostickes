@@ -39,16 +39,16 @@
         {% endfor %}
       </ul>
     {% else %}
-      {{ field }}<br />
+      {% if forloop.counter == 2 or forloop.counter == 4 %}
+        {{ field }}
+      {% else %}
+        {{ field }}<br />
+      {% endif %}
     {% endif %}
     {% if forloop.counter == 3 %}
-    {% elif forloop.counter == 2 %}
-      {% if field.help_text %}
-        {{ field.help_text|safe }}<br />
-      {% endif %}
     {% else %}
       {% if field.help_text %}
-        {{ field.help_text|safe }}<br /><br />
+        <small class="form-text text-muted">{{ field.help_text|safe }}</small><br />
       {% endif %}
     {% endif %}
   {% endfor %}

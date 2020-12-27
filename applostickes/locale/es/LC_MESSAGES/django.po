@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-12-27 15:15+0100\n"
+"POT-Creation-Date: 2020-12-27 16:20+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -30,45 +30,37 @@ msgstr "Usuarios a añadir..."
 msgid "Only positive integers allowed"
 msgstr "Solo se permiten numeros positivos"
 
-#: .\applostickes\models.py:144
-msgid "Name of transaction"
-msgstr "Nombre de la transacción"
-
-#: .\applostickes\models.py:149
-msgid "Description of transaction"
-msgstr "Descripción de la transacción"
-
-#: .\applostickes\models.py:162
+#: .\applostickes\models.py:160
 msgid "Users involved in transaction."
 msgstr "Usuarios involucrados en la transacción"
 
-#: .\applostickes\models.py:167
+#: .\applostickes\models.py:165
 #, fuzzy
 #| msgid "Didn't add elements to the transaction."
 msgid "Elements involved in transaction."
 msgstr "No has añadido ningún elemento a la transaccion."
 
-#: .\applostickes\models.py:173
+#: .\applostickes\models.py:171
 msgid "Mapping of whose is what and such..."
 msgstr "Correspondencia de qué cosa es de quién..."
 
-#: .\applostickes\models.py:382
+#: .\applostickes\models.py:400
 msgid "Name"
 msgstr "Nombre"
 
-#: .\applostickes\models.py:383
+#: .\applostickes\models.py:401
 msgid "Description"
 msgstr "Descripción"
 
-#: .\applostickes\models.py:388
+#: .\applostickes\models.py:406
 msgid "Payer"
 msgstr "Pagador"
 
-#: .\applostickes\models.py:390
+#: .\applostickes\models.py:408
 msgid "Member of group paying for the whole thing."
 msgstr "Miembro del grupo que va a pagar la cuenta"
 
-#: .\applostickes\models.py:392
+#: .\applostickes\models.py:410
 msgid "Elements"
 msgstr "Elementos"
 
@@ -338,6 +330,12 @@ msgstr "El pagador no tiene nada en la transaccion."
 #: .\applostickes\views.py:660
 msgid "Debt payed!"
 msgstr "¡La deuda ha sido pagada!"
+
+#~ msgid "Name of transaction"
+#~ msgstr "Nombre de la transacción"
+
+#~ msgid "Description of transaction"
+#~ msgstr "Descripción de la transacción"
 
 #, fuzzy
 #~| msgid "Balance (you owe)"

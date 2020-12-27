@@ -140,13 +140,11 @@ class Transaction(models.Model):
 
     name = models.CharField(
         max_length=55,
-        blank=False,
-        help_text=_('Name of transaction')
+        blank=False
     )
     desc = models.TextField(
         max_length=280,
-        blank=False,
-        help_text=_('Description of transaction')
+        blank=False
     )
 
     primkey = models.UUIDField(primary_key=True, editable=False, default=uuid.uuid4)
@@ -349,6 +347,22 @@ class TransactionForm(forms.ModelForm):
             'elements',
         ]
 
+    name = forms.CharField(
+        widget=forms.TextInput(
+            attrs={
+                'class': 'textinput textInput form-control',
+            }
+        )
+    )
+
+    desc = forms.CharField(
+        widget=forms.Textarea(
+            attrs={
+                'class': 'textarea form-control',
+            }
+        )
+    )
+
     user_group = forms.ModelChoiceField(
         empty_label=None,
         queryset=None,
@@ -358,7 +372,11 @@ class TransactionForm(forms.ModelForm):
     payer = forms.ModelChoiceField(
         empty_label=None,
         queryset=None,
-        widget=forms.Select
+        widget=forms.Select(
+            attrs={
+                'class': 'select form-control',
+            }
+        )
     )
 
     elements = forms.ModelMultipleChoiceField(
