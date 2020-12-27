@@ -1,5 +1,6 @@
 {% extends "applostickes/base.html" %}
 {% load static %}
+{% load i18n %}
 {% block content %}
 {% if messages %}
 {% for message in messages %}
@@ -55,11 +56,11 @@
               <div class="row">
                 <div class="col">
                   {% if trans_list.2 > 0 %}
-                  <p class="text-muted">Coste: {{ trans_list.2 }} €</p>
+                  <p class="text-muted">{% trans "Cost" %}: {{ trans_list.2 }} €</p>
                   {% elif trans_list.2 == 0 %}
-                  <p class="text-muted">Coste: 0.0 €</p><!-- por eso de que python no pilla decimales de 0 -->
+                  <p class="text-muted">{% trans "Cost" %}: 0.0 €</p><!-- por eso de que python no pilla decimales de 0 -->
                   {% else %}
-                  <p class="text-muted">Coste: {{ trans_list.2 }} €</p>
+                  <p class="text-muted">{% trans "Cost" %}: {{ trans_list.2 }} €</p>
                   {% endif %}
                 </div>
               </div>
@@ -68,11 +69,11 @@
               <div class="row">
                 <div class="col">
                   {% if trans_list.3 > 0 %}
-                  <p name="bal" class="text-muted">Balance (debes): {{ trans_list.3 }} €</p>
+                  <p name="bal" class="text-muted">{% trans "Balance (you owe)" %}: {{ trans_list.3 }} €</p>
                   {% elif trans_list.3 == 0 %}
-                  <p name="bal" class="text-muted">Balance: 0.0 €</p><!-- por eso de que python no pilla decimales de 0 -->
+                  <p name="bal" class="text-muted">{% trans "Balance" %}: 0.0 €</p><!-- por eso de que python no pilla decimales de 0 -->
                   {% else %}
-                  <p name="bal" class="text-muted">Balance (te deben): {{ trans_list.3 }} €</p>
+                  <p name="bal" class="text-muted">{% trans "Balance (you are owed)" %}: {{ trans_list.3 }} €</p>
                   {% endif %}
                 </div>
               </div>
@@ -128,16 +129,14 @@
 {%block side %}
 <div id="sidebar" class="col-md-4">
   <div class="content-section">
-    <h3>Options</h3>
+    <h3>{% trans "Options" %}</h3>
     <p class='text-muted'>
-    <ul class="list-group">
-      <li class="list-group-item list-group-item-light"><a class="article-title" href="{% url 'user' %}">Home</a></li>
-      <li class="list-group-item list-group-item-light"><a class="article-title" href="{% url 'groups' %}">Groups</a>
-      </li>
-      <li class="list-group-item list-group-item-light"><a class="article-title" href="#">Debts</a></li>
-      <li class="list-group-item list-group-item-light"><a class="article-title" href="{% url 'createGroup' %}">Create
-          group</a></li>
-    </ul>
+      <ul class="list-group">
+        <li class="list-group-item list-group-item-light"><a class="article-title" href="{% url 'user' %}">{% trans "Home" %}</a></li>
+        <li class="list-group-item list-group-item-light"><a class="article-title" href="{% url 'groups' %}">{% trans "Groups" %}</a></li>
+        <li class="list-group-item list-group-item-light"><a class="article-title" href="{% url 'debts' %}">{% trans "Debts" %}</a></li>
+        <li class="list-group-item list-group-item-light"><a class="article-title" href="{% url 'createGroup' %}">{% trans "Create group" %}</a></li>
+      </ul>
     </p>
   </div>
   <div>

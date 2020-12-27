@@ -1,6 +1,6 @@
 {% extends "applostickes/base.html" %}
-{% load i18n %}
 {% load static %}
+{% load i18n %}
 {% block content %}
 {% for group_name, group_list in groups.items %}
   <div class="col-md-12">
@@ -21,11 +21,11 @@
             <div class="row">
               <div class="col-xs-12 col-sm-12">
                 {% if group_list.1 > 0 %}
-                <p id="balance_grupo" style="justify-content: center; color: red;">Balance de grupo (debes): {{ group_list.1 }} €</p>
+                  <p id="balance_grupo" style="justify-content: center; color: red;">{% trans "Group balance (you owe)" %}: {{ group_list.1 }} €</p>
                 {% elif group_list.1 == 0 %}
-                <p id="balance_grupo" style="justify-content: center;" class="text-muted">Balance de grupo: 0.0 €</p><!-- por eso de que python no pilla decimales de 0 -->
+                  <p id="balance_grupo" style="justify-content: center;" class="text-muted">{% trans "Group balance" %}: 0.0 €</p><!-- por eso de que python no pilla decimales de 0 -->
                 {% else %}
-                <p id="balance_grupo" style="justify-content: center; color: forestgreen;" >Balance de grupo (te deben): {{ group_list.1 }} €</p>
+                  <p id="balance_grupo" style="justify-content: center; color: forestgreen;" >{% trans "Group balance (you are owed)" %}: {{ group_list.1 }} €</p>
                 {% endif %}
               </div>
             </div>
@@ -34,11 +34,11 @@
             <div class="row">
               <div class="col"><p style="display: inline;" class="text-muted">{{ transaction.0 }}</p>
                 {% if transaction.1 > 0 %}
-                <small style="float: right; color: red;">Balance de deuda (debes): {{ transaction.1 }} €</small>
+                  <small style="float: right; color: red;">{% trans "Debt balance (you owe)" %}: {{ transaction.1 }} €</small>
                 {% elif transaction.1 == 0 %}
-                <small style="float: right;" class="text-muted">Balance de deuda: {{ transaction.1 }} €</small>
+                  <small style="float: right;" class="text-muted">{% trans "Debt balance" %}: {{ transaction.1 }} €</small>
                 {% else %}
-                <small style="float: right; color: forestgreen;">Balance de deuda (te deben): {{ transaction.1 }} €</small>
+                  <small style="float: right; color: forestgreen;">{% trans "Debt balance (you are owed)" %}: {{ transaction.1 }} €</small>
                 {% endif %}
               </div>
             </div>
@@ -55,8 +55,8 @@
     <h3>{% trans "Options" %}</h3>
     <p class='text-muted'>
       <ul class="list-group">
-        <li class="list-group-item list-group-item-light"><a class="article-title" href="#">{% trans "Home" %}</a></li>
-        <li class="list-group-item list-group-item-light"><a class="article-title" href="{% url 'groups' %}">{% trans "Groups" %}</a></li>
+        <li class="list-group-item list-group-item-light"><a class="article-title" href="{% url 'user' %}">{% trans "Home" %}</a></li>
+        <li class="list-group-item list-group-item-light"><a class="article-title" href="#">{% trans "Groups" %}</a></li>
         <li class="list-group-item list-group-item-light"><a class="article-title" href="{% url 'debts' %}">{% trans "Debts" %}</a></li>
         <li class="list-group-item list-group-item-light"><a class="article-title" href="{% url 'createGroup' %}">{% trans "Create group" %}</a></li>
       </ul>

@@ -1,4 +1,5 @@
 {% extends "applostickes/base.html" %}
+{% load i18n %}
 {% load crispy_forms_tags %}
 {% block content %}
 <form method="POST">
@@ -7,7 +8,7 @@
   <div id="app">
     <input type="button" style="display: inline;" class="btn btn-outline-info btn-block" value="Add User" @click="add" />
     <br /><br />
-    <p>Added users:</p>
+    <p>{% trans "Added users" %}:</p>
     <div id="added">
     </div>
     <br />
@@ -72,15 +73,14 @@
 {%block side %}
 <div id="sidebar" class="col-md-4">
   <div class="content-section">
-    <h3>Options</h3>
+    <h3>{% trans "Options" %}</h3>
     <p class='text-muted'>
-    <ul class="list-group">
-      <li class="list-group-item list-group-item-light"><a class="article-title" href="{% url 'user' %}">Home</a></li>
-      <li class="list-group-item list-group-item-light"><a class="article-title" href="{% url 'groups' %}">Groups</a>
-      </li>
-      <li class="list-group-item list-group-item-light"><a class="article-title" href="{% url 'debts' %}">Debts</a></li>
-      <li class="list-group-item list-group-item-light"><a class="article-title" href="#">Create group</a></li>
-    </ul>
+      <ul class="list-group">
+        <li class="list-group-item list-group-item-light"><a class="article-title" href="{% url 'user' %}">{% trans "Home" %}</a></li>
+        <li class="list-group-item list-group-item-light"><a class="article-title" href="{% url 'groups' %}">{% trans "Groups" %}</a></li>
+        <li class="list-group-item list-group-item-light"><a class="article-title" href="{% url 'debts' %}">{% trans "Debts" %}</a></li>
+        <li class="list-group-item list-group-item-light"><a class="article-title" href="{% url 'createGroup' %}">{% trans "Create group" %}</a></li>
+      </ul>
     </p>
   </div>
 </div>
