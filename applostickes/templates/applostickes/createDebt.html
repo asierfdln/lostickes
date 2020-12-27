@@ -75,10 +75,10 @@
   </ul>
   <br />
   <label for="el">New element:
-    <input v-model="newElement" id="el" type="text" placeholder="{% trans 'Add product' %}"> <!-- elemento de la data de Vue -->
+    <input v-model="newElement" class="textinput textInput form-control" id="el" type="text" placeholder="{% trans 'Add product' %}"> <!-- elemento de la data de Vue -->
   </label>
   <label for="pr">Price:
-    <input v-model="newPrice" id="pr" type="text" placeholder="{% trans 'Add price' %}"> <!-- elemento de la data de Vue -->
+    <input v-model="newPrice" class="textinput textInput form-control" id="pr" type="text" placeholder="{% trans 'Add price' %}"> <!-- elemento de la data de Vue -->
   </label>
   <button type="button" id="botonDeAdd" class="btn btn-primary ml-2" @click="saveElement">{% trans "Add" %}</button>
   <!-- al hacer click en botón se envia el nuevo elemento a la lista -->
