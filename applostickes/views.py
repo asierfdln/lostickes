@@ -3,6 +3,7 @@ from django.contrib import messages
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
+from django.utils.translation import gettext as _
 from .models import UserForm, UserGroupForm, TransactionForm
 from .models import User, UserGroup, Transaction, Element
 import applostickes
@@ -52,7 +53,7 @@ def logout_view(request):
     # cerramos sesion del usuario
     logout(request)
     #cargamos un mensaje para la siguiente view
-    messages.success(request, 'You have been logged out, see ya soon!')
+    messages.success(request, _('You have been logged out, see ya soon!'))
     # redirigimos a main
     return redirect('main')
 

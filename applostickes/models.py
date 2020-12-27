@@ -42,12 +42,12 @@ class UserForm(UserCreationForm):
 
 class UserGroup(models.Model):
 
-    name = models.CharField(max_length=55, blank=False)
-    desc = models.TextField(max_length=280, blank=False)
+    name = models.CharField(max_length=55, blank=False) # _('ug_name')
+    desc = models.TextField(max_length=280, blank=False) # _('ug_desc')
 
     primkey = models.UUIDField(primary_key=True, editable=False, default=uuid.uuid4)
 
-    users = models.ManyToManyField(User, blank=False, help_text="Usuarios pertenecientes al grupo.")
+    users = models.ManyToManyField(User, blank=False, help_text="Usuarios pertenecientes al grupo.") # _('ug_users')
 
     ugidentifier = None
 
