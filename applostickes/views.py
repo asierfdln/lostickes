@@ -36,7 +36,7 @@ def register(request):
         # lo guardamos en base de datos
         user_modelonuestro.save()
         # cargamos un mensajito para la siguiente pagina
-        messages.success(request, "User signed up, let's try it out...")
+        messages.success(request, _("User signed up, let's try it out..."))
         # nos vamos a login
         return redirect('login')
 
