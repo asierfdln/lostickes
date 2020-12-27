@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-12-27 13:25+0100\n"
+"POT-Creation-Date: 2020-12-27 13:39+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -242,21 +242,41 @@ msgstr "Cuenta registrada, vamos a probar..."
 msgid "You have been logged out, see ya soon!"
 msgstr "Has cerrado la sesión, ¡hasta pronto!"
 
-#: .\applostickes\views.py:181
+#: .\applostickes\views.py:181 .\applostickes\views.py:282
 msgid " (OWNER)"
 msgstr " (DUEÑO)"
 
-#: .\applostickes\views.py:184
+#: .\applostickes\views.py:184 .\applostickes\views.py:285
 msgid " (PAYED)"
 msgstr " (PAGAU)"
 
-#: .\applostickes\views.py:186
+#: .\applostickes\views.py:186 .\applostickes\views.py:287
 msgid " (OWS)"
 msgstr " (DEBE)"
 
 #: .\applostickes\views.py:218
 msgid "You didn't add any users."
 msgstr "No has añadido ningún usuario."
+
+#: .\applostickes\views.py:416 .\applostickes\views.py:424
+msgid "Elements without users attached were found."
+msgstr "Hay elementos sin usuarios checkeados."
+
+#: .\applostickes\views.py:433
+msgid "New elements without users attached were found."
+msgstr "Había elementos nuevos sin usuarios checkeados."
+
+#: .\applostickes\views.py:441
+msgid "Didn't add elements to the transaction."
+msgstr "No has añadido ningún elemento a la transaccion."
+
+#: .\applostickes\views.py:471
+msgid "Can't have a one-user transaction."
+msgstr "No puedes tener un único usuario en la transaccion."
+
+#: .\applostickes\views.py:518
+msgid "Transaction owner has not elements attached."
+msgstr "El pagador no tiene nada en la transaccion."
 
 #, fuzzy
 #~| msgid "Balance (you owe)"

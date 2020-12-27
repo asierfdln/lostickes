@@ -279,12 +279,12 @@ def group(request, groupName, group_identifier):
         for payer in transaction.payers.all():
             payer_name = payer.django_user.username
             if transaction.get_score_role(payer.primkey) == 'OWNER':
-                payer_name = payer_name + ' (OWNER)'
+                payer_name = payer_name + _(' (OWNER)')
             elif transaction.get_score_role(payer.primkey) == 'DEBTER':
                 if transaction.get_score_state(payer.primkey) == 'PAYED':
-                    payer_name = payer_name + ' (PAYED)'
+                    payer_name = payer_name + _(' (PAYED)')
                 elif transaction.get_score_state(payer.primkey) == 'NOTPAYED':
-                    payer_name = payer_name + ' (OWS)'
+                    payer_name = payer_name + _(' (OWS)')
             # añadimos ese nombre modificado en la lista de nombres para la transaccion
             lista_nombres.append(payer_name)
 
@@ -412,7 +412,8 @@ def createDebt(request):
                 checkea_pagador_en_transaccion = False
                 form.add_error(
                     field='elements',
-                    error=forms.ValidationError('Hay elementos sin usuarios checkeados.')
+                    # error=forms.ValidationError('Hay elementos sin usuarios checkeados.')
+                    error=forms.ValidationError(_('Elements without users attached were found.'))
                 )
         elif 'elements' in request_as_dict:
             if len(request_as_dict['elements']) != contador_listas_peoples:
@@ -420,7 +421,7 @@ def createDebt(request):
                 checkea_pagador_en_transaccion = False
                 form.add_error(
                     field='elements',
-                    error=forms.ValidationError('Hay elementos sin usuarios checkeados.')
+                    error=forms.ValidationError(_('Elements without users attached were found.'))
                 )
         elif 'elements_vue' in request_as_dict:
             if len(request_as_dict['elements_vue']) != contador_listas_peoples:
@@ -428,14 +429,16 @@ def createDebt(request):
                 checkea_pagador_en_transaccion = False
                 form.add_error(
                     field='elements',
-                    error=forms.ValidationError('Había elementos nuevos sin usuarios checkeados.')
+                    # error=forms.ValidationError('Había elementos nuevos sin usuarios checkeados.')
+                    error=forms.ValidationError(_('New elements without users attached were found.'))
                 )
         else:
             todo_bien = False
             checkea_pagador_en_transaccion = False
             form.add_error(
                 field='elements',
-                error=forms.ValidationError('No has añadido ningún elemento a la transaccion.')
+                # error=forms.ValidationError('No has añadido ningún elemento a la transaccion.')
+                error=forms.ValidationError(_("Didn't add elements to the transaction."))
             )
 
         # obtenemos una lista de todos usuarios que pagan (repetidos)
@@ -464,7 +467,8 @@ def createDebt(request):
             todo_bien = False
             form.add_error(
                 field='elements',
-                error=forms.ValidationError('No puedes tener un único usuario en la transaccion.')
+                # error=forms.ValidationError('No puedes tener un único usuario en la transaccion.')
+                error=forms.ValidationError(_("Can't have a one-user transaction."))
             )
 
         # OJO al conjuro...
@@ -510,7 +514,8 @@ def createDebt(request):
                 todo_bien = False
                 form.add_error(
                     field='elements',
-                    error=forms.ValidationError('El pagador no tiene nada en la transaccion.')
+                    # error=forms.ValidationError('El pagador no tiene nada en la transaccion.')
+                    error=forms.ValidationError(_('Transaction owner has not elements attached.'))
                 )
 
         # string final
