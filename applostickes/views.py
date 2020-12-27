@@ -657,19 +657,18 @@ def pay_debt(request, debt_identifier):
         # que nos han pagado ya todos
         transaction_to_work_with.mark_as_payed()
 
+    messages.success(request, _('Debt payed!'))
+
     # si hemos venido desde debts
     if applostickes.debts_or_group_enter_point_to_debt_0_or_1 == 0:
-        messages.success(request, 'Debt payed!')
         return redirect('debts')
 
     # si hemos venido desde group
     elif applostickes.debts_or_group_enter_point_to_debt_0_or_1 == 1:
-        messages.success(request, 'Debt payed!')
         group_name = applostickes.from_group_view_url_string.split('-')[0]
         group_identifier = applostickes.from_group_view_url_string.split('-')[1]
         return redirect('group', group_name, group_identifier)
 
     # si ha pasado algo raro (refescos de pag o lo que sea...)
     else:
-        messages.success(request, 'Debt payed!')
         return redirect('user')

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-12-27 13:53+0100\n"
+"POT-Creation-Date: 2020-12-27 13:56+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -280,6 +280,10 @@ msgstr "No puedes tener un único usuario en la transaccion."
 #: .\applostickes\views.py:518
 msgid "Transaction owner has not elements attached."
 msgstr "El pagador no tiene nada en la transaccion."
+
+#: .\applostickes\views.py:660
+msgid "Debt payed!"
+msgstr "¡La deuda ha sido pagada!"
 
 #, fuzzy
 #~| msgid "Balance (you owe)"
