@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-12-27 13:39+0100\n"
+"POT-Creation-Date: 2020-12-27 13:53+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -243,14 +243,17 @@ msgid "You have been logged out, see ya soon!"
 msgstr "Has cerrado la sesión, ¡hasta pronto!"
 
 #: .\applostickes\views.py:181 .\applostickes\views.py:282
+#: .\applostickes\views.py:601
 msgid " (OWNER)"
 msgstr " (DUEÑO)"
 
 #: .\applostickes\views.py:184 .\applostickes\views.py:285
+#: .\applostickes\views.py:604
 msgid " (PAYED)"
 msgstr " (PAGAU)"
 
 #: .\applostickes\views.py:186 .\applostickes\views.py:287
+#: .\applostickes\views.py:606
 msgid " (OWS)"
 msgstr " (DEBE)"
 

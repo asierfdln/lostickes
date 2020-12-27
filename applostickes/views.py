@@ -598,12 +598,12 @@ def debt(request, debtName, transaction_identifier):
         if transaction_to_display.get_score_role(payer.primkey) == 'OWNER':
             if payer_name == user_to_work_with.django_user.username:
                 context['debt'][8] = 1 # el usuario es el OWNER de la deuda
-            payer_name = payer_name + ' (OWNER)'
+            payer_name = payer_name + _(' (OWNER)')
         elif transaction_to_display.get_score_role(payer.primkey) == 'DEBTER':
             if transaction_to_display.get_score_state(payer.primkey) == 'PAYED':
-                payer_name = payer_name + ' (PAYED)'
+                payer_name = payer_name + _(' (PAYED)')
             elif transaction_to_display.get_score_state(payer.primkey) == 'NOTPAYED':
-                payer_name = payer_name + ' (OWS)'
+                payer_name = payer_name + _(' (OWS)')
         context['debt'][6].append(payer_name)
 
     # cogemos cada uno de los usuarios responsables de cada elemento y hacemos una
