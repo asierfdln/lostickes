@@ -6,6 +6,8 @@ txtmagiko.txt
 
 prueba*
 
+*.drawio
+
 helpPickleObject.txt
 
 applostickes/__pycache__/*
