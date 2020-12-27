@@ -21,13 +21,7 @@ usernames = [
 --------------------------------------------- iraxe ----------------------------------------------
 --------------------------------------------------------------------------------------------------
 
-i18n
-
-html <select> para usuarios del usergroup
---> mira la consola del buscador y descomenta el @iraxe de base.html...
---> creo que el selectize no funciona, prueba con alguno de estos si no... https://selectize.github.io/selectize.js/
-
-creo que en vue no esta lo de que no haya usuarios checkeados para un elemento si checkeado...
+poner bonica la view de createDebt...
 
 --------------------------------------------------------------------------------------------------
 --------------------------------------------- asier ----------------------------------------------
@@ -37,6 +31,6 @@ debt borrar si eres owner y ya esta pagada (o no....)
 
 i18n
 
-crispyforms en python...
+ajax elementos
 
-borrar elementos... meh...
+crispy
