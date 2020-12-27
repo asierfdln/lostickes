@@ -1,4 +1,5 @@
 {% extends "applostickes/base.html" %}
+{% load i18n %}
 {% block content %}
 <style>
   div {
@@ -12,14 +13,14 @@
     <a role="button" class="article-title" href="{% url 'login' %}">
       <div class="content-section">
         <p>
-        <h3>Login</h3>
+          <h3>{% trans "Log in" %}</h3>
         </p>
       </div>
     </a>
     <a role="button" class="article-title" href="{% url 'register' %}">
       <div class="content-section">
         <p>
-        <h3>Register</h3>
+          <h3>{% trans "Register" %}</h3>
         </p>
       </div>
     </a>

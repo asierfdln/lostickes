@@ -1,24 +1,25 @@
 {% extends "applostickes/base.html" %}
+{% load i18n %}
 {% load crispy_forms_tags %}
 {% block content %}
 <div class="col">
   <form method="POST">
     {% csrf_token %}
     <fieldset class="form-group">
-      <legend class="">Join Today!</legend>
+      <legend class="">{% trans "Join Today!" %}</legend>
       {{ form | crispy }}
     </fieldset>
     <div class="form group">
-      <a role="button" class="btn btn-outline-secondary mr-2" href="{% url 'main' %}">Cancel</a>
-      <button class="btn btn-outline-info" type="submit">Sign Up</button>
+      <a role="button" class="btn btn-outline-secondary mr-2" href="{% url 'main' %}">{% trans "Cancel" %}</a>
+      <button class="btn btn-outline-info" type="submit">{% trans "Sign up" %}</button>
     </div>
   </form>
   <br />
   <div class="border-top pt3">
     <small class="text-muted">
-      Already have and account?
+      {% trans "Already have an account?" %}
       <a href="{% url 'login' %}">
-        Log In
+        {% trans "Log in" %}
       </a>
     </small>
   </div>

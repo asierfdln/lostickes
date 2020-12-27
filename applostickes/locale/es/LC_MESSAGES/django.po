@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-12-27 05:09+0100\n"
+"POT-Creation-Date: 2020-12-27 06:22+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,6 +17,106 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: .\applostickes\templates\applostickes\base.html:41
+#: .\applostickes\templates\applostickes\base.html:69
+msgid "About"
+msgstr "Acerca de"
+
+#: .\applostickes\templates\applostickes\base.html:56
+#, fuzzy
+#| msgid "Log in"
+msgid "Log out"
+msgstr "Cerrar sesión"
+
+#: .\applostickes\templates\applostickes\base.html:73
+#: .\applostickes\templates\applostickes\login.html:21
+#: .\applostickes\templates\applostickes\main.html:16
+#: .\applostickes\templates\applostickes\register.html:22
+msgid "Log in"
+msgstr "Iniciar sesión"
+
+#: .\applostickes\templates\applostickes\base.html:74
+#: .\applostickes\templates\applostickes\main.html:23
+msgid "Register"
+msgstr "Registrarse"
+
+#: .\applostickes\templates\applostickes\login.html:9
+msgid "Hey there!"
+msgstr "¡Buenas!"
+
+#: .\applostickes\templates\applostickes\login.html:20
+#: .\applostickes\templates\applostickes\register.html:13
+msgid "Cancel"
+msgstr "Cancelar"
+
+#: .\applostickes\templates\applostickes\login.html:27
+msgid "Don't have an account?"
+msgstr "¿Todavía no tienes cuenta?"
+
+#: .\applostickes\templates\applostickes\login.html:29
+#: .\applostickes\templates\applostickes\register.html:14
+msgid "Sign up"
+msgstr "Regístrate"
+
+#: .\applostickes\templates\applostickes\register.html:9
+msgid "Join Today!"
+msgstr "¡Únete hoy!"
+
+#: .\applostickes\templates\applostickes\register.html:20
+msgid "Already have an account?"
+msgstr "¿Ya tienes cuenta?"
+
+#: .\applostickes\templates\applostickes\user.html:22
+#: .\applostickes\templates\applostickes\user.html:95
+msgid "Groups"
+msgstr "Grupos"
+
+#: .\applostickes\templates\applostickes\user.html:29
+#: .\applostickes\templates\applostickes\user.html:40
+#: .\applostickes\templates\applostickes\user.html:63
+#: .\applostickes\templates\applostickes\user.html:74
+msgid "Balance (you owe)"
+msgstr "Balance (debes)"
+
+#: .\applostickes\templates\applostickes\user.html:31
+#: .\applostickes\templates\applostickes\user.html:42
+#: .\applostickes\templates\applostickes\user.html:65
+#: .\applostickes\templates\applostickes\user.html:76
+#, fuzzy
+#| msgid "Cancel"
+msgid "Balance"
+msgstr "Balance"
+
+#: .\applostickes\templates\applostickes\user.html:33
+#: .\applostickes\templates\applostickes\user.html:44
+#: .\applostickes\templates\applostickes\user.html:67
+#: .\applostickes\templates\applostickes\user.html:78
+msgid "Balance (you are owed)"
+msgstr "Balance (te deben)"
+
+#: .\applostickes\templates\applostickes\user.html:56
+#: .\applostickes\templates\applostickes\user.html:97
+msgid "Debts"
+msgstr "Deudas"
+
+#: .\applostickes\templates\applostickes\user.html:91
+msgid "Options"
+msgstr "Opciones"
+
+#: .\applostickes\templates\applostickes\user.html:94
+msgid "Home"
+msgstr "Inicio"
+
+#: .\applostickes\templates\applostickes\user.html:98
+msgid "Create group"
+msgstr "Crear grupo"
+
 #: .\applostickes\views.py:56
 msgid "You have been logged out, see ya soon!"
 msgstr "Has cerrado la sesión, ¡hasta pronto!"
+
+#, fuzzy
+#~| msgid "Log in"
+#~ msgid "Log In"
+#~ msgstr "Iniciar sesión"

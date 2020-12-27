@@ -20,9 +20,9 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
 
     {% if title %}
-    <title>Tickount - {{ title }}</title>
+      <title>Tickount - {{ title }}</title>
     {% else %}
-    <title>Tickount</title>
+      <title>Tickount</title>
     {% endif %}
   </head>
 
@@ -31,57 +31,49 @@
       <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
         <div class="container">
           {% if user.is_authenticated %}
-          <img src="{% static 'applostickes/dollar-rotation-icon.ico' %}" width="50" height="50"
-            class="d-inline-block align-top mr-4" alt="">
-          <a class="navbar-brand mr-4" href="{% url 'user' %}">Tickount</a>
-          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle"
-            aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarToggle">
-            <div class="navbar-nav mr-auto">
-              <a class="nav-item nav-link" href="{% url 'about' %}">About</a>
-            </div>
-            <!-- Navbar Right Side -->
-            <div class="navbar-nav">
-              <div class="dropdown">
-                <button style="background-color: #17a2b8; border-color: #17a2b8;" class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
-                  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  <svg width="1.5em" height="1.5em" viewBox="0 0 16 16" class="bi bi-person-circle" fill="currentColor"
-                    xmlns="http://www.w3.org/2000/svg">
-                    <path
-                      d="M13.468 12.37C12.758 11.226 11.195 10 8 10s-4.757 1.225-5.468 2.37A6.987 6.987 0 0 0 8 15a6.987 6.987 0 0 0 5.468-2.63z" />
-                    <path fill-rule="evenodd" d="M8 9a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" />
-                    <path fill-rule="evenodd"
-                      d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1zM0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8z" />
-                  </svg>
-                  <br />
-                  {{ username }}
-                </button>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                  <a class="dropdown-item" href="{% url 'logout' %}">Log out</a>
+            <img src="{% static 'applostickes/dollar-rotation-icon.ico' %}" width="50" height="50" class="d-inline-block align-top mr-4" alt="">
+            <a class="navbar-brand mr-4" href="{% url 'user' %}">Tickount</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarToggle">
+              <div class="navbar-nav mr-auto">
+                <a class="nav-item nav-link" href="{% url 'about' %}">{% trans "About" %}</a>
+              </div>
+              <!-- Navbar Right Side -->
+              <div class="navbar-nav">
+                <div class="dropdown">
+                  <button style="background-color: #17a2b8; border-color: #17a2b8;" class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <svg width="1.5em" height="1.5em" viewBox="0 0 16 16" class="bi bi-person-circle" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M13.468 12.37C12.758 11.226 11.195 10 8 10s-4.757 1.225-5.468 2.37A6.987 6.987 0 0 0 8 15a6.987 6.987 0 0 0 5.468-2.63z" />
+                      <path fill-rule="evenodd" d="M8 9a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" />
+                      <path fill-rule="evenodd" d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1zM0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8z" />
+                    </svg>
+                    <br />
+                    {{ username }}
+                  </button>
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item" href="{% url 'logout' %}">{% trans "Log out" %}</a>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
           {% else %}
-          <img src="{% static 'applostickes/dollar-rotation-icon.ico' %}" width="50" height="50"
-            class="d-inline-block align-top mr-4" alt="">
-          <a class="navbar-brand mr-4" href="{% url 'main' %}">Tickount</a>
-          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle"
-            aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarToggle">
-            <div class="navbar-nav mr-auto">
-              <a class="nav-item nav-link" href="{% url 'about' %}">About</a>
+            <img src="{% static 'applostickes/dollar-rotation-icon.ico' %}" width="50" height="50" class="d-inline-block align-top mr-4" alt="">
+            <a class="navbar-brand mr-4" href="{% url 'main' %}">Tickount</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarToggle">
+              <div class="navbar-nav mr-auto">
+                <a class="nav-item nav-link" href="{% url 'about' %}">{% trans "About" %}</a>
+              </div>
+              <!-- Navbar Right Side -->
+              <div class="navbar-nav">
+                <a class="nav-item nav-link" href="{% url 'login' %}">{% trans "Log in" %}</a>
+                <a class="nav-item nav-link" href="{% url 'register' %}">{% trans "Register" %}</a>
+              </div>
             </div>
-            <!-- Navbar Right Side -->
-            <div class="navbar-nav">
-              <a class="nav-item nav-link" href="{% url 'login' %}">Log In</a>
-              <a class="nav-item nav-link" href="{% url 'register' %}">Register</a>
-            </div>
-          </div>
           {% endif %}
         </div>
       </nav>
@@ -97,15 +89,9 @@
     </main>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-      integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-      crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-      integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-      crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-      integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-      crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
   </body>
 
 </html>
