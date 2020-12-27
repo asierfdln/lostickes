@@ -52,29 +52,6 @@ class UserGroup(models.Model):
 
     ugidentifier = None
 
-    """
-        ------------------------------------------------------------------------------------------
-        PENSAMIENTOS ACERCA DE ESTA MINIPRIMARYKEY DE ugidentifier (tb aplicable a Transaction...)
-        ------------------------------------------------------------------------------------------
-
-        Este identificador (como su nombre apunta) esta pensado para ser usado en la view de group(). La 
-        idea es que, antes que hacer una query del grupo clickado en groups() en la view de group() con la 
-        primkey del propio grupo (lo cual implicaria tener la primkey de los grupos por ahi en las 
-        plantillas para que todo quisqui las vea, cosa mala...), es mejor pasar como parametro a la vista 
-        group() un identificador no clave (es decir, a partir del cual no se pueda inferir todo el 
-        importante campo de la clave primaria de uuid del grupo del cual proviene) que identifique 
-        univocamente a un grupo de entre todos los demas, cosa que la fecha de creacion del grupo o su 
-        nombre o el nombre+fechadecreacion no pueden hacer.
-
-        Para ello, estamos "confiando" en que los campos primkey uuid de los grupos son robustos ante 
-        colisiones parciales, es decir, que los (arbitrarios) primeros 8 caracteres de los campos de 
-        primkey no se repiten de grupo a grupo y, por lo tanto, sirven como identificadores univocos de 
-        los grupos sin llegar a ser una clara filtracion de como funciona nuestra base de datos por debajo. 
-        Este acto de confianza ha conllevado algo de lectura de la literatura acerca de UUID, preguntar 
-        a @asier sobre el tema...
-
-    """
-
     def user_balance(self, user_pk):
         balance = 0
         user_to_filter_transactionsofgroup_with = User.objects.get(primkey=user_pk)
