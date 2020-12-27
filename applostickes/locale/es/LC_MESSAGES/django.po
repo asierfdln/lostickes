@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-12-27 11:54+0100\n"
+"POT-Creation-Date: 2020-12-27 12:08+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -41,10 +41,36 @@ msgstr "Iniciar sesión"
 msgid "Register"
 msgstr "Registrarse"
 
-#: .\applostickes\templates\applostickes\createGroup.html:11
-msgid "Added users"
-msgstr "Usuarios añadidos"
+#: .\applostickes\templates\applostickes\createDebt.html:28
+#: .\applostickes\templates\applostickes\createDebt.html:63
+msgid "All"
+msgstr "Todos"
 
+#: .\applostickes\templates\applostickes\createDebt.html:77
+msgid "Add product"
+msgstr "Añadir producto"
+
+#: .\applostickes\templates\applostickes\createDebt.html:80
+msgid "Add price"
+msgstr "Añadir precio"
+
+#: .\applostickes\templates\applostickes\createDebt.html:82
+msgid "Add"
+msgstr "Añadir"
+
+#: .\applostickes\templates\applostickes\createDebt.html:87
+#: .\applostickes\templates\applostickes\createGroup.html:15
+#: .\applostickes\templates\applostickes\login.html:20
+#: .\applostickes\templates\applostickes\register.html:13
+msgid "Cancel"
+msgstr "Cancelar"
+
+#: .\applostickes\templates\applostickes\createDebt.html:89
+#: .\applostickes\templates\applostickes\createGroup.html:16
+msgid "Submit"
+msgstr "Enviar"
+
+#: .\applostickes\templates\applostickes\createDebt.html:231
 #: .\applostickes\templates\applostickes\createGroup.html:76
 #: .\applostickes\templates\applostickes\debt.html:100
 #: .\applostickes\templates\applostickes\debts.html:132
@@ -54,6 +80,7 @@ msgstr "Usuarios añadidos"
 msgid "Options"
 msgstr "Opciones"
 
+#: .\applostickes\templates\applostickes\createDebt.html:234
 #: .\applostickes\templates\applostickes\createGroup.html:79
 #: .\applostickes\templates\applostickes\debt.html:103
 #: .\applostickes\templates\applostickes\debts.html:135
@@ -63,6 +90,7 @@ msgstr "Opciones"
 msgid "Home"
 msgstr "Inicio"
 
+#: .\applostickes\templates\applostickes\createDebt.html:235
 #: .\applostickes\templates\applostickes\createGroup.html:80
 #: .\applostickes\templates\applostickes\debt.html:104
 #: .\applostickes\templates\applostickes\debts.html:136
@@ -73,6 +101,7 @@ msgstr "Inicio"
 msgid "Groups"
 msgstr "Grupos"
 
+#: .\applostickes\templates\applostickes\createDebt.html:236
 #: .\applostickes\templates\applostickes\createGroup.html:81
 #: .\applostickes\templates\applostickes\debt.html:105
 #: .\applostickes\templates\applostickes\debts.html:137
@@ -83,6 +112,7 @@ msgstr "Grupos"
 msgid "Debts"
 msgstr "Deudas"
 
+#: .\applostickes\templates\applostickes\createDebt.html:237
 #: .\applostickes\templates\applostickes\createGroup.html:82
 #: .\applostickes\templates\applostickes\debt.html:106
 #: .\applostickes\templates\applostickes\debts.html:138
@@ -91,6 +121,10 @@ msgstr "Deudas"
 #: .\applostickes\templates\applostickes\user.html:97
 msgid "Create group"
 msgstr "Crear grupo"
+
+#: .\applostickes\templates\applostickes\createGroup.html:11
+msgid "Added users"
+msgstr "Usuarios añadidos"
 
 #: .\applostickes\templates\applostickes\debt.html:37
 #: .\applostickes\templates\applostickes\debt.html:39
@@ -190,11 +224,6 @@ msgstr "Balance de deuda (te deben)"
 #: .\applostickes\templates\applostickes\login.html:9
 msgid "Hey there!"
 msgstr "¡Buenas!"
-
-#: .\applostickes\templates\applostickes\login.html:20
-#: .\applostickes\templates\applostickes\register.html:13
-msgid "Cancel"
-msgstr "Cancelar"
 
 #: .\applostickes\templates\applostickes\login.html:27
 msgid "Don't have an account?"

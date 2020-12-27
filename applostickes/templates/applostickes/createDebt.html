@@ -1,5 +1,6 @@
 {% extends "applostickes/base.html" %}
 {% load static %}
+{% load i18n %}
 {% block content %}
 <form id="app" method="POST">
   {% csrf_token %}
@@ -24,7 +25,7 @@
       <ul>
         <label for="checkall_id_elements_{{ forloop.counter0 }}">
           <input type="checkbox" id="checkall_id_elements_{{ forloop.counter0 }}" />
-          All
+          {% trans "All" %}
         </label>
         {% for people in lista_peoples %} <!-- bucle for de cada uno de los checkboxes detras de All -->
         <label for="{{ people.1 }}">
@@ -59,7 +60,7 @@
       <ul>
         <label v-bind:for="'checkall_id_elements_vue_' + index">
           <input type="checkbox" disabled v-bind:id="'checkall_id_elements_vue_' + index" @click="check_uncheck_all_users(index)" />
-          All
+          {% trans "All" %}
         </label>
         {% for people in lista_peoples %} <!-- bucle for de cada uno de los checkboxes detras de All -->
         <label for="{{ people.1 }}">
@@ -73,19 +74,19 @@
   </ul>
   <br />
   <label for="el">New element:
-    <input v-model="newElement" id="el" type="text" placeholder="Add product"> <!-- elemento de la data de Vue -->
+    <input v-model="newElement" id="el" type="text" placeholder="{% trans 'Add product' %}"> <!-- elemento de la data de Vue -->
   </label>
   <label for="pr">Price:
-    <input v-model="newPrice" id="pr" type="text" placeholder="Add price"> <!-- elemento de la data de Vue -->
+    <input v-model="newPrice" id="pr" type="text" placeholder="{% trans 'Add price' %}"> <!-- elemento de la data de Vue -->
   </label>
-  <button type="button" id="botonDeAdd" class="btn btn-primary ml-2" @click="saveElement">Add</button>
+  <button type="button" id="botonDeAdd" class="btn btn-primary ml-2" @click="saveElement">{% trans "Add" %}</button>
   <!-- al hacer click en botón se envia el nuevo elemento a la lista -->
   <div id="elements-alerts2" class="mt-2"></div><br />
   <a role="button" class="btn btn-outline-secondary mr-2"
     href="{% url 'group' groupName=group_name group_identifier=groupIdentifier %}">
-    Cancel
+    {% trans "Cancel" %}
   </a>
-  <input type="submit" value="Submit" id="btnSend" class="btn btn-outline-info" /><br /><br />
+  <input type="submit" value="{% trans 'Submit' %}" id="btnSend" class="btn btn-outline-info" /><br /><br />
 </form>
 <script type="text/javascript">
   new Vue({
@@ -227,16 +228,14 @@
 {% block side %}
 <div id="sidebar" class="col-md-4">
   <div class="content-section">
-    <h3>Options</h3>
+    <h3>{% trans "Options" %}</h3>
     <p class='text-muted'>
-    <ul class="list-group">
-      <li class="list-group-item list-group-item-light"><a class="article-title" href="{% url 'user' %}">Home</a></li>
-      <li class="list-group-item list-group-item-light"><a class="article-title" href="{% url 'groups' %}">Groups</a>
-      </li>
-      <li class="list-group-item list-group-item-light"><a class="article-title" href="{% url 'debts' %}">Debts</a></li>
-      <li class="list-group-item list-group-item-light"><a class="article-title" href="{% url 'createGroup' %}">Create
-          group</a></li>
-    </ul>
+      <ul class="list-group">
+        <li class="list-group-item list-group-item-light"><a class="article-title" href="{% url 'user' %}">{% trans "Home" %}</a></li>
+        <li class="list-group-item list-group-item-light"><a class="article-title" href="{% url 'groups' %}">{% trans "Groups" %}</a></li>
+        <li class="list-group-item list-group-item-light"><a class="article-title" href="{% url 'debts' %}">{% trans "Debts" %}</a></li>
+        <li class="list-group-item list-group-item-light"><a class="article-title" href="{% url 'createGroup' %}">{% trans "Create group" %}</a></li>
+      </ul>
     </p>
   </div>
   <button id="btnShHd" role="button" class="btn btn-outline-info btn-block">Hide old elements</button>
