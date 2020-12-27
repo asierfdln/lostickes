@@ -162,7 +162,7 @@ def debts(request):
     for transaction in transactions_of_user:
 
         # metemos informacion
-        context['debts'][transaction.name] = [
+        context['debts'][transaction.get_tridentifier()] = [
             transaction.desc,
             transaction.user_group.name,
             transaction.total_price(),
@@ -170,6 +170,7 @@ def debts(request):
             [],
             transaction.get_tridentifier(),
             transaction.user_group.get_ugidentifier(),
+            transaction.name,
         ]
 
         # cogemos a cada usuario y su rol en la transaccion (estado si es que ha pagado...)
@@ -183,7 +184,7 @@ def debts(request):
                 elif transaction.get_score_state(payer.primkey) == 'NOTPAYED':
                     payer_name = payer_name + ' (OWS)'
 
-            context['debts'][transaction.name][4].append(payer_name)
+            context['debts'][transaction.get_tridentifier()][4].append(payer_name)
 
     context['title'] = 'Debts'
     context['nameClass'] = 'Debts'
@@ -207,11 +208,28 @@ def createGroup(request):
     form = UserGroupForm(request.POST or None)
 
     if form.is_valid():
-        from pprint import pprint
+        todo_bien = True
         request_as_dict = dict(request.POST)
-        pprint(request_as_dict)
-        # form.save()
-        # return redirect('groups')
+        if 'users_group' not in request_as_dict:
+            todo_bien = False
+            form.add_error(
+                field='users',
+                error=forms.ValidationError('No has añadido ningún usuario')
+            )
+
+        if todo_bien:
+            nuevo_grupo = UserGroup(
+                name=request_as_dict['name'][0],
+                desc=request_as_dict['desc'][0]
+            )
+            nuevo_grupo.save()
+            lista_loggeduser = [str(user_to_work_with.primkey)]
+            nuevo_grupo.users.set(
+                User.objects.filter(
+                    primkey__in=request_as_dict['users_group'] + lista_loggeduser
+                )
+            )
+            return redirect('group', nuevo_grupo.name, nuevo_grupo.get_ugidentifier())
 
     context['form'] = form
     context['title'] = 'Create group'

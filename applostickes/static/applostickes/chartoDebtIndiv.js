@@ -27,7 +27,6 @@ $(document).ready(function () {
     // carga de variables
     getData();
 
-    // var precio_total_usuario = jq_data.reduce((a, b) => a + b, 0); // suma total de lo que pagas
     var precio_total_usuario = 0; // suma total de lo que pagas
     var relacion = Math.floor(255 / jq_data.length);
     var blue_comp = 0;
@@ -35,11 +34,7 @@ $(document).ready(function () {
         colourz.push('rgb(23, 162, ' + blue_comp + ')');
         blue_comp = blue_comp + relacion;
         precio_total_usuario = (Number(precio_total_usuario) + Number(element)).toFixed(2);
-        // console.log(element);
-        console.log(precio_total_usuario);
     });
-
-    console.log(precio_total_usuario);
 
     // pintamos la tarta
     var chart = new Chart(ctx, {

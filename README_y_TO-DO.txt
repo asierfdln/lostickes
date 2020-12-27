@@ -31,6 +31,7 @@ debt borrar si eres owner y ya esta pagada (o no....)
 
 i18n
 
-ajax elementos
+ajax borrar transaccion
+ajax pagar transaccion
 
 crispy

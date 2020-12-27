@@ -26,6 +26,7 @@ $(document).ready(function () {
     // carga de variables
     getData();
 
+    var precio_total_usuario = 0; // suma total de lo que pagas
     jq_data.forEach(element => {
         if (element == 0.0) {
             colourz.push('rgb(0, 0, 0)'); // no se va a ver, da igual el color...
@@ -34,6 +35,13 @@ $(document).ready(function () {
         } else {
             colourz.push('rgb(99, 255, 132)'); // verde
         }
+        console.log('element');
+        console.log(element);
+        console.log('precio_total_usuario');
+        console.log(precio_total_usuario);
+        precio_total_usuario = (Number(precio_total_usuario) + Number(element)).toFixed(2);
+        console.log('precio_total_usuarioooooooooooooooooo');
+        console.log(precio_total_usuario);
     });
 
     // pintamos la tarta
@@ -50,6 +58,10 @@ $(document).ready(function () {
         options: {
             legend: {
                 display: false
+            },
+            title: {
+                display: true,
+                text: 'Total: ' + precio_total_usuario + ' lereles'
             },
             tooltips: {
                 enabled: true

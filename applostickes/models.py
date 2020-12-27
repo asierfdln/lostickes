@@ -35,7 +35,6 @@ class UserForm(UserCreationForm):
         model = DjangoUser
         fields = [
             'username',
-            'email',
             'password1',
             'password2',
         ]

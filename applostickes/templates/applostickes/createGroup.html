@@ -7,67 +7,62 @@
   <div id="app">
     <input type="button" style="display: inline;" class="btn btn-outline-info btn-block" value="Add User" @click="add" />
     <br /><br />
-    <strong><p>Added users:</p></strong>
+    <p>Added users:</p>
     <div id="added">
     </div>
-    <br /><br />
+    <br />
     <input type="submit" class="btn btn-outline-secondary mr-2" value="Cancel" onclick="history.back()" />
     <input type="submit" class="btn btn-outline-info" value="Submit" />
     <br /><br />
   </div>
 </form>
 <script type="text/javascript">
-  
   var elementosVue = new Vue({
     el: "#app",
-    data:{
+    data: {
       users: []
     },
-    methods:{
-      add: function(){
+    methods: {
+      add: function () {
         var f = document.getElementsByName("users");
-        var user =  f[0][f[0].selectedIndex];
-        if(this.users.length == 0) {
+        var user = f[0][f[0].selectedIndex];
+        if (this.users.length == 0) {
           this.users.push(f[0][f[0].selectedIndex]);
           console.log(this.users[0].outerText);
           $("#added").append(
-              '<div id="'+user.value+'ELDIV"><button id="'+user.value+'" style="display: inline;" type="button" class="btn btn-outline-danger mr-4" onclick="deleteF(this, event)">' +
-                '<span>&times;</span>' +
-              '</button>' +
-              '<input type="text" name="users_group" style="display: none;" value="'+user.value+'">' +
-                user.outerText +
-              '<br /></div>'
-              
+            '<div id="' + user.value + 'ELDIV"><button id="' + user.value + '" style="display: inline;" type="button" class="btn btn-outline-danger mr-4 mb-2" onclick="deleteF(this, event)">' +
+            '<span>&times;</span>' +
+            '</button>' +
+            '<input type="text" name="users_group" style="display: none;" value="' + user.value + '">' +
+            user.outerText +
+            '</div>'
           );
         }
-        else{
-          if(this.users.includes(user)){
+        else {
+          if (this.users.includes(user)) {
             console.log("esta");
           }
-          else{
+          else {
             this.users.push(f[0][f[0].selectedIndex]);
             $("#added").append(
-              '<div id="'+user.value+'ELDIV"><button id="'+user.value+'" style="display: inline;" type="button" class="btn btn-outline-danger mr-4" onclick="deleteF(this, event)">' +
-                '<span>&times;</span>' +
+              '<div id="' + user.value + 'ELDIV"><button id="' + user.value + '" style="display: inline;" type="button" class="btn btn-outline-danger mr-4 mb-2" onclick="deleteF(this, event)">' +
+              '<span>&times;</span>' +
               '</button>' +
-              '<input type="text" name="users_group" style="display: none;" value="'+user.value+'">' +
-                user.outerText +
-              '<br /></div>'
-              
-          );
+              '<input type="text" name="users_group" style="display: none;" value="' + user.value + '">' +
+              user.outerText +
+              '</div>'
+            );
           }
         }
-        
       }
     }
-    
   });
-  function deleteF(ele, e){
-    var cosaPincha = document.getElementById(ele.id+"ELDIV");
+  function deleteF(ele, e) {
+    var cosaPincha = document.getElementById(ele.id + "ELDIV");
     cosaPincha.remove();
-    for(var i = 0; i < elementosVue.users.length; i++){
+    for (var i = 0; i < elementosVue.users.length; i++) {
       console.log(elementosVue.users[i].value);
-      if(ele.id == elementosVue.users[i].value){
+      if (ele.id == elementosVue.users[i].value) {
         elementosVue.users.splice(i, 1);
       }
     }
