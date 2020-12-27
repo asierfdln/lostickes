@@ -178,12 +178,12 @@ def debts(request):
         for payer in transaction.payers.all():
             payer_name = payer.django_user.username
             if transaction.get_score_role(payer.primkey) == 'OWNER':
-                payer_name = payer_name + ' (OWNER)'
+                payer_name = payer_name + _(' (OWNER)')
             elif transaction.get_score_role(payer.primkey) == 'DEBTER':
                 if transaction.get_score_state(payer.primkey) == 'PAYED':
-                    payer_name = payer_name + ' (PAYED)'
+                    payer_name = payer_name + _(' (PAYED)')
                 elif transaction.get_score_state(payer.primkey) == 'NOTPAYED':
-                    payer_name = payer_name + ' (OWS)'
+                    payer_name = payer_name + _(' (OWS)')
 
             context['debts'][transaction.get_tridentifier()][4].append(payer_name)
 
