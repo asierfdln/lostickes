@@ -348,7 +348,7 @@ def createDebt(request):
         if 'elements_vue' in request_as_dict:
             for elemento in request_as_dict['elements_vue']:
                 nombre_elemento = elemento.strip().split(' - ')[0]
-                precio_elemento = int(elemento.strip().split(' - ')[1].split(' €')[0])
+                precio_elemento = float(elemento.strip().split(' - ')[1].split(' €')[0])
                 element = Element(
                     name=nombre_elemento,
                     price=precio_elemento,

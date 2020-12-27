@@ -358,8 +358,8 @@ class TransactionForm(forms.ModelForm):
         queryset=Element.objects.all(),
         required=False,
         widget=forms.CheckboxSelectMultiple,
-        help_text='Introduce elementos de la transaccion.'
     )
+
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
