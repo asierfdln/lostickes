@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-12-27 06:22+0100\n"
+"POT-Creation-Date: 2020-12-27 11:32+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -41,6 +41,113 @@ msgstr "Iniciar sesión"
 msgid "Register"
 msgstr "Registrarse"
 
+#: .\applostickes\templates\applostickes\group.html:21
+#: .\applostickes\templates\applostickes\groups.html:24
+#, fuzzy
+#| msgid "Balance (you owe)"
+msgid "Group balance (you owe)"
+msgstr "Balance de grupo (debes)"
+
+#: .\applostickes\templates\applostickes\group.html:23
+#: .\applostickes\templates\applostickes\groups.html:26
+#, fuzzy
+#| msgid "Cancel"
+msgid "Group balance"
+msgstr "Balance de grupo"
+
+#: .\applostickes\templates\applostickes\group.html:25
+#: .\applostickes\templates\applostickes\groups.html:28
+#, fuzzy
+#| msgid "Balance (you are owed)"
+msgid "Group balance (you are owed)"
+msgstr "Balance de grupo (te deben)"
+
+#: .\applostickes\templates\applostickes\group.html:80
+#: .\applostickes\templates\applostickes\group.html:82
+#: .\applostickes\templates\applostickes\group.html:84
+msgid "Cost"
+msgstr "Coste"
+
+#: .\applostickes\templates\applostickes\group.html:93
+#: .\applostickes\templates\applostickes\user.html:29
+#: .\applostickes\templates\applostickes\user.html:40
+#: .\applostickes\templates\applostickes\user.html:63
+#: .\applostickes\templates\applostickes\user.html:74
+msgid "Balance (you owe)"
+msgstr "Balance (debes)"
+
+#: .\applostickes\templates\applostickes\group.html:95
+#: .\applostickes\templates\applostickes\user.html:31
+#: .\applostickes\templates\applostickes\user.html:42
+#: .\applostickes\templates\applostickes\user.html:65
+#: .\applostickes\templates\applostickes\user.html:76
+#, fuzzy
+#| msgid "Cancel"
+msgid "Balance"
+msgstr "Balance"
+
+#: .\applostickes\templates\applostickes\group.html:97
+#: .\applostickes\templates\applostickes\user.html:33
+#: .\applostickes\templates\applostickes\user.html:44
+#: .\applostickes\templates\applostickes\user.html:67
+#: .\applostickes\templates\applostickes\user.html:78
+msgid "Balance (you are owed)"
+msgstr "Balance (te deben)"
+
+#: .\applostickes\templates\applostickes\group.html:155
+#: .\applostickes\templates\applostickes\groups.html:55
+#: .\applostickes\templates\applostickes\user.html:91
+msgid "Options"
+msgstr "Opciones"
+
+#: .\applostickes\templates\applostickes\group.html:158
+#: .\applostickes\templates\applostickes\groups.html:58
+#: .\applostickes\templates\applostickes\user.html:94
+msgid "Home"
+msgstr "Inicio"
+
+#: .\applostickes\templates\applostickes\group.html:159
+#: .\applostickes\templates\applostickes\groups.html:59
+#: .\applostickes\templates\applostickes\user.html:22
+#: .\applostickes\templates\applostickes\user.html:95
+msgid "Groups"
+msgstr "Grupos"
+
+#: .\applostickes\templates\applostickes\group.html:160
+#: .\applostickes\templates\applostickes\groups.html:60
+#: .\applostickes\templates\applostickes\user.html:56
+#: .\applostickes\templates\applostickes\user.html:96
+msgid "Debts"
+msgstr "Deudas"
+
+#: .\applostickes\templates\applostickes\group.html:161
+#: .\applostickes\templates\applostickes\groups.html:61
+#: .\applostickes\templates\applostickes\user.html:97
+msgid "Create group"
+msgstr "Crear grupo"
+
+#: .\applostickes\templates\applostickes\group.html:166
+msgid "Create new debt"
+msgstr "Crear nueva deuda"
+
+#: .\applostickes\templates\applostickes\groups.html:37
+#, fuzzy
+#| msgid "Balance (you are owed)"
+msgid "Debt balance (you owe)"
+msgstr "Balance de deuda (te deben)"
+
+#: .\applostickes\templates\applostickes\groups.html:39
+#, fuzzy
+#| msgid "Cancel"
+msgid "Debt balance"
+msgstr "Balance de deuda"
+
+#: .\applostickes\templates\applostickes\groups.html:41
+#, fuzzy
+#| msgid "Balance (you are owed)"
+msgid "Debt balance (you are owed)"
+msgstr "Balance de deuda (te deben)"
+
 #: .\applostickes\templates\applostickes\login.html:9
 msgid "Hey there!"
 msgstr "¡Buenas!"
@@ -67,54 +174,19 @@ msgstr "¡Únete hoy!"
 msgid "Already have an account?"
 msgstr "¿Ya tienes cuenta?"
 
-#: .\applostickes\templates\applostickes\user.html:22
-#: .\applostickes\templates\applostickes\user.html:95
-msgid "Groups"
-msgstr "Grupos"
-
-#: .\applostickes\templates\applostickes\user.html:29
-#: .\applostickes\templates\applostickes\user.html:40
-#: .\applostickes\templates\applostickes\user.html:63
-#: .\applostickes\templates\applostickes\user.html:74
-msgid "Balance (you owe)"
-msgstr "Balance (debes)"
-
-#: .\applostickes\templates\applostickes\user.html:31
-#: .\applostickes\templates\applostickes\user.html:42
-#: .\applostickes\templates\applostickes\user.html:65
-#: .\applostickes\templates\applostickes\user.html:76
-#, fuzzy
-#| msgid "Cancel"
-msgid "Balance"
-msgstr "Balance"
-
-#: .\applostickes\templates\applostickes\user.html:33
-#: .\applostickes\templates\applostickes\user.html:44
-#: .\applostickes\templates\applostickes\user.html:67
-#: .\applostickes\templates\applostickes\user.html:78
-msgid "Balance (you are owed)"
-msgstr "Balance (te deben)"
-
-#: .\applostickes\templates\applostickes\user.html:56
-#: .\applostickes\templates\applostickes\user.html:97
-msgid "Debts"
-msgstr "Deudas"
-
-#: .\applostickes\templates\applostickes\user.html:91
-msgid "Options"
-msgstr "Opciones"
-
-#: .\applostickes\templates\applostickes\user.html:94
-msgid "Home"
-msgstr "Inicio"
-
-#: .\applostickes\templates\applostickes\user.html:98
-msgid "Create group"
-msgstr "Crear grupo"
-
 #: .\applostickes\views.py:56
 msgid "You have been logged out, see ya soon!"
 msgstr "Has cerrado la sesión, ¡hasta pronto!"
+
+#, fuzzy
+#~| msgid "Balance (you owe)"
+#~ msgid "Debt balance (debes)"
+#~ msgstr "Balance de deuda (debes)"
+
+#, fuzzy
+#~| msgid "Balance (you owe)"
+#~ msgid "Debt balance (te deben)"
+#~ msgstr "Balance de deuda (debes)"
 
 #, fuzzy
 #~| msgid "Log in"
