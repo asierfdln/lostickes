@@ -5,6 +5,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User as DjangoUser
 from django.core import validators as vals
 from django.db import models
+from django.utils.translation import gettext_lazy as _
 from picklefield.fields import PickledObjectField
 import applostickes
 
@@ -47,7 +48,7 @@ class UserGroup(models.Model):
 
     primkey = models.UUIDField(primary_key=True, editable=False, default=uuid.uuid4)
 
-    users = models.ManyToManyField(User, blank=False, help_text="Usuarios pertenecientes al grupo.") # _('ug_users')
+    users = models.ManyToManyField(User, blank=False, help_text=_("Users belonging to group."))
 
     ugidentifier = None
 
@@ -102,19 +103,19 @@ class UserGroupForm(forms.ModelForm):
     users = forms.ModelChoiceField(
         empty_label=None,
         queryset=None,
-        widget=forms.Select,
-        help_text='Usuarios que elegir'
+        widget=forms.Select
     )
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['users'].queryset = User.objects.exclude(primkey=applostickes.user_primkey_exclude)
+        self.fields['users'].help_text = _('Users to choose from...')
 
 
 class Element(models.Model):
 
     name = models.CharField(max_length=55, blank=False)
-    price = models.FloatField(validators=[vals.MinValueValidator(limit_value=0.009, message="Only positive integers allowed")])
+    price = models.FloatField(validators=[vals.MinValueValidator(limit_value=0.009, message=_("Only positive integers allowed"))])
 
     primkey = models.UUIDField(primary_key=True, editable=False, default=uuid.uuid4)
 
@@ -137,32 +138,39 @@ class ElementForm(forms.ModelForm):
 
 class Transaction(models.Model):
 
-    name = models.CharField(max_length=55, blank=False)
-    desc = models.TextField(max_length=280, blank=False)
+    name = models.CharField(
+        max_length=55,
+        blank=False,
+        help_text=_('Name of transaction')
+    )
+    desc = models.TextField(
+        max_length=280,
+        blank=False,
+        help_text=_('Description of transaction')
+    )
 
     primkey = models.UUIDField(primary_key=True, editable=False, default=uuid.uuid4)
 
     user_group = models.ForeignKey(
         UserGroup,
         blank=False,
-        on_delete=models.CASCADE,
-        help_text="Grupo al cual pertenence la transaccion."
+        on_delete=models.CASCADE
     )
     payers = models.ManyToManyField(
         User,
         blank=False,
-        help_text="Usuarios entre los que pagar la transaccion."
+        help_text=_('Users involved in transaction.')
     )
     elements = models.ManyToManyField(
         Element,
         blank=False,
-        help_text="Introduce elementos de la transaccion."
+        help_text=_('Elements involved in transaction.')
     )
 
     mapping = models.CharField(
         max_length=280,
         blank=False,
-        help_text="Para definir que paga cada usuario seguir el siguiente formato: 1,2;2,3,4. ; por cada producto. , por cada usuario responsable."
+        help_text=_('Mapping of whose is what and such...')
     )
 
     score_settling_mapping = PickledObjectField(default=dict)
@@ -350,8 +358,7 @@ class TransactionForm(forms.ModelForm):
     payer = forms.ModelChoiceField(
         empty_label=None,
         queryset=None,
-        widget=forms.Select,
-        help_text='Miembro del grupo a pagar la transaccion.'
+        widget=forms.Select
     )
 
     elements = forms.ModelMultipleChoiceField(
@@ -372,8 +379,14 @@ class TransactionForm(forms.ModelForm):
             usergroup__in=usergroup_tofilterwith
         )
 
+        self.fields['name'].label = _('Name')
+        self.fields['desc'].label = _('Description')
+
         self.fields['user_group'].queryset = usergroup_tofilterwith
         self.fields['user_group'].initial = usergroup_tofilterwith[0]
-        self.fields['user_group'].help_text = 'Grupo al cual pertenence la transaccion.'
 
+        self.fields['payer'].label = _('Payer')
         self.fields['payer'].queryset = peoples_paying
+        self.fields['payer'].help_text = _('Member of group paying for the whole thing.')
+
+        self.fields['elements'].label = _('Elements')

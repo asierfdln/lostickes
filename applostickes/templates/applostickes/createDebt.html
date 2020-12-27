@@ -5,51 +5,52 @@
 <form id="app" method="POST">
   {% csrf_token %}
   {% for field in form %}
-  {% if field.errors %}
-  <div class="alert alert-danger">
-    <span style="color: red;">{{ field.errors }}</span>
-  </div>
-  {% endif %}
-  {% if forloop.counter == 3 %}
-  {% elif forloop.counter == 5 %}
-  <div id="elements-alerts"></div>
-  {{ field.label_tag }}<br />
-  {% else %}
-  {{ field.label_tag }}<br />
-  {% endif %}
-  {% if forloop.counter == 5 %}
-  <ul id="ultohide" style="display: block; list-style: none;">
-    {% for li in field %} <!-- for de cada uno de las leches/bollicaos... -->
-    <li>
-      {{ li }} <!-- la lichi... cuyo id sigue el formato de id_elements_{{ forloop.counter0 }} -->
-      <ul>
-        <label for="checkall_id_elements_{{ forloop.counter0 }}">
-          <input type="checkbox" id="checkall_id_elements_{{ forloop.counter0 }}" />
-          {% trans "All" %}
-        </label>
-        {% for people in lista_peoples %} <!-- bucle for de cada uno de los checkboxes detras de All -->
-        <label for="{{ people.1 }}">
-          <input type="checkbox" name="people_paying_element_{{ forloop.parentloop.counter0 }}" value="{{ people.0 }}"
-            id="{{ people.1 }}" />
-          {{ people.2 }}
-        </label>
+    {% if field.errors %}
+      <div class="alert alert-danger">
+        <span style="color: red;">{{ field.errors }}</span>
+      </div>
+    {% endif %}
+    {% if forloop.counter == 3 %}
+    {% elif forloop.counter == 5 %}
+      <div id="elements-alerts"></div>
+      {{ field.label_tag }}<br />
+    {% else %}
+      {{ field.label_tag }}<br />
+    {% endif %}
+    {% if forloop.counter == 5 %}
+      <ul id="ultohide" style="display: block; list-style: none;">
+        {% for li in field %} <!-- for de cada uno de las leches/bollicaos... -->
+          <li>
+            {{ li }} <!-- la lichi... cuyo id sigue el formato de id_elements_{{ forloop.counter0 }} -->
+            <ul>
+              <label for="checkall_id_elements_{{ forloop.counter0 }}">
+                <input type="checkbox" id="checkall_id_elements_{{ forloop.counter0 }}" />
+                {% trans "All" %}
+              </label>
+              {% for people in lista_peoples %} <!-- bucle for de cada uno de los checkboxes detras de All -->
+              <label for="{{ people.1 }}">
+                <input type="checkbox" name="people_paying_element_{{ forloop.parentloop.counter0 }}" value="{{ people.0 }}"
+                  id="{{ people.1 }}" />
+                {{ people.2 }}
+              </label>
+              {% endfor %}
+            </ul>
+          </li>
         {% endfor %}
       </ul>
-    </li>
-    {% endfor %}
-  </ul>
-  {% else %}
-  {{ field }}<br />
-    {% if forloop.counter == 1 %}
-    <br />
+    {% else %}
+      {{ field }}<br />
     {% endif %}
-  {% endif %}
-  {% if forloop.counter == 3 %}
-  {% else %}
-    {% if field.help_text %}
-    {{ field.help_text|safe }}<br /><br />
-  {% endif %}
-  {% endif %}
+    {% if forloop.counter == 3 %}
+    {% elif forloop.counter == 2 %}
+      {% if field.help_text %}
+        {{ field.help_text|safe }}<br />
+      {% endif %}
+    {% else %}
+      {% if field.help_text %}
+        {{ field.help_text|safe }}<br /><br />
+      {% endif %}
+    {% endif %}
   {% endfor %}
   <ul id="ulVue" style="list-style: none;" v-for="(e, index) in elements">
     <li>
