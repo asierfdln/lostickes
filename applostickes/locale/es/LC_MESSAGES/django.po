@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-12-27 13:20+0100\n"
+"POT-Creation-Date: 2020-12-27 13:25+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -122,6 +122,10 @@ msgstr "Deudas"
 msgid "Create group"
 msgstr "Crear grupo"
 
+#: .\applostickes\templates\applostickes\createGroup.html:9
+msgid "Add user"
+msgstr "Añadir usuario"
+
 #: .\applostickes\templates\applostickes\createGroup.html:11
 msgid "Added users"
 msgstr "Usuarios añadidos"
@@ -180,22 +184,16 @@ msgstr "Deuda pagada"
 
 #: .\applostickes\templates\applostickes\group.html:22
 #: .\applostickes\templates\applostickes\groups.html:24
-#, fuzzy
-#| msgid "Balance (you owe)"
 msgid "Group balance (you owe)"
 msgstr "Balance de grupo (debes)"
 
 #: .\applostickes\templates\applostickes\group.html:24
 #: .\applostickes\templates\applostickes\groups.html:26
-#, fuzzy
-#| msgid "Cancel"
 msgid "Group balance"
 msgstr "Balance de grupo"
 
 #: .\applostickes\templates\applostickes\group.html:26
 #: .\applostickes\templates\applostickes\groups.html:28
-#, fuzzy
-#| msgid "Balance (you are owed)"
 msgid "Group balance (you are owed)"
 msgstr "Balance de grupo (te deben)"
 
@@ -204,20 +202,14 @@ msgid "Create new debt"
 msgstr "Crear nueva deuda"
 
 #: .\applostickes\templates\applostickes\groups.html:37
-#, fuzzy
-#| msgid "Balance (you are owed)"
 msgid "Debt balance (you owe)"
 msgstr "Balance de deuda (te deben)"
 
 #: .\applostickes\templates\applostickes\groups.html:39
-#, fuzzy
-#| msgid "Cancel"
 msgid "Debt balance"
 msgstr "Balance de deuda"
 
 #: .\applostickes\templates\applostickes\groups.html:41
-#, fuzzy
-#| msgid "Balance (you are owed)"
 msgid "Debt balance (you are owed)"
 msgstr "Balance de deuda (te deben)"
 
@@ -261,6 +253,10 @@ msgstr " (PAGAU)"
 #: .\applostickes\views.py:186
 msgid " (OWS)"
 msgstr " (DEBE)"
+
+#: .\applostickes\views.py:218
+msgid "You didn't add any users."
+msgstr "No has añadido ningún usuario."
 
 #, fuzzy
 #~| msgid "Balance (you owe)"

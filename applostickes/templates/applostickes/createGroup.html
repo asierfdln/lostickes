@@ -6,7 +6,7 @@
   {% csrf_token %}
   {{ form | crispy }}
   <div id="app">
-    <input type="button" style="display: inline;" class="btn btn-outline-info btn-block" value="Add User" @click="add" />
+    <input type="button" style="display: inline;" class="btn btn-outline-info btn-block" value="{% trans 'Add user' %}" @click="add" />
     <br /><br />
     <p>{% trans "Added users" %}:</p>
     <div id="added">

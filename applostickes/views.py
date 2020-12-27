@@ -215,7 +215,7 @@ def createGroup(request):
             todo_bien = False
             form.add_error(
                 field='users',
-                error=forms.ValidationError('No has añadido ningún usuario')
+                error=forms.ValidationError(_("You didn't add any users."))
             )
 
         if todo_bien:
